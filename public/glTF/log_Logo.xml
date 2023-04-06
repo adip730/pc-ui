@@ -1,0 +1,57 @@
+<batchrender>
+  <environmentinfo>
+    <machineinfo>
+      <machinename>DESKTOP-G5GA9EP</machinename>
+      <username>Pleasure Craft Matt</username>
+      <processortype>GenuineIntel, stepping 4, model 5, instruction family 6</processortype>
+      <processorname>Intel Core i9-7960X CPU</processorname>
+      <processornumber>32</processornumber>
+      <ostype>WINDOWS 64 BIT</ostype>
+      <osversion>Windows 10, 64 Bit, Professional Edition (build 19045)</osversion>
+      <oglvendorname>NVIDIA</oglvendorname>
+      <oglrendername>NVIDIA GeForce GTX 1080 Ti</oglrendername>
+      <oglversion>12</oglversion>
+    </machineinfo>
+    <c4dinfo>
+      <c4dversion>24111</c4dversion>
+      <c4dplugins>cadexchangeconfig substanceconfig addons advanced_render alembic archigrass assetbrowser bitmapfilter bpexchange browser bugslife_client c4d_viewport_render c4dOctane-S24 ca ca2 cadexchange clothilde collada14 collada15 colorchoosergui compositing cyctypes deltamush deployment dwg dwgobjects dynamics exchanges expressiontag fbx gltf gorillacam goz greyscalegorillahub hair hdrilink i_skp interop io_obj lightkit3 lighttypes metrics mkmodeler mocca model mograph motioncam motiontracker nbo nbp newman nodeeditor objects onlineupdater physx_hybrid pluslibrary projectassetinspector python relaxuv scenemanager sculpt sculptbrushes shader signal sketch sky sla spacemouse substance teamrender thinking_particles tool_system_hybrid topcoat tpoperators usd uvviewport volumes xpressocore xtensions </c4dplugins>
+    </c4dinfo>
+  </environmentinfo>
+  <fileinfo>
+    <filename>Logo Chrome.c4d</filename>
+    <filepath>C:\Users\Pleasure Craft Matt\Dropbox\PROJECTS\WEBSITE\Logo\glTF\Logo Chrome</filepath>
+    <renderdatainfo>
+      <rendersettings>My Render Setting</rendersettings>
+      <take>Main</take>
+      <camera>Default Camera</camera>
+      <width>4800</width>
+      <height>3840</height>
+      <filmaspect>1.25</filmaspect>
+      <pixelaspect>1</pixelaspect>
+      <fps>30</fps>
+      <from>159</from>
+      <to>159</to>
+      <steps>1</steps>
+      <saveinfo>
+        <imagepath>C:\Users\Pleasure Craft Matt\Dropbox\PROJECTS\WEBSITE\Logo</imagepath>
+        <imagedepth>8</imagedepth>
+        <imageformat>PNG</imageformat>
+      </saveinfo>
+      <renderengine>
+        <engine id="1023342" name="Physical" />
+      </renderengine>
+      <videopost>
+        <effect id="1029525" name="Octane Renderer" />
+      </videopost>
+    </renderdatainfo>
+  </fileinfo>
+  <renderinfo>
+    <imageinfo frame="159">00:00:15 C:\Users\Pleasure Craft Matt\Dropbox\PROJECTS\WEBSITE\Logo\Logo0159.png</imageinfo>
+  </renderinfo>
+  <batchinfo>
+    <added>1/19/2023, 5:53:26 PM</added>
+    <started>1/19/2023, 5:53:37 PM</started>
+    <rendertime>00:00:17</rendertime>
+    <result>Finished</result>
+  </batchinfo>
+</batchrender>
