@@ -7,6 +7,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Cache } from "three";
 import { isPlainObject } from "@mui/utils";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
+import Fade from '@mui/material/Fade';
 
 // Global context var
 var direction = 0;
@@ -17,7 +18,8 @@ export const HomeLogo = () => {
   // Canvas ref
   const canvasRef = useRef(null);
 
-  const { api } = useContext(AppContext);
+  const { state, api } = useContext(AppContext);
+  const { showLoading } = state;
   const { setShowLoading } = api;
 
   const clearThree = (obj) => {
@@ -79,6 +81,8 @@ export const HomeLogo = () => {
           coinDisc.material.emissive = new THREE.Color(0xffffff);
           coinDisc.material.emissiveIntensity = 0.1;
           scene.add(coinDisc);
+          loadTime = Date.now();
+          theta = Math.PI / 2;
         }
       );
       //console.log(dumpObject(root).join('\n'));
@@ -94,7 +98,7 @@ export const HomeLogo = () => {
     });
     // Set up the Three.js scene, camera, and renderer
     const scene = new THREE.Scene();
-    var theta = 0;
+    let theta;
     const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
       antialias: true,
@@ -109,12 +113,20 @@ export const HomeLogo = () => {
       1000
     );
     camera.position.z = 100;
+    camera.position.x = 100;
+    var rotating = false;
+    let loadTime;
     renderer.render(scene, camera);
+    const frame = Math.PI / 360;
     function animate() {
       // Translating camera on a horizontal fixed orbit
-      var frame = Math.PI / 360;
       var r = 100;
-      theta -= frame; //this gives the illusion of rotation by orbiting the camera
+      if (Date.now() - loadTime >= 2000) {
+        rotating = true;
+      }
+      if (rotating) {
+        theta -= frame; //this gives the illusion of rotation by orbiting the camera
+      }
       coinDisc.rotation.y -= frame * direction; //rotating the mesh should give reflections animation
       theta += frame * direction; //applying counterspin
       var coordinates = calculate_orbit(r, theta);
@@ -136,18 +148,27 @@ export const HomeLogo = () => {
       clearThree(scene);
     };
   }, []); // The empty array ensures that this effect only runs once when the component mounts
+  /*useEffect (() => {
+    if(!showLoading){
+      setTimeout(animate, 2000);
+    }
+  },[showLoading]);*/
   return (
+      <Fade in={!showLoading} timeout={500}>
     <div id="main">
-      <canvas
-        ref={canvasRef}
-        className="three"
-        style={{ maxHeight: "100%", maxWidth: "100%" }}
-        width="1000px"
-        height="1000px"
-      />
+
+        <canvas
+          ref={canvasRef}
+          className="three"
+          style={{ maxHeight: "100%", maxWidth: "100%" }}
+          width="1000px"
+          height="1000px"
+        />
     </div>
+      </Fade>
   );
 };
+
 
 export default HomeLogo;
 
@@ -180,8 +201,7 @@ function handleScroll(event) {
 function dumpObject(obj, lines = [], isLast = true, prefix = "") {
   const localPrefix = isLast ? "└─" : "├─";
   lines.push(
-    `${prefix}${prefix ? localPrefix : ""}${obj.name || "*no-name*"} [${
-      obj.type
+    `${prefix}${prefix ? localPrefix : ""}${obj.name || "*no-name*"} [${obj.type
     }]`
   );
   const newPrefix = prefix + (isLast ? "  " : "│ ");

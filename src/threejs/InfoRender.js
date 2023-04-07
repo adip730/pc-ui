@@ -115,8 +115,9 @@ export const InfoRender = () => {
       {
         textureWidth: 2048,
         textureHeight: 2048,
-        waterNormals: new THREE.TextureLoader().load('textures/waternormals.jpg', function(texture) {
+        waterNormals: new THREE.TextureLoader().load('/Textures/waternormals.jpg', function(texture) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+          console.log('Texture loaded successfully');
         }),
         sunDirection: new THREE.Vector3(0, -1, -1),
         sunColor: null,
