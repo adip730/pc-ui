@@ -20,9 +20,9 @@ import fragmentShader from './FragmentShader.js';
 var direction = 0;
 
 const waves = {
-  A: { direction: 344, steepness: .1, wavelength: 5 },
-  B: { direction: 330, steepness: .1, wavelength: 10 },
-  C: { direction: 280, steepness: .1, wavelength: 6.9 },
+  A: { direction: 344, steepness: .1, wavelength: 3 },
+  //B: { direction: 330, steepness: .1, wavelength: 10 },
+  //C: { direction: 280, steepness: .1, wavelength: 6.9 },
 };
 
 // About page scene demo
@@ -139,7 +139,7 @@ export const InfoRender = () => {
           waves.A.wavelength,
         ],
       };
-      shader.uniforms.waveB = {
+      /*shader.uniforms.waveB = {
         value: [
           Math.sin( ( waves.B.direction * Math.PI ) / 180 ),
           Math.cos( ( waves.B.direction * Math.PI ) / 180 ),
@@ -154,7 +154,7 @@ export const InfoRender = () => {
           waves.C.steepness,
           waves.C.wavelength,
         ],
-      };
+      };*/
       shader.vertexShader = vertexShader;
       shader.fragmentShader = fragmentShader;
 
@@ -288,56 +288,26 @@ export const InfoRender = () => {
     controls.minDistance = 230;
     controls.maxDistance = 500;
 
-    var framecount = 0;
-    var rotateAvatar = 0;
+    //var framecount = 0;
+    //var rotateAvatar = 0;
     //var isRotating = false;
-    var clock = new THREE.Clock();
+    //var clock = new THREE.Clock();
     //renderer.setAnimationLoop(animate);
 
     function animate() {
       // Translating camera on a horizontal fixed orbit
       controls.update();
-      //sphere.rotation.z += Math.PI/4;
-      
-      // Calculate the angle between the camera and the avatars
-      const avatarDirection = new THREE.Vector3();
-      mattAvatar.getWorldDirection(avatarDirection);
-
-      const cameraDirection = new THREE.Vector3();
-      cameraDirection.subVectors(camera.position, mattAvatar.position).normalize();
-
-      var angle = avatarDirection.angleTo(cameraDirection);
-
-      if (avatarDirection.dot(cameraDirection.cross(new THREE.Vector3(0, 1, 0))) > 0) {
-        angle = -angle;
-      }
-
-      //console.log("AVATAR ANGLE: " + angle);
-      const dist = Math.abs(angle);
-
-      if(dist >= (100 * Math.PI / 180) && rotateAvatar === 0){
-        rotateAvatar = (angle > 0) ? 1 : -1;
-      };
-      if(framecount >= 40 && dist < 20 * Math.PI / 180){
-        rotateAvatar = 0;
-        framecount = 0;
-      }
-      if(rotateAvatar !== 0 && (dist > 20 * Math.PI / 180)) {
-        // Rotate the avatars by a small amount
-        mattAvatar.rotation.y += rotateAvatar * Math.PI / 45;
-        derekAvatar.rotation.y += rotateAvatar * Math.PI / 45;
-        framecount ++;
-      }
-      //console.log(rotate_avatar);
-
-      //water
-      //water.material.uniforms.time.value += 1.0 / 60.0;
-      water.material.uniforms[ 'time' ].value += clock.getDelta();
-
-      //console.log(camera.position);
+    
+      // Rotate the avatars towards the camera if needed
+      rotateTowardsCamera(mattAvatar, camera);
+      rotateTowardsCamera(derekAvatar, camera);
+    
+      // Update water
+      water.material.uniforms['time'].value += clock.getDelta();
+    
+      // Render the scene
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
-
     }
 
     animate();
@@ -374,55 +344,76 @@ function dumpObject(obj, lines = [], isLast = true, prefix = '') {
     return lines;
   }
 
-  function getWaveInfo( x, z, time ) {
+function getWaveInfo( x, z, time ) {
 
-    const pos = new THREE.Vector3();
-    const tangent = new THREE.Vector3( 1, 0, 0 );
-    const binormal = new THREE.Vector3( 0, 0, 1 );
-    Object.keys( waves ).forEach( ( wave ) => {
+  const pos = new THREE.Vector3();
+  const tangent = new THREE.Vector3( 1, 0, 0 );
+  const binormal = new THREE.Vector3( 0, 0, 1 );
+  Object.keys( waves ).forEach( ( wave ) => {
 
-      const w = waves[ wave ];
-      const k = ( Math.PI * 2 ) / w.wavelength;
-      const c = Math.sqrt( 9.8 / k );
-      const d = new THREE.Vector2(
-        Math.sin( ( w.direction * Math.PI ) / 180 ),
-        - Math.cos( ( w.direction * Math.PI ) / 180 )
-      );
-      const f = k * ( d.dot( new THREE.Vector2( x, z ) ) - c * time );
-      const a = w.steepness / k;
+    const w = waves[ wave ];
+    const k = ( Math.PI * 2 ) / w.wavelength;
+    const c = Math.sqrt( 9.8 / k );
+    const d = new THREE.Vector2(
+      Math.sin( ( w.direction * Math.PI ) / 180 ),
+      - Math.cos( ( w.direction * Math.PI ) / 180 )
+    );
+    const f = k * ( d.dot( new THREE.Vector2( x, z ) ) - c * time );
+    const a = w.steepness / k;
 
-      pos.x += d.y * ( a * Math.cos( f ) );
-      pos.y += a * Math.sin( f );
-      pos.z += d.x * ( a * Math.cos( f ) );
+    pos.x += d.y * ( a * Math.cos( f ) );
+    pos.y += a * Math.sin( f );
+    pos.z += d.x * ( a * Math.cos( f ) );
 
-      tangent.x += - d.x * d.x * ( w.steepness * Math.sin( f ) );
-      tangent.y += d.x * ( w.steepness * Math.cos( f ) );
-      tangent.z += - d.x * d.y * ( w.steepness * Math.sin( f ) );
+    tangent.x += - d.x * d.x * ( w.steepness * Math.sin( f ) );
+    tangent.y += d.x * ( w.steepness * Math.cos( f ) );
+    tangent.z += - d.x * d.y * ( w.steepness * Math.sin( f ) );
 
-      binormal.x += - d.x * d.y * ( w.steepness * Math.sin( f ) );
-      binormal.y += d.y * ( w.steepness * Math.cos( f ) );
-      binormal.z += - d.y * d.y * ( w.steepness * Math.sin( f ) );
+    binormal.x += - d.x * d.y * ( w.steepness * Math.sin( f ) );
+    binormal.y += d.y * ( w.steepness * Math.cos( f ) );
+    binormal.z += - d.y * d.y * ( w.steepness * Math.sin( f ) );
 
-    } );
+  } );
 
-    const normal = binormal.cross( tangent ).normalize();
+  const normal = binormal.cross( tangent ).normalize();
 
-    return { position: pos, normal: normal };
+  return { position: pos, normal: normal };
 
   }
 
-  function rotateAvatarsToCamera(camera, mattAvatar, derekAvatar, rotateAvatar, isRotating) {
-    const avatarDirection = new THREE.Vector3();
-    mattAvatar.getWorldDirection(avatarDirection);
+  function calculateAngleBetweenVectors(vec1, vec2) {
+    const dotProduct = vec1.dot(vec2);
+    const vec1Length = vec1.length();
+    const vec2Length = vec2.length();
+    const cosAngle = dotProduct / (vec1Length * vec2Length);
+    return Math.acos(cosAngle) * (180 / Math.PI);
+  }
   
-    const cameraDirection = new THREE.Vector3();
-    cameraDirection.subVectors(camera.position, mattAvatar.position).normalize();
+  function isCameraWithinFieldOfVision(avatarForward, cameraPosition, avatarPosition, fovDegrees = 100) {
+    const directionToCamera = cameraPosition.clone().sub(avatarPosition).normalize();
+    const angleBetweenVectors = calculateAngleBetweenVectors(avatarForward, directionToCamera);
   
-    var angle = avatarDirection.angleTo(cameraDirection);
+    return angleBetweenVectors <= (fovDegrees / 2);
+  }
   
-    if (avatarDirection.dot(cameraDirection.cross(new THREE.Vector3(0, 1, 0))) > 0) {
-      angle = -angle;
+  function rotateTowardsCamera(avatar, camera, rotationSpeed = 1.0) {
+    const avatarForward = avatar.getForwardVector();
+    const avatarPosition = avatar.getPosition();
+    const cameraPosition = camera.getPosition();
+  
+    if (!isCameraWithinFieldOfVision(avatarForward, cameraPosition, avatarPosition)) {
+      const targetDirection = cameraPosition.clone().sub(avatarPosition).normalize();
+      const currentRotation = avatar.getRotation();
+      const targetRotation = Math.atan2(targetDirection.y, targetDirection.x) * (180 / Math.PI);
+      const newRotation = currentRotation + rotationSpeed * Math.sign(targetRotation - currentRotation);
+      avatar.setRotation(newRotation);
+  
+      // If after rotation, the avatar can see the camera, stop rotating
+      const updatedAvatarForward = avatar.getForwardVector();
+      if (isCameraWithinFieldOfVision(updatedAvatarForward, cameraPosition, avatarPosition)) {
+        avatar.setRotation(targetRotation);
+      }
     }
-  
   }
+  
   
