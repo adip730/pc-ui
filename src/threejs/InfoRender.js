@@ -20,9 +20,9 @@ import fragmentShader from './FragmentShader.js';
 var direction = 0;
 
 const waves = {
-  A: { direction: 344, steepness: .1, wavelength: 3 },
-  //B: { direction: 330, steepness: .1, wavelength: 10 },
-  //C: { direction: 280, steepness: .1, wavelength: 6.9 },
+  A: { direction: 344, steepness: 5, wavelength: 2.5 },
+  B: { direction: 330, steepness: 1, wavelength: 10 },
+  C: { direction: 280, steepness: 1, wavelength: 6.9 },
 };
 
 // About page scene demo
@@ -113,15 +113,16 @@ export const InfoRender = () => {
     const water = new Water(
       waterGeometry,
       {
-        textureWidth: 512,
-        textureHeight: 512,
-        waterNormals: new THREE.TextureLoader().load('textures/Water0325normal.jpeg', function(texture) {
+        textureWidth: 2048,
+        textureHeight: 2048,
+        waterNormals: new THREE.TextureLoader().load('textures/waternormals.jpg', function(texture) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         }),
         sunDirection: new THREE.Vector3(0, -1, -1),
         sunColor: null,
         waterColor: null,
-        distortionScale: 10.0,
+        distortionScale: 5.0,
+        envMapIntensity: 0,
         fog: scene.fog !== undefined,
         //shadowSide: THREE.BackSide,
         /*map: new THREE.TextureLoader().load('textures/Water0325.jpeg', function(texture) {
@@ -139,7 +140,7 @@ export const InfoRender = () => {
           waves.A.wavelength,
         ],
       };
-      /*shader.uniforms.waveB = {
+      shader.uniforms.waveB = {
         value: [
           Math.sin( ( waves.B.direction * Math.PI ) / 180 ),
           Math.cos( ( waves.B.direction * Math.PI ) / 180 ),
@@ -154,7 +155,7 @@ export const InfoRender = () => {
           waves.C.steepness,
           waves.C.wavelength,
         ],
-      };*/
+      };
       shader.vertexShader = vertexShader;
       shader.fragmentShader = fragmentShader;
 
@@ -196,7 +197,7 @@ export const InfoRender = () => {
       sphere.material.ambientIntensity = 0;
       //water.material.envMap = prefilteredCubeMap;
       pmremGenerator.dispose();
-      document.body.removeChild(loadingDiv);
+      loadingDiv.style.background = 'rgba(0, 0, 0, 0)';
 
       let hdrtime = Date.now().toLocaleString('en-us',{ 
         hour12: false,
@@ -210,23 +211,24 @@ export const InfoRender = () => {
     // Importing entire scene from c4d export
     loader.load('./glTF/compressed_avatars.glb', (gltf) => {
       const root = gltf.scene;
-      console.log('got to here');
-      console.log(gltf.scene);
 
       // console.log(dumpObject(root).join('\n'));
-      scene.add(root);
       root.rotateY(Math.PI/2);
       root.position.y = -3;
+      //root.position.x -= 65;
       //var waterFloor = root.getObjectByName('Water_Floor');
       mattAvatar = root.getObjectByName('Matt');
       derekAvatar = root.getObjectByName('Derek');
+      scene.add(mattAvatar);
+      scene.add(derekAvatar);
+      document.body.removeChild(loadingDiv);
      
-      // derekAvatar.getObjectByName("Jacket_D_1").material = derekAvatar.getObjectByName("Jacket_D-Clothing").material;
-      // mattAvatar.getObjectByName("Jacket_M_1").material = mattAvatar.getObjectByName("Jacket_M-Clothing").material;
-      // const offWhite = new THREE.Color(240/255, 240/255, 240/255);
-      // derekAvatar.getObjectByName("Jacket_D_1").material.color = offWhite;
-      // mattAvatar.getObjectByName("Jacket_M_1").material.color = offWhite;
-      // derekAvatar.getObjectByName("Jacket_D_1").material.metalness = .5;
+      derekAvatar.getObjectByName("Jacket_D_1").material = derekAvatar.getObjectByName("Jacket_D-Clothing").material;
+      mattAvatar.getObjectByName("Jacket_M_1").material = mattAvatar.getObjectByName("Jacket_M-Clothing").material;
+      const offWhite = new THREE.Color(240/255, 245/255, 245/255);
+      derekAvatar.getObjectByName("Jacket_D_1").material.color = offWhite;
+      mattAvatar.getObjectByName("Jacket_M_1").material.color = offWhite;
+      derekAvatar.getObjectByName("Jacket_D_1").material.metalness = .5;
       let end = Date.now().toLocaleString('en-us',{ 
         hour12: false,
         hour: '2-digit',
@@ -235,13 +237,14 @@ export const InfoRender = () => {
         fractionalSecondDigits: 3 
       });
       console.log('time to finish gltf load: ', end);
-      //console.log(camera.position);
+      derekAvatar.position.y += 83;
+      mattAvatar.position.y += 83;
       
   });
 
     // Set up the Three.js scene, camera, and renderer
 
-    const light = new THREE.AmbientLight(0xffbb77, .3);
+    const light = new THREE.AmbientLight(0xffbb77, .8);
     const light2 = new THREE.AmbientLight(0xffffff, .7);
     const sun = new THREE.RectAreaLight(0xff7700, .8, 6000, 4500);
     sun.decay = .3;
@@ -254,7 +257,7 @@ export const InfoRender = () => {
     sun.lookAt(0,0,0);
     sun2.lookAt(0,0,0);
     scene.add(light);
-    scene.add(light2);
+    //scene.add(light2);
     scene.add(sun);
     scene.add(sun2);
     water.rotation.x = - Math.PI / 2;
@@ -273,37 +276,44 @@ export const InfoRender = () => {
     water.material.opacity = 0.8;
 
     camera = new THREE.PerspectiveCamera(75, canvasRef.current.width / canvasRef.current.height, 0.1, 4000);
-    //camera.position.set(0, 75, 0);
+    camera.position.set(0, 75, 333);
     scene.add(camera);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.autoRotate = true;
-    controls.autoRotateSpeed = 2.0;
+    controls.autoRotateSpeed = 2;
     controls.target.set( 0, 80, 0);
     controls.enablePan = false;
     controls.rotateSpeed = .5; // reduce the maximum orbit speed
     controls.zoomSpeed = 0.5; // reduce the maximum zoom speed
     controls.minPolarAngle = Math.PI/3.5; // lock vertical rotation
     controls.maxPolarAngle = Math.PI/2; // lock vertical rotation
-    controls.minDistance = 230;
-    controls.maxDistance = 500;
+    controls.maxDistance = 808;
+    controls.minDistance = 210;
 
     //var framecount = 0;
     //var rotateAvatar = 0;
     //var isRotating = false;
-    //var clock = new THREE.Clock();
+    var clock = new THREE.Clock();
+    var increment = 0;
     //renderer.setAnimationLoop(animate);
 
     function animate() {
       // Translating camera on a horizontal fixed orbit
       controls.update();
+      increment = clock.getDelta();
     
-      // Rotate the avatars towards the camera if needed
-      rotateTowardsCamera(mattAvatar, camera);
-      rotateTowardsCamera(derekAvatar, camera);
+      // Call the getRotationalVelocity() function to calculate the rotational velocity
+      var rotationalVelocity = (getRotationalVelocity(mattAvatar, camera)/2) + (getRotationalVelocity(derekAvatar, camera)/2);
+  
+
+      // Update the avatar's rotation using the calculated rotational velocity
+      //console.log(rotationalVelocity);
+      mattAvatar.rotation.y += rotationalVelocity * increment;
+      derekAvatar.rotation.y += rotationalVelocity * increment;
     
       // Update water
-      water.material.uniforms['time'].value += clock.getDelta();
+      water.material.uniforms['time'].value += increment;
     
       // Render the scene
       renderer.render(scene, camera);
@@ -380,7 +390,7 @@ function getWaveInfo( x, z, time ) {
   return { position: pos, normal: normal };
 
   }
-
+/*
   function calculateAngleBetweenVectors(vec1, vec2) {
     const dotProduct = vec1.dot(vec2);
     const vec1Length = vec1.length();
@@ -396,24 +406,72 @@ function getWaveInfo( x, z, time ) {
     return angleBetweenVectors <= (fovDegrees / 2);
   }
   
+  function getForwardVector(object) {
+    const forward = new THREE.Vector3(0, 0, -1);
+    const euler = new THREE.Euler(0, object.rotation.y, 0, 'YXZ');
+    forward.applyEuler(euler);
+    return forward;
+  }
+
   function rotateTowardsCamera(avatar, camera, rotationSpeed = 1.0) {
-    const avatarForward = avatar.getForwardVector();
-    const avatarPosition = avatar.getPosition();
-    const cameraPosition = camera.getPosition();
+    const avatarForward = getForwardVector(avatar);
+    const avatarPosition = avatar.position;
+    const cameraPosition = camera.position;
   
     if (!isCameraWithinFieldOfVision(avatarForward, cameraPosition, avatarPosition)) {
       const targetDirection = cameraPosition.clone().sub(avatarPosition).normalize();
-      const currentRotation = avatar.getRotation();
+      const currentRotation = avatar.rotation.y;
       const targetRotation = Math.atan2(targetDirection.y, targetDirection.x) * (180 / Math.PI);
       const newRotation = currentRotation + rotationSpeed * Math.sign(targetRotation - currentRotation);
-      avatar.setRotation(newRotation);
+      avatar.rotation.y = newRotation;
   
       // If after rotation, the avatar can see the camera, stop rotating
-      const updatedAvatarForward = avatar.getForwardVector();
+      const updatedAvatarForward = getForwardVector(avatar);
       if (isCameraWithinFieldOfVision(updatedAvatarForward, cameraPosition, avatarPosition)) {
-        avatar.setRotation(targetRotation);
+        avatar.rotation.y = targetRotation;
       }
     }
+  }
+  */
+
+  function getRotationalVelocity(avatar, camera) {
+    // Get the avatar's forward direction
+    const avatarForward = new THREE.Vector3();
+    avatar.getWorldDirection(avatarForward);
+  
+    // Get the camera's forward direction
+    const cameraForward = new THREE.Vector3();
+    camera.getWorldDirection(cameraForward);
+  
+    // Calculate the angle between the two vectors
+    const angle = avatarForward.angleTo(cameraForward);
+  
+    // Get the cross product to determine the rotation direction
+    const cross = avatarForward.cross(cameraForward);
+  
+    // Check if the cross product's y component is positive or negative
+    const sign = cross.y >= 0 ? 1 : -1;
+  
+    // Calculate the rotational velocity between -1 and 1
+    const rotationalVelocity = sign * (angle / Math.PI - 1);
+
+    if(rotationalVelocity >= -.1 && rotationalVelocity <= .1){
+      return 0;
+    }
+    if(rotationalVelocity >= -.2 && rotationalVelocity <= .2){
+      return rotationalVelocity;
+    }
+    if(rotationalVelocity >= -.3 && rotationalVelocity <= .3){ 
+      return rotationalVelocity*1.5;
+    }
+    if(rotationalVelocity >= -.4 && rotationalVelocity <= .4){ 
+      return rotationalVelocity * 2;
+    }
+    if(rotationalVelocity >= -.5 && rotationalVelocity <= .5){ 
+      return rotationalVelocity * 2.5;
+    }
+  
+    return rotationalVelocity * 3;
   }
   
   

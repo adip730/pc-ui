@@ -19,7 +19,7 @@ import fragmentShader from "./FragmentShader.js";
 var direction = 0;
 
 const waves = {
-  A: { direction: 344, steepness: 0.1, wavelength: 5 },
+  A: { direction: 344, steepness: 1, wavelength: 5 },
   B: { direction: 330, steepness: 0.1, wavelength: 10 },
   C: { direction: 280, steepness: 0.1, wavelength: 6.9 },
 };
