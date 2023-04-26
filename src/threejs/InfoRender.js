@@ -19,12 +19,6 @@ import fragmentShader from './FragmentShader.js';
 // Global context var
 var direction = 0;
 
-const waves = {
-  A: { direction: 344, steepness: 5, wavelength: 2.5 },
-  B: { direction: 330, steepness: 1, wavelength: 10 },
-  C: { direction: 280, steepness: 1, wavelength: 6.9 },
-};
-
 // About page scene demo
 export const InfoRender = () => {
   // Canvas ref
@@ -109,59 +103,30 @@ export const InfoRender = () => {
 		renderer.setSize( window.innerWidth, window.innerHeight );
 
     //Manual water 
-    const waterGeometry = new THREE.PlaneGeometry(6000, 6000, 1, 1);
+    const waterGeometry = new THREE.PlaneGeometry(2000, 2000, 1, 1);
     const water = new Water(
       waterGeometry,
       {
-        textureWidth: 2048,
-        textureHeight: 2048,
-        waterNormals: new THREE.TextureLoader().load('/Textures/waternormals.jpg', function(texture) {
+        textureWidth: 512,
+        textureHeight: 512,
+        waterNormals: new THREE.TextureLoader().load('/Textures/Water 0341normal.jpg', function(texture) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
           console.log('Texture loaded successfully');
         }),
         sunDirection: new THREE.Vector3(0, -1, -1),
         sunColor: null,
         waterColor: null,
-        distortionScale: 5.0,
-        envMapIntensity: 0,
+        distortionScale: 10.0,
+        envMapIntensity: 1,
         fog: scene.fog !== undefined,
+        ambientIntensity: 0,
         //shadowSide: THREE.BackSide,
         /*map: new THREE.TextureLoader().load('textures/Water0325.jpeg', function(texture) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         })*/
       }
     );
-    water.material.onBeforeCompile = function ( shader ) {
-
-      shader.uniforms.waveA = {
-        value: [
-          Math.sin( ( waves.A.direction * Math.PI ) / 180 ),
-          Math.cos( ( waves.A.direction * Math.PI ) / 180 ),
-          waves.A.steepness,
-          waves.A.wavelength,
-        ],
-      };
-      shader.uniforms.waveB = {
-        value: [
-          Math.sin( ( waves.B.direction * Math.PI ) / 180 ),
-          Math.cos( ( waves.B.direction * Math.PI ) / 180 ),
-          waves.B.steepness,
-          waves.B.wavelength,
-        ],
-      };
-      shader.uniforms.waveC = {
-        value: [
-          Math.sin( ( waves.C.direction * Math.PI ) / 180 ),
-          Math.cos( ( waves.C.direction * Math.PI ) / 180 ),
-          waves.C.steepness,
-          waves.C.wavelength,
-        ],
-      };
-      shader.vertexShader = vertexShader;
-      shader.fragmentShader = fragmentShader;
-
-    };
-
+    
     //Manual sky 
     // Create the sphere geometry
     const sphereGeometry = new THREE.SphereGeometry(3000);
@@ -213,9 +178,9 @@ export const InfoRender = () => {
     loader.load('./glTF/compressed_avatars.glb', (gltf) => {
       const root = gltf.scene;
 
-      // console.log(dumpObject(root).join('\n'));
-      root.rotateY(Math.PI/2);
-      root.position.y = -3;
+      console.log(dumpObject(root).join('\n'));
+      //root.rotateY(Math.PI/2);
+      //root.position.y = -3;
       //root.position.x -= 65;
       //var waterFloor = root.getObjectByName('Water_Floor');
       mattAvatar = root.getObjectByName('Matt');
@@ -225,11 +190,48 @@ export const InfoRender = () => {
       document.body.removeChild(loadingDiv);
      
       derekAvatar.getObjectByName("Jacket_D_1").material = derekAvatar.getObjectByName("Jacket_D-Clothing").material;
-      mattAvatar.getObjectByName("Jacket_M_1").material = mattAvatar.getObjectByName("Jacket_M-Clothing").material;
-      const offWhite = new THREE.Color(240/255, 245/255, 245/255);
+      //mattAvatar.getObjectByName("Jacket_M_1").material = mattAvatar.getObjectByName("Jacket_M-Clothing").material;
+      const offWhite = new THREE.Color(232/255, 223/255, 220/255);
+      const shoeWhite = new THREE.Color(244/255, 235/255, 232/255);
       derekAvatar.getObjectByName("Jacket_D_1").material.color = offWhite;
-      mattAvatar.getObjectByName("Jacket_M_1").material.color = offWhite;
-      derekAvatar.getObjectByName("Jacket_D_1").material.metalness = .5;
+      derekAvatar.getObjectByName("Jacket_D_1").material.metalness = 0.3;
+      derekAvatar.getObjectByName("Jacket_D_1").material.roughness = 0.1;
+      //mattAvatar.getObjectByName("Jacket_M_1").material.color = offWhite;
+      //mattAvatar.getObjectByName("Jacket_M_1").material.metalness = 0.3;
+      //mattAvatar.getObjectByName("Jacket_M_1").material.roughness = 0.9;
+      mattAvatar.getObjectByName("Sneakers_M").material.color = shoeWhite;
+      //derekAvatar.getObjectByName("Bottoms_D-Sneakers").material.color = shoeWhite;
+      console.log(mattAvatar.getObjectByName("Sneakers_M").material);
+      //derekAvatar.getObjectByName("Jacket_D-Clothing").material.color = offWhite;
+      //mattAvatar.getObjectByName("Jacket_M-Clothing").material.color = offWhite;
+      //const handD = derekAvatar.getObjectByName("Hand_D").material;
+      //const color = new THREE.Color();
+      //color.set(handD.color);
+      //color.offsetHSL(0, -0.2, -0.1); // reduce brightness and increase saturation
+      //derekAvatar.getObjectByName("Hand_D").material.color.set(color);
+      //mattAvatar.getObjectByName("Hand_M").material.color.set(color);
+      //derekAvatar.getObjectByName("Hand_D").material.emissiveIntensity = 0;
+      //mattAvatar.getObjectByName("Hand_M").material.emissiveIntensity = 0;
+      //derekAvatar.getObjectByName("Hand_D").material.lightMapIntensity = 0;
+      //mattAvatar.getObjectByName("Hand_M").material.lightMapIntensity = 0;
+      derekAvatar.getObjectByName("Hand_D").material.metalness = 0.3;
+      derekAvatar.getObjectByName("Hand_D").material.roughness = 0.9;
+      mattAvatar.getObjectByName("Hand_M").material.metalness = 0.3;
+      mattAvatar.getObjectByName("Hand_M").material.roughness = 0.9;
+      //mattAvatar.getObjectByName("Hand_M").material.roughness = 0.9;
+      //derekAvatar.getObjectByName("Hand_D").material.aoMapIntensity = 0;
+      //derekAvatar.getObjectByName("Hand_D").material.flatShading = true;
+      //console.log(derekAvatar.getObjectByName("Hand_D").material);
+      //derekAvatar.getObjectByName("Jacket_D_1").material.metalness = .5;
+      //const white = new THREE.Color(0xffffff);
+      //derekAvatar.getObjectByName("Jacket_D_1").material.emissive = white;
+      //mattAvatar.getObjectByName("Jacket_M_1").material.emissive = white;
+      //derekAvatar.getObjectByName("Derek_1").material.emissive = white;
+      //mattAvatar.getObjectByName("Matt_1").material.emissive = white;
+      //derekAvatar.getObjectByName("Jacket_D_1").material.emissiveIntensity = 0.1;
+      //mattAvatar.getObjectByName("Jacket_M_1").material.emissiveIntensity = 0.1;
+      //derekAvatar.getObjectByName("Derek").material.emissiveIntensity = 0.2;
+      //mattAvatar.getObjectByName("Matt").material.emissiveIntensity = 0.2;
       let end = Date.now().toLocaleString('en-us',{ 
         hour12: false,
         hour: '2-digit',
@@ -245,11 +247,12 @@ export const InfoRender = () => {
 
     // Set up the Three.js scene, camera, and renderer
 
-    const light = new THREE.AmbientLight(0xffbb77, .8);
-    const light2 = new THREE.AmbientLight(0xffffff, .7);
-    const sun = new THREE.RectAreaLight(0xff7700, .8, 6000, 4500);
+    const light = new THREE.AmbientLight(0xffbb77, .4);
+    const light2 = new THREE.AmbientLight(0xffffff, .8);
+    const light3 = new THREE.AmbientLight(0xffffff, .2);
+    const sun = new THREE.RectAreaLight(0xff7700, .4, 6000, 4500);
     sun.decay = .3;
-    const sun2 = new THREE.RectAreaLight(0xfff0f0, 1, 3000, 2000);
+    const sun2 = new THREE.RectAreaLight(0xfff0f0, .4, 3000, 2000);
     sun2.decay = .6;
     sun.position.set(-2700, 1100, 0);
     sun2.position.set(-1550, 700, 0);
@@ -258,7 +261,8 @@ export const InfoRender = () => {
     sun.lookAt(0,0,0);
     sun2.lookAt(0,0,0);
     scene.add(light);
-    //scene.add(light2);
+    scene.add(light2);
+    scene.add(light3);
     scene.add(sun);
     scene.add(sun2);
     water.rotation.x = - Math.PI / 2;
@@ -269,6 +273,7 @@ export const InfoRender = () => {
     //sphere.material.opacity = 0;
     //sphere.material.reflectivity = 0;
     scene.add( water );
+    water.scale.set(3, 3, 3);
     //water.position.y = 28;
     water.material.side = THREE.FrontSide;
     //water.material.envMapIntensity = 1;
