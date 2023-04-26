@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
     left: 0,
     height: "60px",
     zIndex: 3,
-    opacity: 0.5,
+    opacity: 1,
     marginBottom: 0,
     display: "flex",
     flexDirection: "row",
@@ -114,6 +114,7 @@ export const NavBar = (props) => {
         container
         className={classes.toolbar}
         style={{
+          padding: largeScreen ? '0px 40px' : '0px 24px',
           minWidth: largeScreen && showLogo ? "100%" : "60%",
         }}
       >

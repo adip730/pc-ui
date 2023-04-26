@@ -40,14 +40,13 @@ export const AboutPage = (props) => {
         <Typography
           style={{
             fontFamily: "Square721",
-            fontSize: ".75rem"
+            fontSize: ".75rem",
           }}
         >
-          About us blurb will go here. About us blurb will go here. About us
-          blurb will go here. About us blurb will go here. About us blurb will
-          go here. About us blurb will go here. About us blurb will go here.
-          About us blurb will go here. About us blurb will go here. About us
-          blurb will go here. About us blurb will go here.
+          Pleasure Craft is a NYC-based creative studio and directing duo that
+          specializes in CGI and live-action cinematography. The world they
+          create becomes a portal that trancends from the ordinary to the
+          surreal.
         </Typography>
       </div>
     </div>

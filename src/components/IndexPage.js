@@ -329,7 +329,7 @@ export const IndexPage = (props) => {
                     fontSize: largeScreen ? ".75rem" : ".6rem",
                   }}
                 >
-                  PROJ.MEDIUM
+                  {proj.medium.toUpperCase()}
                 </Typography>
               </Grid>
               <Grid

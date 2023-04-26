@@ -6,7 +6,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import AppContext from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
-import axios from 'axios';
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,7 +81,7 @@ export const Preview = (props) => {
 
   const [previewUrl, setPreviewUrl] = useState("");
 
-  const { projectName, name, role, client, director, code, featured, preview } =
+  const { projectName, name, role, client, medium, code, featured, preview } =
     data;
 
   const [showSubtitle, setShowSubtitle] = useState(false);
@@ -152,9 +152,9 @@ export const Preview = (props) => {
     wind.style.paddingTop = "0px";
     // container.style.transition = "width .75s, height .5s";
     container.style.transition = "all .5s";
-    container.style.width = "100%";
-    container.style.height = "100%";
-    container.style.borderRadius = "0px";
+    container.style.width = "95%";
+    container.style.height = "90%";
+    container.style.borderRadius = "80px";
     setShowNav(false);
   }
 
@@ -191,18 +191,17 @@ export const Preview = (props) => {
           container.style.height = "calc(100% - 32px)";
           // container.style.width = "100%";
           // container.style.transition = 'transform 1s';
-          container.style.transform = `scale(${100/85}, 1)`;
-          element.style.transition = 'transform 1s';
-          element.style.transform = `scale(1, ${100/85})`;
+          container.style.transform = `scale(${100 / 85}, 1)`;
+          element.style.transition = "transform 1s";
+          element.style.transform = `scale(1, ${100 / 85})`;
           // setTimeout(() => growTimerLarge(container), 2000);
         } else {
-
-            // container.style.transitionDelay = "0ms, 0ms";
-            // container.style.transitionProperty = "height, width";
-            // container.style.minWidth = "85%";
-            container.style.height = "100%";
-            container.style.transform = 'scale(1, 1)';
-            element.style.transform = 'scale(1, 1)';
+          // container.style.transitionDelay = "0ms, 0ms";
+          // container.style.transitionProperty = "height, width";
+          // container.style.minWidth = "85%";
+          container.style.height = "100%";
+          container.style.transform = "scale(1, 1)";
+          element.style.transform = "scale(1, 1)";
         }
       }
     }
@@ -251,7 +250,11 @@ export const Preview = (props) => {
                 left: 0,
                 alignContent: "center",
               }}
-              url={videoMap[name] ? videoMap[name] : `http://${endpoint}${previewUrl}`}
+              url={
+                videoMap[name]
+                  ? videoMap[name]
+                  : `http://${endpoint}${previewUrl}`
+              }
               width="100%"
               height="auto"
               playing={playing}
@@ -277,19 +280,8 @@ export const Preview = (props) => {
                 fontSize: largeScreen ? ".75rem" : ".6rem",
               }}
             >
-              {client.toUpperCase()}
+              {projectName.toUpperCase()}
             </Typography>
-            {largeScreen && (
-              <Typography
-                color="primary"
-                style={{
-                  fontFamily: "Square721",
-                  fontSize: largeScreen ? ".75rem" : ".6rem",
-                }}
-              >
-                {projectName.toUpperCase()}
-              </Typography>
-            )}
             <Typography
               color="primary"
               style={{
@@ -299,6 +291,17 @@ export const Preview = (props) => {
             >
               {role.toUpperCase()}
             </Typography>
+            {largeScreen && (
+              <Typography
+                color="primary"
+                style={{
+                  fontFamily: "Square721",
+                  fontSize: largeScreen ? ".75rem" : ".6rem",
+                }}
+              >
+                {medium.toUpperCase()}
+              </Typography>
+            )}
             <Typography
               color="primary"
               style={{

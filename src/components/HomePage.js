@@ -6,7 +6,7 @@ import Preview from "./Preview";
 import PreviewPage from "./PreviewPage";
 import HomeLogo from "../threejs/HomeLogo";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
+import ReactPlayer from "react-player";
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
   scrollView: {
     width: "100%",
     height: "100vh",
-    scrollSnapType: "y mandatory",
+    // scrollSnapType: "y mandatory",
     overflowY: "scroll",
   },
   viewContainer: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     justifyContent: "center",
     padding: 0,
-    scrollSnapAlign: "start",
+    // scrollSnapAlign: "start",
   },
   "@keyframes fadeout": {
     "0%": {
@@ -80,14 +80,11 @@ export const HomePage = (props) => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(showLoading);
-  }, [showLoading])
 
   let videoObserverOptions = {
     root: null,
     rootMargin: "0px",
-    threshold: 1.0,
+    threshold: 0.8,
   };
 
   let logoObserverOptions = {
@@ -110,11 +107,6 @@ export const HomePage = (props) => {
     }
   }
 
-  // const handleScroll = () => {
-  //   let scrollTop = viewRef.current.scrollTop;
-  //   setScrollPos(scrollTop);
-  //   // console.log(scrollTop);
-  // };
 
   return (
     <div className={classes.root}>
@@ -133,7 +125,7 @@ export const HomePage = (props) => {
         </div>
         {projects.map(
           (proj, ind) =>
-            (config && config === [] ||
+            ((config && config === []) ||
               (config && config.length > 0 && config.includes(proj.name))) && (
               <div className={classes.viewContainer}>
                 <Preview

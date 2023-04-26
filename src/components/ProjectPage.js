@@ -520,6 +520,7 @@ export const ProjectPage = (props) => {
             color="primary"
             style={{
               fontFamily: "Square721",
+              textAlign: 'justify',
               fontSize: largeScreen ? ".75rem" : ".6rem",
             }}
           >
