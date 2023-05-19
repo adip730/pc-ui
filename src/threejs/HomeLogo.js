@@ -52,7 +52,7 @@ export const HomeLogo = () => {
     });
     // console.log('start time: ', start);
     const canvas = canvasRef.current;
-    canvas.addEventListener("mousemove", handleMouseMove);
+    canvas.addEventListener("pointermove", handleMouseMove);
     // Primary floating object
     var coinDisc = new THREE.Mesh();
     const dracoLoader = new DRACOLoader();
@@ -60,17 +60,17 @@ export const HomeLogo = () => {
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
 
-    loader.load("./glTF/compressed_logo.gltf", (gltf) => {
+    loader.load("./glTF/LOGO CHROME_Less Soft.gltf", (gltf) => {
       const root = gltf.scene;
       //scene.add(root);
-      coinDisc = root.getObjectByName("Icon_Logo");
+      coinDisc = root.getObjectByName("Fixed_Logo");
       coinDisc.position.set(0, 0, 0);
       coinDisc.scale.set(0.1, 0.1, 0.1);
       // HDRI setup
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
       const hdrLoader = new THREE.TextureLoader();
       hdrLoader.load(
-        "./Textures/Ultimate_Skies_4k_0058_BOOSTED.jpg",
+        "./Textures/HDRI_Chrome_Soft.png",
         function (texture) {
           const prefilteredCubeMap =
             pmremGenerator.fromEquirectangular(texture).texture;
@@ -78,8 +78,8 @@ export const HomeLogo = () => {
           coinDisc.material.envMap = prefilteredCubeMap;
           pmremGenerator.dispose();
           // console.log(texture.status);
-          coinDisc.material.emissive = new THREE.Color(0xffffff);
-          coinDisc.material.emissiveIntensity = 0.1;
+          //coinDisc.material.emissive = new THREE.Color(0xffffff);
+          //coinDisc.material.emissiveIntensity = 0.1;
           scene.add(coinDisc);
           loadTime = Date.now();
           theta = Math.PI / 2;
@@ -182,7 +182,7 @@ function calculate_orbit(r, theta) {
 // Tracks user interaction
 let timeout;
 const handleMouseMove = (event) => {
-  var coefficient = 0.75;
+  const coefficient = 0.75;
   direction = event.movementX * coefficient;
   clearTimeout(timeout);
   timeout = setTimeout(() => {

@@ -403,3 +403,138 @@ function dumpObject(obj, lines = [], isLast = true, prefix = '') {
   
   }
   
+  /*
+  function calculateAngleBetweenVectors(vec1, vec2) {
+    const dotProduct = vec1.dot(vec2);
+    const vec1Length = vec1.length();
+    const vec2Length = vec2.length();
+    const cosAngle = dotProduct / (vec1Length * vec2Length);
+    return Math.acos(cosAngle) * (180 / Math.PI);
+  }
+  
+  function isCameraWithinFieldOfVision(avatarForward, cameraPosition, avatarPosition, fovDegrees = 100) {
+    const directionToCamera = cameraPosition.clone().sub(avatarPosition).normalize();
+    const angleBetweenVectors = calculateAngleBetweenVectors(avatarForward, directionToCamera);
+  
+    return angleBetweenVectors <= (fovDegrees / 2);
+  }
+  
+  function getForwardVector(object) {
+    const forward = new THREE.Vector3(0, 0, -1);
+    const euler = new THREE.Euler(0, object.rotation.y, 0, 'YXZ');
+    forward.applyEuler(euler);
+    return forward;
+  }
+
+  function rotateTowardsCamera(avatar, camera, rotationSpeed = 1.0) {
+    const avatarForward = getForwardVector(avatar);
+    const avatarPosition = avatar.position;
+    const cameraPosition = camera.position;
+  
+    if (!isCameraWithinFieldOfVision(avatarForward, cameraPosition, avatarPosition)) {
+      const targetDirection = cameraPosition.clone().sub(avatarPosition).normalize();
+      const currentRotation = avatar.rotation.y;
+      const targetRotation = Math.atan2(targetDirection.y, targetDirection.x) * (180 / Math.PI);
+      const newRotation = currentRotation + rotationSpeed * Math.sign(targetRotation - currentRotation);
+      avatar.rotation.y = newRotation;
+  
+      // If after rotation, the avatar can see the camera, stop rotating
+      const updatedAvatarForward = getForwardVector(avatar);
+      if (isCameraWithinFieldOfVision(updatedAvatarForward, cameraPosition, avatarPosition)) {
+        avatar.rotation.y = targetRotation;
+      }
+    }
+  }
+  */
+
+  function getRotationalVelocity(avatar, camera) {
+    // Get the avatar's forward direction
+    const avatarForward = new THREE.Vector3();
+    avatar.getWorldDirection(avatarForward);
+  
+    // Get the camera's forward direction
+    const cameraForward = new THREE.Vector3();
+    camera.getWorldDirection(cameraForward);
+  
+    // Calculate the angle between the two vectors
+    const angle = avatarForward.angleTo(cameraForward);
+  
+    // Get the cross product to determine the rotation direction
+    const cross = avatarForward.cross(cameraForward);
+  
+    // Check if the cross product's y component is positive or negative
+    const sign = cross.y >= 0 ? 1 : -1;
+  
+    // Calculate the rotational velocity between -1 and 1
+    const rotationalVelocity = sign * (angle / Math.PI - 1);
+
+    if(rotationalVelocity >= -.1 && rotationalVelocity <= .1){
+      return 0;
+    }
+    if(rotationalVelocity >= -.2 && rotationalVelocity <= .2){
+      return rotationalVelocity;
+    }
+    if(rotationalVelocity >= -.3 && rotationalVelocity <= .3){ 
+      return rotationalVelocity*1.5;
+    }
+    if(rotationalVelocity >= -.4 && rotationalVelocity <= .4){ 
+      return rotationalVelocity * 2;
+    }
+    if(rotationalVelocity >= -.5 && rotationalVelocity <= .5){ 
+      return rotationalVelocity * 2.5;
+    }
+  
+    return rotationalVelocity * 3;
+  }
+
+  function getWaveInfo( x, z, time ) {
+
+    const pos = new THREE.Vector3();
+    const tangent = new THREE.Vector3( 1, 0, 0 );
+    const binormal = new THREE.Vector3( 0, 0, 1 );
+    Object.keys( waves ).forEach( ( wave ) => {
+  
+      const w = waves[ wave ];
+      const k = ( Math.PI * 2 ) / w.wavelength;
+      const c = Math.sqrt( 9.8 / k );
+      const d = new THREE.Vector2(
+        Math.sin( ( w.direction * Math.PI ) / 180 ),
+        - Math.cos( ( w.direction * Math.PI ) / 180 )
+      );
+      const f = k * ( d.dot( new THREE.Vector2( x, z ) ) - c * time );
+      const a = w.steepness / k;
+  
+      pos.x += d.y * ( a * Math.cos( f ) );
+      pos.y += a * Math.sin( f );
+      pos.z += d.x * ( a * Math.cos( f ) );
+  
+      tangent.x += - d.x * d.x * ( w.steepness * Math.sin( f ) );
+      tangent.y += d.x * ( w.steepness * Math.cos( f ) );
+      tangent.z += - d.x * d.y * ( w.steepness * Math.sin( f ) );
+  
+      binormal.x += - d.x * d.y * ( w.steepness * Math.sin( f ) );
+      binormal.y += d.y * ( w.steepness * Math.cos( f ) );
+      binormal.z += - d.y * d.y * ( w.steepness * Math.sin( f ) );
+  
+    } );
+  
+    const normal = binormal.cross( tangent ).normalize();
+  
+    return { position: pos, normal: normal };
+  
+    }
+  
+        //increment = clock.getDelta();
+    
+      // Call the getRotationalVelocity() function to calculate the rotational velocity
+      //var rotationalVelocity = (getRotationalVelocity(mattAvatar, camera)/2) + (getRotationalVelocity(derekAvatar, camera)/2);
+  
+
+      // Update the avatar's rotation using the calculated rotational velocity
+      //console.log(rotationalVelocity);
+      //mattAvatar.rotation.y += rotationalVelocity * increment;
+      //derekAvatar.rotation.y += rotationalVelocity * increment;
+    
+      // Update water
+      //const elapsedTime = clock.getElapsedTime();
+      //water.material.uniforms.time.value = elapsedTime;
