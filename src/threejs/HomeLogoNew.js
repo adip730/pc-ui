@@ -129,24 +129,25 @@ export const HomeLogo = () => {
         theta -= frame; // This gives the illusion of rotation by orbiting the camera horizontally
       }
       // The mesh rotates one way
+      // Rotate coinDisc mesh around local x-axis and global y-axis
       coinDisc.rotateY(frame * directionX);
-      //coinDisc.rotateOnAxis(new THREE.Vector3(1, 0, 0), frame * directionY);
+      coinDisc.rotateOnAxis(new THREE.Vector3(1, 0, 0), frame * directionY);
 
-      // The camera orbits the opposite way
-      theta -= frame * directionX;
-      phi -= frame * directionY;
+      // Extract position and quaternion (rotation) from coinDisc's world matrix
+      coinDisc.updateMatrixWorld();
+      let position = new THREE.Vector3();
+      let quaternion = new THREE.Quaternion();
+      coinDisc.matrixWorld.decompose(position, quaternion, new THREE.Vector3());
 
-      let coordinates = calculate_orbit(r, theta, phi);
+      // Apply coinDisc's world position and rotation to camera
+      camera.position.copy(position);
+      camera.quaternion.copy(quaternion);
+      
+      // Add a translation along the viewing direction of the camera
+      camera.translateZ(r);
 
-      // Updating camera position
-      camera.position.x = coordinates[0];
-      //camera.position.y = coordinates[1];
-      camera.position.z = coordinates[2];
-
-      // Rotating camera to track origin
+      // Look at the origin
       camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-      renderer.render(scene, camera);
     }    
     
     return () => {
@@ -182,9 +183,9 @@ export default HomeLogo;
 
 // Draws a circular orbit around (0,0)
 function calculate_orbit(r, theta, phi) {
-  var x = r * Math.cos(theta);
+  var x = r * Math.sin(phi) * Math.cos(theta);
   var y = r * Math.cos(phi);
-  var z = r * Math.sin(theta);
+  var z = r * Math.sin(phi) * Math.sin(theta);
   return [x, y, z];
 }
 

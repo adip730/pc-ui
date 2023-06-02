@@ -11,7 +11,7 @@ import mappedMPFShader from './mappedMPFShader.js';
 
 const bounds_coeff = 12.0;
 // Texture width for simulation
-const WIDTH = 128 * 4;
+const WIDTH = 128 * 2;
 
 // Water size in system units
 const BOUNDS = 512 * bounds_coeff;
@@ -109,7 +109,7 @@ class GPGPU_Water {
 	this.waterMesh.updateMatrix();
 
 	this.scene.add( this.waterMesh );
-	//this.waterMesh.position.y += 2;
+	this.waterMesh.position.y += 5;
 
 	// THREE.Mesh just for mouse raycasting
 	const geometryRay = new THREE.PlaneGeometry( BOUNDS, BOUNDS, 1, 1 );
@@ -142,7 +142,7 @@ class GPGPU_Water {
 
 	this.heightmapVariable.material.uniforms[ 'mousePos' ] = { value: new THREE.Vector2( 10000, 10000 ) };
 	this.heightmapVariable.material.uniforms[ 'mouseSize' ] = { value: 69.0 };
-	this.heightmapVariable.material.uniforms[ 'viscosityConstant' ] = { value: 0.99 };
+	this.heightmapVariable.material.uniforms[ 'viscosityConstant' ] = { value: 0.98 };
 	this.heightmapVariable.material.uniforms[ 'heightCompensation' ] = { value: 1.0 };
 	this.heightmapVariable.material.defines.BOUNDS = BOUNDS.toFixed( 1 );
 
@@ -311,11 +311,25 @@ render() {
 			const point = intersects[ 0 ].point;
 
 			uniforms[ 'mousePos' ].value.set( point.x, point.z );
-			let scale = Math.sqrt( point.x * point.x + point.y * point.y );
-			let dist_coeff = 0.69 + scale/420;
-			uniforms[ 'mouseSize' ].value = 50.0 * dist_coeff;
-			uniforms[ 'heightCompensation' ].value = 0.33 + scale/4750;
-			uniforms[ 'viscosityConstant' ].value = 0.981 - scale/69000;
+			let scale = Math.sqrt( point.x * point.x + point.z * point.z );
+			let dist_coeff = 0.77 + Math.sqrt(scale)/100 * scale/1000;
+			uniforms[ 'mouseSize' ].value = 69.0 * dist_coeff;
+			let scalescale = 0;
+			if (scale > 1500) {
+				scalescale = 1.3;
+			}
+			if (scale > 777) {
+				scalescale = 1.1;
+			}
+			if (scale > 420 && scale < 777) {
+				scalescale = 0.9;
+			}
+			if (scale > 150 && scale < 420) {
+				scalescale = 0.7;
+			}
+			uniforms[ 'heightCompensation' ].value = 0.28 + Math.sqrt(scale/1000) * Math.sqrt(dist_coeff) * scalescale;
+			//console.log(uniforms[ 'heightCompensation' ].value);
+			//uniforms[ 'viscosityConstant' ].value = 0.981 - scale/69000;
 
 		} else {
 
@@ -356,7 +370,9 @@ render() {
     //this.waterMesh.material.needsUpdate = true;
 	// Render
 
-	this.mirror.position.y = this.readWaterHeightAtOrigin();
+	this.mirror.position.y = this.readWaterHeightAtOrigin()+1;
+	if (this.mirror.position.y < -3) {this.waterMesh.position.y = -3;}
+	else {this.waterMesh.position.y = 3;}
 	this.mirror.onBeforeRender(this.renderer, this.scene, this.camera);
 	this.waterUniforms[ 'diffuse' ].value = this.mirror.material.uniforms[ 'color' ].value;
 	this.waterUniforms[ 'tDiffuse' ].value = this.mirror.material.uniforms[ 'tDiffuse' ].value;

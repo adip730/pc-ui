@@ -59,7 +59,7 @@ vec3 colorMapping(vec3 colorIn) {
 
     float scaleFactorR = 1.6;
     float biasR = 0.0;
-    float scaleFactorG = 1.55;
+    float scaleFactorG = 1.52;
     float biasG = 0.0;
     float scaleFactorB = 1.85;
     float biasB = 0.0;

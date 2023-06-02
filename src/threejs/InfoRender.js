@@ -13,14 +13,10 @@ import { Cache, QuadraticBezierCurve3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 import { Water } from 'three/examples/jsm/objects/Water.js';
-import { CustomReflector } from './customReflector.js';
 import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
 //import vertexShader from './VertexShader.js';
 //import fragmentShader from './FragmentShader.js';
 import GPGPU_Water from './gpgpuWater.js';
-
-// Global context var
-var direction = 0;
 
 // About page scene demo
 export const InfoRender = () => {
@@ -53,7 +49,7 @@ export const InfoRender = () => {
     //canvas.addEventListener('wheel', handleScroll);
 
     // Create the loading div
-  /*  const loadingDiv = document.createElement('div');
+    const loadingDiv = document.createElement('div');
     loadingDiv.id = 'loading';
     loadingDiv.innerText = 'Loading...';
 
@@ -74,7 +70,7 @@ export const InfoRender = () => {
 
 
     // Add the loading div to the DOM
-    //document.body.appendChild(loadingDiv);
+    document.body.appendChild(loadingDiv);
 
     // Scene
     const scene = new THREE.Scene();
@@ -251,7 +247,7 @@ export const InfoRender = () => {
       scene.add(mattAvatar);
       scene.add(derekAvatar);
       //water = new GPGPU_Water(scene, renderer, camera, mirror);
-      //document.body.removeChild(loadingDiv);
+      document.body.removeChild(loadingDiv);
       //setIsLoading(false);
       //exportTexture(mirror.material.map, renderer);
       
