@@ -7,6 +7,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AppContext from "../context/AppContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
+import logo_gif from "../../public/logo-gif.gif";
+
 const useStyles = makeStyles(() => ({
   navBar: {
     minWidth: "100%",
@@ -193,7 +195,7 @@ export const NavBar = (props) => {
             <Fade in={showLogo} unmountOnExit timeout={1000}>
               <img
                 className={classes.logo}
-                src={"./logo-gif.gif"}
+                src={logo_gif}
                 onClick={(e) => navigate("/")}
               />
             </Fade>

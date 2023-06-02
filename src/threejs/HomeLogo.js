@@ -8,6 +8,8 @@ import { Cache } from "three";
 import { isPlainObject } from "@mui/utils";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import Fade from '@mui/material/Fade';
+import logo_gltf from "../../public/glTF/LOGO CHROME_Less Soft.gltf";
+import logo_tex from "../../public/Textures/HDRI_Chrome_Soft.png";
 
 // Homepage logo demo
 
@@ -60,7 +62,7 @@ export const HomeLogo = () => {
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
 
-    loader.load("./glTF/LOGO CHROME_Less Soft.gltf", (gltf) => {
+    loader.load(logo_gltf, (gltf) => {
       const root = gltf.scene;
       //scene.add(root);
       coinDisc = root.getObjectByName("Fixed_Logo");
@@ -70,7 +72,7 @@ export const HomeLogo = () => {
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
       const hdrLoader = new THREE.TextureLoader();
       hdrLoader.load(
-        "./Textures/HDRI_Chrome_Soft.png",
+        logo_tex,
         function (texture) {
           const prefilteredCubeMap =
             pmremGenerator.fromEquirectangular(texture).texture;

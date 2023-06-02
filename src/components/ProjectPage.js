@@ -237,13 +237,13 @@ export const ProjectPage = (props) => {
     }
   }, [expanded]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (!largeScreen) {
       if (playing) {
         setExpanded(true);
       }
     }
-  }, [playing]);
+  }, [playing]);*/
 
   const handleProgress = (changeState) => {
     if (changeState.played === 1) {

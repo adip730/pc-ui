@@ -18,6 +18,9 @@ import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
 //import fragmentShader from './FragmentShader.js';
 import GPGPU_Water from './gpgpuWater.js';
 
+import hdri_tex from '../../public/Textures/HDRI_INFO.png';
+import avatars from '../../public/glTF/avatars.glb';
+
 // About page scene demo
 export const InfoRender = () => {
   // Canvas ref
@@ -137,7 +140,7 @@ export const InfoRender = () => {
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
     const hdrLoader = new THREE.TextureLoader();
 
-    hdrLoader.load('./Textures/HDRI_INFO.png', function (texture) {
+    hdrLoader.load(hdri_tex, function (texture) {
       const prefilteredCubeMap = pmremGenerator.fromEquirectangular( texture ).texture;
       sphere.material.envMap = prefilteredCubeMap;
       sphere.material.needsUpdate = true; // Update the material
@@ -150,7 +153,7 @@ export const InfoRender = () => {
 
     });
     // Importing entire scene from c4d export
-    loader.load('./glTF/avatars.glb', (gltf) => {
+    loader.load(avatars, (gltf) => {
       const root = gltf.scene;
 
       console.log(dumpObject(root).join('\n'));

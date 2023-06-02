@@ -50,6 +50,18 @@ module.exports = {
           filename: "static/fonts/[name][ext][query]",
         },
       },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(gltf)$/,
+        use: [
+          {
+            loader: "gltf-webpack-loader"
+          }
+        ]
+      },
     ],
   },
   plugins: [

@@ -38,7 +38,7 @@ export const AboutPage = (props) => {
       <div className={classes.assetContainer}>
         <InfoRender />
       </div>
-      <div className={classes.textContainer} style={{width: largeScreen ? '25%' : '100%', padding: largeScreen ? 0 : '64px 20px 20px 20px', boxSizing: 'border-box', bottom: largeScreen ? '48px' : 0, left: largeScreen ? '10%' : 0, right: largeScreen ? '' : 0, textAlign: largeScreen ? 'left' : 'center'}}>
+      <div className={classes.textContainer} style={{width: largeScreen ? '25%' : '100%', padding: largeScreen ? 0 : '64px 20px 20px 20px', boxSizing: 'border-box', bottom: largeScreen ? '48px' : "16px", left: largeScreen ? '10%' : 0, right: largeScreen ? '' : 0, textAlign: largeScreen ? 'left' : 'center'}}>
         <Typography
           style={{
             fontFamily: "Square721",
