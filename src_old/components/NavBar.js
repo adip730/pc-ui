@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import makeStyles from "@mui/styles/makeStyles";
+import Typography from "@mui/material/Typography";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AppContext from "../context/AppContext";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
@@ -11,6 +12,7 @@ const useStyles = makeStyles(() => ({
   navBar: {
     minWidth: "100%",
     background: "#FFFFFF",
+
     width: "100%",
     position: "fixed",
     top: 0,
@@ -18,6 +20,7 @@ const useStyles = makeStyles(() => ({
     left: 0,
     height: "60px",
     zIndex: 3,
+    opacity: 1,
     marginBottom: 0,
     display: "flex",
     flexDirection: "row",
@@ -25,17 +28,22 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     padding: "0px 24px",
     boxSizing: "border-box",
+    // transition: "all .25s ease-in-out",
     transformOrigin: "top",
   },
   toolbar: {
     display: "flex",
-    padding: "0px 40px",
+    padding: "0px 24px",
+
     minWidth: "60%",
     flexDirection: "row",
+    background: "#FFFFFF",
+    // justifyContent: "space-between",
     alignItems: "center",
     height: "100%",
     zIndex: 2,
   },
+
   menuButton: {
     fontFamily: "Square721",
     cursor: "pointer",
@@ -49,6 +57,7 @@ const useStyles = makeStyles(() => ({
   },
   logo: {
     height: "44px",
+    // animation: "$fadein 1000ms",
   },
   logoOut: {
     animation: "$fadeout 1000ms",
@@ -77,7 +86,7 @@ export const NavBar = (props) => {
   const { state } = useContext(AppContext);
   const { showNav, showLogo } = state;
   const [render, setRender] = useState(showLogo);
-  const [invertColor, setInvertColor] = useState(false);
+
   const largeScreen = useMediaQuery("(min-width:800px)");
 
   // function hideTimer() {
@@ -92,32 +101,20 @@ export const NavBar = (props) => {
   //   }
   // }, [showLogo]);
 
-  const location = useLocation();
-
-  useEffect(() => {
-    if (location.pathname.includes("info")) {
-      setInvertColor(true);
-    } else {
-      setInvertColor(false);
-    }
-  }, [location]);
-
   return (
+    // showNav && (
     <div
       className={classes.navBar}
       style={{
         transform: showNav ? "scaleY(1)" : "scaleY(0)",
-        padding: largeScreen ? "0px 24px" : "0px 32px",
-        background: invertColor
-          ? "rgba(255,255,255,0)"
-          : "rgba(255, 255, 255, 1)",
+        padding: largeScreen ? "0px 24px" : "0px 8px",
       }}
     >
       <Grid
         container
         className={classes.toolbar}
         style={{
-          padding: largeScreen ? "0px 40px" : "0px",
+          padding: largeScreen ? '0px 40px' : '0px 24px',
           minWidth: largeScreen && showLogo ? "100%" : "60%",
         }}
       >
@@ -129,11 +126,12 @@ export const NavBar = (props) => {
         >
           <Button
             className={classes.menuButton}
+            // fullWidth
             style={{
               fontFamily: "Square721",
-              color: invertColor ? "#FFFFFF" : "#000000",
-              padding: 0,
-              fontSize: largeScreen ? ".75rem" : ".6rem",
+              color: "#000000",
+              // justifyContent: "flex-start",
+              fontSize: largeScreen ? "1rem" : ".75rem",
             }}
             onClick={(e) => navigate("/")}
           >
@@ -148,11 +146,13 @@ export const NavBar = (props) => {
         >
           <Button
             className={classes.menuButton}
+            // fullWidth
             style={{
               fontFamily: "Square721",
-              color: invertColor ? "#FFFFFF" : "#000000",
-              padding: 0,
-              fontSize: largeScreen ? ".75rem" : ".6rem",
+              color: "#000000",
+              // justifyContent: "flex-end",
+
+              fontSize: largeScreen ? "1rem" : ".75rem",
             }}
             onClick={(e) => navigate("/info")}
           >
@@ -167,11 +167,13 @@ export const NavBar = (props) => {
         >
           <Button
             className={classes.menuButton}
+            // fullWidth
             style={{
               fontFamily: "Square721",
-              color: invertColor ? "#FFFFFF" : "#000000",
-              padding: 0,
-              fontSize: largeScreen ? ".75rem" : ".6rem",
+              color: "#000000",
+              // justifyContent: "flex-end",
+
+              fontSize: largeScreen ? "1rem" : ".75rem",
             }}
             onClick={(e) => navigate("/index")}
           >
@@ -201,6 +203,36 @@ export const NavBar = (props) => {
         </Grid>
       </Grid>
     </div>
+    // )
+    /* <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Grid item xs={3} style={{ height: "100%" }}>
+          <div className={classes.menuButton} onClick={(e) => navigate("/")}>
+            Pleasure Craft
+          </div>
+        </Grid>
+        <Grid item xs={3} style={{ float: "right", border: "1px solid black" }}>
+          <Button
+            className={classes.menuButton}
+            onClick={(e) => navigate("/info")}
+          >
+            Info
+          </Button>
+        </Grid>
+        <Grid item xs={3} style={{ float: "right", border: "1px solid black" }}>
+          <Button
+            className={classes.menuButton}
+            onClick={(e) => navigate("/index")}
+          >
+            Index
+          </Button>
+        </Grid>
+      </Grid> */
+    // </div>
   );
 };
 

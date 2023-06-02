@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const endpoint = process.env.REACT_APP_STRAPIURL;
 const auth = process.env.REACT_APP_STRAPIAUTH;
-
 export const getProjects = () => {
     let url = `http://${endpoint}/api/projects?populate=*`
     return axios.get(url, {
@@ -11,6 +10,7 @@ export const getProjects = () => {
             'Authorization': `${auth}`,
         }
     });
+       
 };
 
 export const getMedia = () => {

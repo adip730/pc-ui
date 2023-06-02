@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    height: "100vh",
+    height: "100dvh",
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     minWidth: "100%",
     aspectRatio: 16 / 9,
-    // borderRadius: "40px",
-    // overflow: "hidden",
+    borderRadius: "40px",
+    overflow: "hidden",
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     // bottom: "13.33%",
     height: "100%",
     width: "100%",
-    // overflow: "hidden",
+    overflow: "hidden",
   },
   cont: {
     height: useMediaQuery("(min-width:600px)") ? "100%" : "75%",
@@ -52,34 +52,21 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     overflow: "hidden",
-    borderRadius: "40px 40px",
-    boxSizing: "border-box",
+    borderRadius: "40px",
   },
   subtitle: {
     marginTop: "8px",
     position: "absolute",
-    bottom: 0,
-    // bottom: 0,
-    // marginLeft: useMediaQuery("(min-width:600px)") ? '' : 'auto',
-    // marginRight: useMediaQuery("(min-width:600px)") ? '' : 'auto',
+    bottom: useMediaQuery("(min-width:600px)") ? 0 : 80,
     flexGrow: 1,
     width: "85%",
     maxWidth: "85%",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: useMediaQuery("(min-width: 600px)")
-      ? "space-evenly"
-      : "center",
+    justifyContent: "space-between",
     transition: "display 1s",
   },
-  smallSubtitle: {
-    position: 'absolute',
-    bottom: 50,
-    width: '100%',
-    maxWidth: '100%',
-    textAlign: 'center',
-  }
 }));
 
 const endpoint = process.env.REACT_APP_STRAPIURL;
@@ -94,7 +81,7 @@ export const Preview = (props) => {
 
   const [previewUrl, setPreviewUrl] = useState("");
 
-  const { projectName, name, role, client, director, code, featured, preview } =
+  const { projectName, name, role, client, medium, code, featured, preview } =
     data;
 
   const [showSubtitle, setShowSubtitle] = useState(false);
@@ -162,13 +149,13 @@ export const Preview = (props) => {
   const largeScreen = useMediaQuery("(min-width:600px)");
 
   function growTimer(container, wind) {
-    wind.style.paddingTop = "80px";
+    wind.style.paddingTop = "0px";
     // container.style.transition = "width .75s, height .5s";
-    container.style.transition = "all .5s ease-in-out";
+    container.style.transition = "all .5s";
     container.style.width = "95%";
-    container.style.height = "95%";
-    container.style.borderRadius = "10px";
-    // setShowNav(false);
+    container.style.height = "90%";
+    container.style.borderRadius = "80px";
+    setShowNav(false);
   }
 
   function doGrow(entry) {
@@ -177,14 +164,14 @@ export const Preview = (props) => {
     if (entry[0].isIntersecting) {
       let container = document.getElementById(`container-${name}`);
       let wind = document.getElementById(`window-${name}`);
-      this.grow = setTimeout(() => growTimer(container, wind), 500);
+      this.grow = setTimeout(() => growTimer(container, wind), 2000);
     } else {
       clearTimeout(this.grow);
       wind.style.paddingTop = "80px";
       container.style.width = "85%";
       container.style.height = "75%";
       container.style.borderRadius = "40px";
-      // setShowNav(true);
+      setShowNav(true);
     }
   }
 
@@ -256,8 +243,8 @@ export const Preview = (props) => {
               style={{
                 maxHeight: "100%",
                 maxWidth: "100%",
-                // borderRadius: "40px",
-                // overflow: "hidden",
+                borderRadius: "40px",
+                overflow: "hidden",
                 position: "absolute",
                 top: 0,
                 left: 0,
@@ -282,22 +269,9 @@ export const Preview = (props) => {
                 }
               }}
             />
-          {!largeScreen && (
-            <div className={classes.smallSubtitle} style={{textAlign: 'center'}}>
-              <Typography
-                color="primary"
-                style={{
-                  fontFamily: "Square721",
-                  fontSize: largeScreen ? ".75rem" : ".6rem",
-                }}
-              >
-                {projectName.toUpperCase()}
-              </Typography>
-            </div>
-          )}
           </div>
         </div>
-        {showSubtitle && largeScreen && (
+        {(showSubtitle || !largeScreen) && (
           <div className={classes.subtitle}>
             <Typography
               color="primary"
@@ -308,6 +282,15 @@ export const Preview = (props) => {
             >
               {projectName.toUpperCase()}
             </Typography>
+            <Typography
+              color="primary"
+              style={{
+                fontFamily: "Square721",
+                fontSize: largeScreen ? ".75rem" : ".6rem",
+              }}
+            >
+              {role.toUpperCase()}
+            </Typography>
             {largeScreen && (
               <Typography
                 color="primary"
@@ -316,31 +299,18 @@ export const Preview = (props) => {
                   fontSize: largeScreen ? ".75rem" : ".6rem",
                 }}
               >
-                {role.toUpperCase()}
+                {medium.toUpperCase()}
               </Typography>
             )}
-            {largeScreen && (
-              <Typography
-                color="primary"
-                style={{
-                  fontFamily: "Square721",
-                  fontSize: largeScreen ? ".75rem" : ".6rem",
-                }}
-              >
-                {director.toUpperCase()}
-              </Typography>
-            )}
-            {largeScreen && (
-              <Typography
-                color="primary"
-                style={{
-                  fontFamily: "Square721",
-                  fontSize: largeScreen ? ".75rem" : ".6rem",
-                }}
-              >
-                {code.toUpperCase()}
-              </Typography>
-            )}
+            <Typography
+              color="primary"
+              style={{
+                fontFamily: "Square721",
+                fontSize: largeScreen ? ".75rem" : ".6rem",
+              }}
+            >
+              {code.toUpperCase()}
+            </Typography>
           </div>
         )}
       </div>

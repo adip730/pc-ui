@@ -1,9 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import makeStyles from "@mui/styles/makeStyles";
 import { Typography } from "@mui/material";
+import HomeLogo from "../threejs/HomeLogo";
 import InfoRender from "../threejs/InfoRender";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Footer from "./Footer";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -15,9 +14,8 @@ const useStyles = makeStyles(() => ({
   },
   assetContainer: {
     height: "100vh",
-    // border: "1px solid black",
+    border: "1px solid black",
     textAlign: "center",
-    width: '100%',
   },
   textContainer: {
     height: "25%",
@@ -25,24 +23,24 @@ const useStyles = makeStyles(() => ({
     position: "absolute",
     bottom: "64px",
     left: "10%",
+    // border: "1px solid black",
     textAlign: "left",
   },
 }));
 
 export const AboutPage = (props) => {
   const classes = useStyles();
-  const largeScreen = useMediaQuery("(min-width:600px)");
 
   return (
     <div className={classes.root}>
       <div className={classes.assetContainer}>
         <InfoRender />
       </div>
-      <div className={classes.textContainer} style={{width: largeScreen ? '25%' : '100%', padding: largeScreen ? 0 : '64px 20px 20px 20px', boxSizing: 'border-box', bottom: largeScreen ? '48px' : 0, left: largeScreen ? '10%' : 0, right: largeScreen ? '' : 0, textAlign: largeScreen ? 'left' : 'center'}}>
+      <div className={classes.textContainer}>
         <Typography
           style={{
             fontFamily: "Square721",
-            fontSize: largeScreen ? ".75rem" : '.6rem',
+            fontSize: ".75rem",
           }}
         >
           Pleasure Craft is a NYC-based creative studio and directing duo that
@@ -50,9 +48,6 @@ export const AboutPage = (props) => {
           create becomes a portal that trancends from the ordinary to the
           surreal.
         </Typography>
-      </div>
-      <div style={{ width: "100%", position: "absolute", bottom: 0 }}>
-        <Footer />
       </div>
     </div>
   );

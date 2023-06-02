@@ -3,10 +3,10 @@ import makeStyles from "@mui/styles/makeStyles";
 import Fade from "@mui/material/Fade";
 import AppContext from "../context/AppContext";
 import Preview from "./Preview";
+import PreviewPage from "./PreviewPage";
 import HomeLogo from "../threejs/HomeLogo";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import Footer from "./Footer";
-
+import ReactPlayer from "react-player";
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -17,6 +17,7 @@ const useStyles = makeStyles(() => ({
   scrollView: {
     width: "100%",
     height: "100vh",
+    // scrollSnapType: "y mandatory",
     overflowY: "scroll",
   },
   viewContainer: {
@@ -27,6 +28,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     justifyContent: "center",
     padding: 0,
+    // scrollSnapAlign: "start",
   },
   "@keyframes fadeout": {
     "0%": {
@@ -62,7 +64,12 @@ export const HomePage = (props) => {
   const classes = useStyles();
   const viewRef = useRef();
 
+  // const [scrollPos, setScrollPos] = useState(0);
+
   useEffect(() => {
+    // let view = document.getElementById("scrollview");
+    // view.addEventListener("scroll", handleScroll);
+
     let logoObserver = new IntersectionObserver(showHide, logoObserverOptions);
     let target = document.getElementById("logo-container");
     if (largeScreen) {
@@ -72,6 +79,7 @@ export const HomePage = (props) => {
       logoObserver.unobserve(target);
     };
   }, []);
+
 
   let videoObserverOptions = {
     root: null,
@@ -99,13 +107,20 @@ export const HomePage = (props) => {
     }
   }
 
+
   return (
     <div className={classes.root}>
       <Fade in={showLoading} unmountOnExit timeout={500}>
         <div className={classes.loadingScreen}>Loading</div>
       </Fade>
-      <div className={classes.scrollView} ref={viewRef} id="scrollview">
-        <div className={classes.viewContainer} /*style={{height: largeScreen ? '100vh' : '100%'}}*/ id="logo-container">
+      <div
+        className={classes.scrollView}
+        ref={viewRef}
+        // onScroll={handleScroll}
+        id="scrollview"
+      >
+        <div className={classes.viewContainer} id="logo-container">
+          {/* <p>Spinning Logo goes here</p> */}
           <HomeLogo />
         </div>
         {projects.map(
@@ -118,13 +133,11 @@ export const HomePage = (props) => {
                   playOptions={playObserverOptions}
                   data={proj}
                   index={ind}
+                  // scrollPos={scrollPos}
                 />
               </div>
             )
         )}
-        <div style={{ width: "100%" }}>
-          <Footer />
-        </div>
       </div>
     </div>
   );

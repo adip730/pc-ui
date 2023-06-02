@@ -3,14 +3,14 @@ import ReactPlayer from "react-player/file";
 import makeStyles from "@mui/styles/makeStyles";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import Slider from "@mui/material/Slider";
 import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AppContext from "../context/AppContext";
-import Footer from "./Footer";
 
 import PlayCircleOutlinedIcon from "@mui/icons-material/PlayCircleOutlined";
-import Slider from "@mui/material/Slider";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
@@ -34,7 +34,7 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    position: "relative",
+    // position: "relative",
     padding: "84px 64px 24px 64px",
     // maxHeight: "calc(100%-60)",
     height: "100vh",
@@ -43,13 +43,12 @@ const useStyles = makeStyles(() => ({
     overflow: "auto",
     boxSizing: "border-box",
     justifyContent: "flex-start",
-    // border: '1px solid green',
   },
   window: {
     height: "60%",
     width: "100%",
     overflow: "hidden",
-    borderRadius: "20px",
+    borderRadius: "40px",
     position: "relative",
     display: "flex",
     flexDirection: "column",
@@ -60,7 +59,7 @@ const useStyles = makeStyles(() => ({
   videoWrapper: {
     height: "100%",
     // width: "100%",
-    borderRadius: "20px",
+    borderRadius: "40px",
     overflow: "hidden",
     position: "relative",
     alignItems: "center",
@@ -191,7 +190,6 @@ export const ProjectPage = (props) => {
   } = data;
 
   const largeScreen = useMediaQuery("(min-width:800px)");
-  const xlargeScreen = useMediaQuery("(min-width:1200px)");
 
   const playerRef = useRef(null);
 
@@ -254,10 +252,23 @@ export const ProjectPage = (props) => {
     }
   };
 
+  const onSeek = (e, newVal) => {
+    setVideoDuration(parseFloat(newVal / 100));
+  };
+
+  const onSeekMouseDown = (e) => {
+    setSeeking(true);
+  };
+
+  const onSeekMouseUp = (e, newVal) => {
+    setSeeking(false);
+    playerRef.current.seekTo(parseFloat(newVal / 100));
+  };
+
   useEffect(() => {
     let container = document.getElementById("container");
     let player = document.getElementById("player-wrapper");
-    let root = document.getElementById("pageRoot");
+    let root = document.getElementById('pageRoot');
     if (container && player) {
       if (expanded) {
         setShowNav(false);
@@ -271,6 +282,8 @@ export const ProjectPage = (props) => {
         player.style.height = "auto";
         player.style.width = "100%";
         container.style.width = "100vw";
+        // container.style.transform=`scale(${1/(container.clientWidth/root.clientWidth)},${1/(container.clientHeight/root.clientHeight)})`;
+        // console.log(`scale(${1/(container.clientWidth/root.clientWidth)},${1/(container.clientHeight/root.clientHeight)})`);
         container.style.position = "fixed";
         container.style.top = 0;
         container.style.left = 0;
@@ -286,9 +299,9 @@ export const ProjectPage = (props) => {
         container.style.width = "100%";
         container.style.position = "relative";
         container.style.marginBottom = "24px";
-        container.style.borderRadius = "20px";
+        container.style.borderRadius = "40px";
         container.style.backgroundColor = "#FFFFFF";
-        player.style.borderRadius = "20px";
+        player.style.borderRadius = "40px";
         player.style.paddingTop = 0;
         player.style.height = "100%";
         player.style.width = "";
@@ -299,7 +312,7 @@ export const ProjectPage = (props) => {
   return (
     <div
       className={classes.root}
-      id="pageRoot"
+      id='pageRoot'
       style={{
         padding: largeScreen ? "84px 64px 24px 64px" : "84px 32px 24px 32px",
       }}
@@ -323,7 +336,7 @@ export const ProjectPage = (props) => {
             style={{
               maxHeight: "100%",
               maxWidth: "100%",
-              borderRadius: expanded ? "0px" : "20px",
+              borderRadius: expanded ? "0px" : "40px",
               overflow: "hidden",
               position: "absolute",
               top: 0,
@@ -341,11 +354,10 @@ export const ProjectPage = (props) => {
             // muted
             playsinline
             // fluid={true}
-            controls={showControls}
             progressInterval={100}
             onProgress={handleProgress}
           />
-          {/* {showControls && !showOverlay && !expanded && (
+          {showControls && !showOverlay && !expanded && (
             <div className={classes.controls}>
               <Button
                 className={classes.playPause}
@@ -386,7 +398,7 @@ export const ProjectPage = (props) => {
                 <FullscreenIcon style={{ color: "white" }} />
               </Button>
             </div>
-          )} */}
+          )}
           {showOverlay && (
             <>
               <div className={classes.overlay}>
@@ -412,7 +424,7 @@ export const ProjectPage = (props) => {
             </>
           )}
         </div>
-        {/* {showControls && expanded && (
+        {showControls && expanded && (
           <div className={classes.controls}>
             <Button
               className={classes.playPause}
@@ -449,7 +461,7 @@ export const ProjectPage = (props) => {
               <FullscreenExitIcon style={{ color: "white" }} />
             </Button>
           </div>
-        )} */}
+        )}
       </div>
 
       <Grid
@@ -462,10 +474,10 @@ export const ProjectPage = (props) => {
           direction="row"
           alignItems="center"
           justifyContent="space-between"
-          spacing={2}
+            spacing={2}
           className={classes.row}
         >
-          <Grid item xs={12} md={"auto"}>
+          <Grid item xs={6} sm={4} md={3}>
             <Typography
               color="primary"
               sx={{
@@ -476,25 +488,26 @@ export const ProjectPage = (props) => {
               PROJECT: {projectName.toUpperCase()}
             </Typography>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={6} sm={4} md={3}>
             <Typography
               color="primary"
               sx={{
                 fontFamily: "Square721",
                 fontSize: largeScreen ? ".75rem" : ".6rem",
-                textAlign: "left",
+                textAlign: {xs: 'left', sm: 'center'}
+                
               }}
             >
               ROLE: {role.toUpperCase()}
             </Typography>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={6} sm={4} md={3}>
             <Typography
               color="primary"
               sx={{
                 fontFamily: "Square721",
                 fontSize: largeScreen ? ".75rem" : ".6rem",
-                textAlign: "left",
+                textAlign: {xs: 'left', sm: 'right'}
               }}
             >
               CLIENT: {client.toUpperCase()}
@@ -507,7 +520,7 @@ export const ProjectPage = (props) => {
             color="primary"
             style={{
               fontFamily: "Square721",
-              textAlign: "justify",
+              textAlign: 'justify',
               fontSize: largeScreen ? ".75rem" : ".6rem",
             }}
           >
@@ -529,7 +542,7 @@ export const ProjectPage = (props) => {
                 item
                 xs={12}
                 sm={6}
-                lg={2}
+                md={2}
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -559,19 +572,7 @@ export const ProjectPage = (props) => {
             );
           })}
         </Grid>
-        {!xlargeScreen && (
-          <div
-            style={{ position: "relative", width: "100%", marginTop: "auto" }}
-          >
-            <Footer />
-          </div>
-        )}
       </Grid>
-      {xlargeScreen && (
-        <div style={{ position: "absolute", bottom: 0, width: "100%", marginTop: "auto" }}>
-          <Footer />
-        </div>
-      )}
     </div>
   );
 };
