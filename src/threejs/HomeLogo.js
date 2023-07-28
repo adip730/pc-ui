@@ -128,7 +128,7 @@ export const HomeLogo = () => {
         rotating = true;
       }
       if (rotating) {
-        theta -= frame; // This gives the illusion of rotation by orbiting the camera horizontally
+        theta += frame; // This gives the illusion of rotation by orbiting the camera horizontally
       }
       // The mesh rotates one way
       coinDisc.rotateY(frame * directionX);
