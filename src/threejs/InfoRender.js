@@ -42,6 +42,10 @@ export const InfoRender = () => {
     }
   };
 
+  const sceneHeight = window.innerHeight;
+  const sceneWidth = window.innerWidth;
+  const sceneRatio = window.devicePixelRatio;
+
   //const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // Get user input 
@@ -91,16 +95,16 @@ export const InfoRender = () => {
     const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, antialias:true });
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.setClearColor(0xffffff, 1);
-    renderer.setPixelRatio( window.devicePixelRatio );
-		renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setPixelRatio( sceneRatio );
+		renderer.setSize( sceneWidth, sceneHeight );
 
     //Manual water 
     const waterGeometry = new THREE.PlaneGeometry(6000, 6000, 1, 1);
 
     const mirror = new Reflector(waterGeometry, {
       clipBias: 0.003,
-      textureWidth: window.innerWidth * window.devicePixelRatio,
-      textureHeight: window.innerHeight * window.devicePixelRatio,
+      textureWidth: sceneWidth * sceneRatio,
+      textureHeight: sceneHeight * sceneRatio,
       color: 0x777777,
     });
     mirror.rotation.x = -Math.PI/2;
@@ -331,7 +335,7 @@ export const InfoRender = () => {
 
 return (
   <div id = "main">
-    <canvas ref={canvasRef} className = "three" style={{maxHeight:"100%", maxWidth:"100%"}} width="1920px" height="1080px" />
+    <canvas ref={canvasRef} className = "three" width={sceneWidth} height={sceneHeight} />
   </div>
 );
 }

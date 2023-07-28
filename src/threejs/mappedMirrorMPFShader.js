@@ -57,12 +57,12 @@ vec3 blendOverlay( vec3 base, vec3 blend ) {
 vec3 colorMapping(vec3 colorIn) {
     vec3 colorOut;
 
-    float scaleFactorR = 1.6;
+    float scaleFactorR = 1.69;
     float biasR = 0.0;
-    float scaleFactorG = 1.52;
+    float scaleFactorG = 1.607;
     float biasG = 0.0;
-    float scaleFactorB = 1.85;
-    float biasB = 0.0;
+    float scaleFactorB = 1.9999999;
+    float biasB = 0.016;
 
     colorOut.r = colorIn.r * scaleFactorR + biasR;
     colorOut.g = colorIn.g * scaleFactorG + biasG;

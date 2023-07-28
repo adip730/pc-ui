@@ -35,7 +35,7 @@ export const AboutPage = (props) => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.assetContainer}>
+      <div className={classes.assetContainer} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         <InfoRender />
       </div>
       <div className={classes.textContainer} style={{width: largeScreen ? '25%' : '100%', padding: largeScreen ? 0 : '64px 20px 20px 20px', boxSizing: 'border-box', bottom: largeScreen ? '48px' : "16px", left: largeScreen ? '10%' : 0, right: largeScreen ? '' : 0, textAlign: largeScreen ? 'left' : 'center'}}>
