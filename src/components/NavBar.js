@@ -189,7 +189,6 @@ export const NavBar = (props) => {
             alignItems: "center",
             justifyContent: "flex-end",
           }}
-          direction="row"
         >
           {largeScreen ? (
             <Fade in={showLogo} unmountOnExit timeout={1000}>

@@ -5,6 +5,7 @@ import HomePage from "./HomePage";
 import IndexPage from "./IndexPage";
 import AboutPage from "./AboutPage";
 import ProjectPage from "./ProjectPage";
+import ProjectPageNew from "./ProjectPageNew";
 
 export const BaseRoutes = () => {
   const { state } = useContext(AppContext);
@@ -18,8 +19,9 @@ export const BaseRoutes = () => {
       {projectRoutes &&
         projectRoutes.map((route) => (
           <Route
+            key={route.routeName}
             path={`/project/${route.routeName}`}
-            element={<ProjectPage viewMode={"slide"} data={route.data} />}
+            element={<ProjectPageNew viewMode={"slide"} data={route.data} />}
           />
         ))}
     </Routes>

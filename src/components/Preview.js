@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     overflow: "hidden",
-    borderRadius: "40px 40px",
+    borderRadius: "40px",
     boxSizing: "border-box",
   },
   subtitle: {
@@ -74,12 +74,12 @@ const useStyles = makeStyles((theme) => ({
     transition: "display 1s",
   },
   smallSubtitle: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 50,
-    width: '100%',
-    maxWidth: '100%',
-    textAlign: 'center',
-  }
+    width: "100%",
+    maxWidth: "100%",
+    textAlign: "center",
+  },
 }));
 
 const endpoint = process.env.REACT_APP_STRAPIURL;
@@ -106,6 +106,14 @@ export const Preview = (props) => {
   const [hasChanged, setHasChanged] = useState(false);
 
   useEffect(() => {
+    // let vid = document.getElementById(`videoFrame-${name}`);
+    // console.log("name: ", name, "width: ", vid.clientWidth);
+    // if (!vid.clientWidth % 2 === 0) {
+    //   console.log("got here");
+    //   let newWidth = vid.clientWidth + 1;
+    //   console.log(newWidth);
+    //   vid.style.width = newWidth;
+    // }
     let observer = new IntersectionObserver(doGrow, options);
     let playObserver = new IntersectionObserver(togglePlay, playOptions);
     let target = document.getElementById(`window-${name}`);
@@ -256,12 +264,15 @@ export const Preview = (props) => {
               style={{
                 maxHeight: "100%",
                 maxWidth: "100%",
+                // width: '100%',
                 // borderRadius: "40px",
                 // overflow: "hidden",
                 position: "absolute",
                 top: 0,
-                left: 0,
+                left: -1,
+                // right: ,
                 alignContent: "center",
+                // background: "transparent",
               }}
               url={
                 videoMap[name]
@@ -273,7 +284,6 @@ export const Preview = (props) => {
               playing={playing}
               loop
               muted
-              fluid={false}
               onReady={() => {
                 let vids = [...loadedVids];
                 if (!vids.includes(name)) {
@@ -282,19 +292,22 @@ export const Preview = (props) => {
                 }
               }}
             />
-          {!largeScreen && (
-            <div className={classes.smallSubtitle} style={{textAlign: 'center'}}>
-              <Typography
-                color="primary"
-                style={{
-                  fontFamily: "Square721",
-                  fontSize: largeScreen ? ".75rem" : ".6rem",
-                }}
+            {!largeScreen && (
+              <div
+                className={classes.smallSubtitle}
+                style={{ textAlign: "center" }}
               >
-                {projectName.toUpperCase()}
-              </Typography>
-            </div>
-          )}
+                <Typography
+                  color="primary"
+                  style={{
+                    fontFamily: "Square721",
+                    fontSize: largeScreen ? ".75rem" : ".6rem",
+                  }}
+                >
+                  {projectName.toUpperCase()}
+                </Typography>
+              </div>
+            )}
           </div>
         </div>
         {showSubtitle && largeScreen && (

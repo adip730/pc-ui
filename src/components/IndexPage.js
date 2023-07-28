@@ -41,6 +41,7 @@ const useStyles = makeStyles(() => ({
     maxWidth: "50%",
     borderRadius: "20px",
     overflow: "hidden",
+    boxShadow: '1px 1px 1px 1px grey',
     zIndex: 2,
   },
   bottomBox: {
@@ -69,6 +70,8 @@ export const IndexPage = (props) => {
   const [hover, setHover] = useState("");
   const [featuredUrl, setFeaturedUrl] = useState("");
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     if (hover !== "") {
       if (projects.some((proj) => proj.name === hover)) {
@@ -80,12 +83,14 @@ export const IndexPage = (props) => {
       }
     } else {
       setFeaturedUrl("");
+      setIsLoaded(false);
     }
   }, [hover]);
 
   const goTo = (route) => {
     navigate(`../project/${route}`, { replace: true });
   };
+
 
   return (
     <div
@@ -194,38 +199,32 @@ export const IndexPage = (props) => {
       <div style={{ width: "100%", position: "fixed", bottom: 0 }}>
         <Footer />
       </div>
-      <div
-        className={classes.previewContainer}
-        style={{ display: largeScreen ? "flex" : "none" }}
-      >
-        <div className={classes.viewWindow}>
-          {/* <ReactPlayer
-                style={{
-                  maxHeight: "100%",
-                  maxWidth: "100%",
-                  borderRadius: "40px",
-                  overflow: "hidden",
-                }}
-                url={`http://${endpoint}${featuredUrl}`}
-                playing
-                loop
-                muted
-              /> */}
-          <video
-            autoplay
-            muted
-            height="auto"
-            width="100%"
-            style={{
-              maxWidth: "100%",
-              maxHeight: "100%",
-              overflow: "hidden",
-              borderRadius: "20px",
-            }}
-            src={videoMap[hover] ? videoMap[hover] : featuredUrl}
-          />
+      {hover !== "" && (
+        <div
+          className={classes.previewContainer}
+          style={{ display: largeScreen ? "flex" : "none" }}
+        >
+          <div
+            className={classes.viewWindow}
+            style={{ display: isLoaded ? '' : 'none'}}
+          >
+            <video
+              onLoadedData={() => setIsLoaded(true)}
+              autoPlay
+              muted
+              height="auto"
+              width="100%"
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+                overflow: "hidden",
+                // borderRadius: "20px",
+              }}
+              src={videoMap[hover] ? videoMap[hover] : featuredUrl}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

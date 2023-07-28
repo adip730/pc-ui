@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     alignItems: "center",
     position: "relative",
-    padding: "84px 64px 24px 64px",
+    padding: "84px 64px 0 64px",
     // maxHeight: "calc(100%-60)",
     height: "100vh",
     width: "100%",
@@ -47,7 +47,7 @@ const useStyles = makeStyles(() => ({
   },
   window: {
     height: "60%",
-    minHeight: '60%',
+    minHeight: "60%",
     width: "100%",
     overflow: "hidden",
     borderRadius: "20px",
@@ -100,21 +100,20 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     // boxSizing: "border-box",
     padding: "16px 0",
+    marginBottom: "32px",
     display: "flex",
-    flexDirection: "column",
+    // flexDirection: "column",
     // marginBottom: "16px",
-    rowGap: "24px",
-    justifyContent: "flex-start",
+    // rowGap: "24px",
+    // justifyContent: "flex-start",
   },
   row: {
-    display: "flex",
-    flexDirection: "row",
-    height: "auto",
-    // marginTop: "auto",
-    // marginBottom: "auto",
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    marginTop: "32px",
+    textAlign: "center",
+
+    maxWidth: "75%",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
   controls: {
     display: "flex",
@@ -168,7 +167,7 @@ const useStyles = makeStyles(() => ({
 
 const endpoint = process.env.REACT_APP_STRAPIURL;
 
-export const ProjectPage = (props) => {
+export const ProjectPageNew = (props) => {
   const { viewMode, data, media } = props;
   const classes = useStyles();
   const navigate = useNavigate();
@@ -297,12 +296,17 @@ export const ProjectPage = (props) => {
     }
   }, [expanded]);
 
+  //   const host = document.getElementById("videoFrame");
+  //   var sheet = new CSSStyleSheet();
+  //   sheet.replaceSync(`-webkit-media-controls::- { color: rgb(255, 0, 0) }`);
+  //   host.shadowRoot.adoptedStyleSheets = [sheet];
+
   return (
     <div
       className={classes.root}
       id="pageRoot"
       style={{
-        padding: largeScreen ? "84px 64px 24px 64px" : "84px 32px 24px 32px",
+        padding: largeScreen ? "84px 64px 0px 64px" : "84px 32px 0px 32px",
       }}
     >
       <div
@@ -341,53 +345,11 @@ export const ProjectPage = (props) => {
             volume={volume}
             // muted
             playsinline
-            // fluid={true}
             controls={showControls}
             progressInterval={100}
             onProgress={handleProgress}
           />
-          {/* {showControls && !showOverlay && !expanded && (
-            <div className={classes.controls}>
-              <Button
-                className={classes.playPause}
-                onClick={() => setPlaying(!playing)}
-              >
-                {playing ? (
-                  <PauseIcon style={{ color: "white" }} />
-                ) : videoDuration === 1 ? (
-                  <ReplayIcon style={{ color: "white" }} />
-                ) : (
-                  <PlayArrowIcon style={{ color: "white" }} />
-                )}
-              </Button>
-              <Button
-                className={classes.volume}
-                onClick={() => setVolume(volume === 1 ? 0 : 1)}
-              >
-                {volume === 1 ? (
-                  <VolumeUpIcon style={{ color: "white" }} />
-                ) : (
-                  <VolumeOffIcon style={{ color: "white" }} />
-                )}
-              </Button>
-              <div className={classes.scrub}>
-                <Slider
-                  step={1}
-                  value={videoDuration * 100}
-                  className={classes.durationSlider}
-                  onChange={onSeek}
-                  onMouseDown={onSeekMouseDown}
-                  onChangeCommitted={onSeekMouseUp}
-                />
-              </div>
-              <Button
-                className={classes.fullScreen}
-                onClick={() => setExpanded(true)}
-              >
-                <FullscreenIcon style={{ color: "white" }} />
-              </Button>
-            </div>
-          )} */}
+
           {showOverlay && (
             <>
               <div className={classes.overlay}>
@@ -399,9 +361,17 @@ export const ProjectPage = (props) => {
                     setPlaying(true);
                   }}
                 >
-                  <PlayCircleOutlinedIcon
+                  {/* <PlayCircleOutlinedIcon
                     style={{ height: "60px", width: "60px" }}
-                  />
+                  /> */}
+                  <Typography
+                    sx={{
+                      fontFamily: "Square721",
+                      fontSize: '1rem',
+                    }}
+                  >
+                    PLAY
+                  </Typography>
                 </IconButton>
               </div>
               {thumbnailUrl !== "" && (
@@ -413,168 +383,153 @@ export const ProjectPage = (props) => {
             </>
           )}
         </div>
-        {/* {showControls && expanded && (
-          <div className={classes.controls}>
-            <Button
-              className={classes.playPause}
-              onClick={() => setPlaying(!playing)}
-            >
-              {playing ? (
-                <PauseIcon style={{ color: "white" }} />
-              ) : videoDuration === 1 ? (
-                <ReplayIcon style={{ color: "white" }} />
-              ) : (
-                <PlayArrowIcon style={{ color: "white" }} />
-              )}
-            </Button>
-            <Button
-              className={classes.volume}
-              // onClick={}
-            >
-              <VolumeUpIcon style={{ color: "white" }} />
-            </Button>
-            <div className={classes.scrub}>
-              <Slider
-                step={1}
-                value={videoDuration * 100}
-                className={classes.durationSlider}
-                onChange={onSeek}
-                onMouseDown={onSeekMouseDown}
-                onChangeCommitted={onSeekMouseUp}
-              />
-            </div>
-            <Button
-              className={classes.fullScreen}
-              onClick={() => setExpanded(false)}
-            >
-              <FullscreenExitIcon style={{ color: "white" }} />
-            </Button>
-          </div>
-        )} */}
       </div>
 
       <Grid
         container
         className={classes.infoSection}
-        style={{ display: expanded ? "none" : "flex" }}
+        direction="row"
+        rowSpacing={0.5}
+        columnSpacing={4}
+        sx={{
+          display: expanded ? "none" : "flex",
+          marginBottom: largeScreen ? "48px" : "32px",
+        }}
       >
-        <Grid
-          container
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          spacing={2}
-          className={classes.row}
-        >
-          <Grid item xs={12} md={"auto"}>
-            <Typography
-              color="primary"
-              sx={{
-                fontFamily: "Square721",
-                fontSize: largeScreen ? ".75rem" : ".6rem",
-              }}
-            >
-              PROJECT: {projectName.toUpperCase()}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Typography
-              color="primary"
-              sx={{
-                fontFamily: "Square721",
-                fontSize: largeScreen ? ".75rem" : ".6rem",
-                textAlign: "left",
-              }}
-            >
-              ROLE: {role.toUpperCase()}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Typography
-              color="primary"
-              sx={{
-                fontFamily: "Square721",
-                fontSize: largeScreen ? ".75rem" : ".6rem",
-                textAlign: "left",
-              }}
-            >
-              CLIENT: {client.toUpperCase()}
-            </Typography>
-          </Grid>
-        </Grid>
-
-        <div className={classes.row}>
+        <Grid item xs={6}>
           <Typography
             color="primary"
-            style={{
+            sx={{
               fontFamily: "Square721",
-              textAlign: "justify",
               fontSize: largeScreen ? ".75rem" : ".6rem",
+              textAlign: "right",
             }}
           >
-            {writeup.toUpperCase()}
+            PROJECT
           </Typography>
-        </div>
-
-        <Grid
-          container
-          direction="row"
-          alignItems="center"
-          className={classes.row}
-          style={{ marginBottom: 16 }}
-          spacing={2}
-        >
-          {creditsArr.map((cred) => {
-            return (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                lg={2}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  justifyContent: "center",
-                }}
-              >
+        </Grid>
+        <Grid item xs={6}>
+          <Typography
+            color="primary"
+            sx={{
+              fontFamily: "Square721",
+              fontSize: largeScreen ? ".75rem" : ".6rem",
+              textAlign: "left",
+            }}
+          >
+            {projectName.toUpperCase()}
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography
+            color="primary"
+            sx={{
+              fontFamily: "Square721",
+              fontSize: largeScreen ? ".75rem" : ".6rem",
+              textAlign: "right",
+            }}
+          >
+            ROLE
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography
+            color="primary"
+            sx={{
+              fontFamily: "Square721",
+              fontSize: largeScreen ? ".75rem" : ".6rem",
+              textAlign: "left",
+            }}
+          >
+            {role.toUpperCase()}
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography
+            color="primary"
+            sx={{
+              fontFamily: "Square721",
+              fontSize: largeScreen ? ".75rem" : ".6rem",
+              textAlign: "right",
+            }}
+          >
+            CLIENT
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography
+            color="primary"
+            sx={{
+              fontFamily: "Square721",
+              fontSize: largeScreen ? ".75rem" : ".6rem",
+              textAlign: "left",
+            }}
+          >
+            {client.toUpperCase()}
+          </Typography>
+        </Grid>
+        {creditsArr.map((cred) => {
+          return (
+            <>
+              <Grid item xs={6}>
                 <Typography
                   color="primary"
                   style={{
                     fontFamily: "Square721",
                     fontSize: largeScreen ? ".75rem" : ".6rem",
+                    textAlign: "right",
                   }}
                 >
                   {cred[0].toUpperCase()}
                 </Typography>
+              </Grid>
+              <Grid item xs={6}>
                 <Typography
                   color="primary"
-                  style={{
+                  sx={{
                     fontFamily: "Square721",
                     fontSize: largeScreen ? ".75rem" : ".6rem",
+                    textAlign: "left",
                   }}
                 >
                   {cred[1].toUpperCase()}
                 </Typography>
               </Grid>
-            );
-          })}
-        </Grid>
-        {!xlargeScreen && (
-          <div
-            style={{ position: "relative", width: "100%", marginTop: "auto" }}
+            </>
+          );
+        })}
+
+        <Grid item xs={12} className={classes.row} sx={{ marginTop: "32px" }}>
+          <Typography
+            color="primary"
+            style={{
+              fontFamily: "Square721",
+              textAlign: "center",
+              fontSize: largeScreen ? ".75rem" : ".6rem",
+            }}
           >
-            <Footer />
-          </div>
-        )}
+            {writeup.toUpperCase()}
+          </Typography>
+        </Grid>
       </Grid>
-      {xlargeScreen && (
-        <div style={{ position: "absolute", bottom: 0, width: "100%", marginTop: "auto" }}>
+      {/* {!xlargeScreen && ( */}
+      <div style={{ width: "100%", marginTop: "auto" }}>
+        <Footer />
+      </div>
+      {/* )} */}
+      {/* {xlargeScreen && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            width: "100%",
+            marginTop: "auto",
+          }}
+        >
           <Footer />
-        </div>
-      )}
+        </div> */}
     </div>
   );
 };
 
-export default ProjectPage;
+export default ProjectPageNew;
