@@ -18,30 +18,12 @@ import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
 //import fragmentShader from './FragmentShader.js';
 import GPGPU_Water from './gpgpuWater.js';
 
+import "./colorBalance.css";
+
 // About page scene demo
 export const InfoRender = () => {
   // Canvas ref
   const canvasRef = useRef(null);
-
-  const clearThree = (obj) => {
-    while (obj.children.length > 0) {
-      clearThree(obj.children[0]);
-      obj.remove(obj.children[0]);
-    }
-    if (obj.geometry) obj.geometry.dispose();
-    if (obj.material) {
-      Object.keys(obj.material).forEach((prop) => {
-        if (!obj.material[prop]) return;
-        if (
-          obj.material[prop] !== null &&
-          typeof obj.material[prop].dispose === "function"
-        )
-          obj.material[prop].dispose();
-      });
-      obj.material.dispose();
-    }
-  };
-
   const sceneHeight = window.innerHeight;
   const sceneWidth = window.innerWidth;
   const sceneRatio = window.devicePixelRatio;
@@ -76,14 +58,9 @@ export const InfoRender = () => {
     // Add the loading div to the DOM
     document.body.appendChild(loadingDiv);
 
-    // Scene
-    const scene = new THREE.Scene();
-
     // variables for control 
     var mattAvatar = new THREE.Mesh();
     let derekAvatar = new THREE.Mesh();
-    let camera = new THREE.PerspectiveCamera(75, canvasRef.current.width / canvasRef.current.height, 0.1, 4000);
-    camera.position.set(333, 100, 0);
 
     const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath("decoder/draco/");
@@ -98,8 +75,16 @@ export const InfoRender = () => {
     renderer.setPixelRatio( sceneRatio );
 		renderer.setSize( sceneWidth, sceneHeight );
 
+    let camera = new THREE.PerspectiveCamera(75, canvasRef.current.width / canvasRef.current.height, 0.1, 4000);
+    camera.position.set(333, 100, 0);
+
+    // Scene
+    const scene = new THREE.Scene();
+    
+
     //Manual water 
     const waterGeometry = new THREE.PlaneGeometry(6000, 6000, 1, 1);
+
 
     const mirror = new Reflector(waterGeometry, {
       clipBias: 0.003,
@@ -198,19 +183,6 @@ export const InfoRender = () => {
         derekAvatar.getObjectByName("Sunnies_D").material.map = texture;
         mattAvatar.getObjectByName("Sunnies_M").material.map = texture;
       });
-      /*avatrText.load('/Textures/ClothesM_Cust.png', function(texture) {
-        texture.flipY = false;
-        texture.encoding = THREE.sRGBEncoding;
-        texture.magFilter = THREE.LinearFilter;
-        texture.minFilter = THREE.LinearFilter;
-        texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-        texture.wrapS = THREE.MirroredRepeatWrapping;
-        texture.wrapT = THREE.MirroredRepeatWrapping;
-        mattAvatar.getObjectByName("Clothes_M").material.roughness = 0.5;
-        mattAvatar.getObjectByName("Clothes_M").material.metalness = 0;
-        mattAvatar.getObjectByName("Clothes_M").material.map = texture;
-        mattAvatar.getObjectByName("Clothes_M").material.map.needsUpdate = true;
-      });*/
       avatrText.load('/Textures/Matt_Cust.png', function(texture) {
         texture.flipY = false;
         texture.encoding = THREE.sRGBEncoding;
@@ -318,6 +290,8 @@ export const InfoRender = () => {
       //water.animate();
       water.render();
       //scene.add(water.waterMesh);
+
+      
 
       // Render the scene
       //renderer.render(scene, camera);
@@ -429,6 +403,26 @@ function getWaveInfo( x, z, time ) {
     a.download = 'image.png';
     a.click();
 }
+
+const clearThree = (obj) => {
+  while (obj.children.length > 0) {
+    clearThree(obj.children[0]);
+    obj.remove(obj.children[0]);
+  }
+  if (obj.geometry) obj.geometry.dispose();
+  if (obj.material) {
+    Object.keys(obj.material).forEach((prop) => {
+      if (!obj.material[prop]) return;
+      if (
+        obj.material[prop] !== null &&
+        typeof obj.material[prop].dispose === "function"
+      )
+        obj.material[prop].dispose();
+    });
+    obj.material.dispose();
+  }
+};
+
 
   
   

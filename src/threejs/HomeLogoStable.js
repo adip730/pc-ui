@@ -1,5 +1,5 @@
 //import { useRef, useEffect } from 'react';
-import React, { useEffect, useRef, useContext } from "react";
+import React, { useEffect, useRef, useContext, useState } from "react";
 import AppContext from "../context/AppContext";
 import * as THREE from "three";
 //import GLTFLoader from 'three-gltf-loader';
@@ -8,6 +8,7 @@ import { Cache } from "three";
 import { isPlainObject } from "@mui/utils";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import Fade from '@mui/material/Fade';
+import logo_gltf from "../../public/glTF/LOGO CHROME_Less Soft.gltf";
 import logo_tex from "../../public/Textures/HDRI_Chrome_Soft.png";
 
 // Homepage logo demo
@@ -24,12 +25,11 @@ export const HomeLogo = () => {
   const { setShowLoading } = api;
 
   const {test_hdri} = state;
-  const [hdri_img, setHdriImg] = useState(logo_tex);
+  const hdriLoaded = useRef(false);
 
   useEffect(() => {
     if (test_hdri) {
-      console.log('test: ',test_hdri)
-      setHdriImg(test_hdri.data.attributes.url || logo_tex);
+      hdriLoaded.current = true; // Mark as not loaded
     }
   }, [test_hdri]);
 
@@ -70,9 +70,9 @@ export const HomeLogo = () => {
     dracoLoader.setDecoderPath('/decoder/draco/');
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
+    const hdrLoader = new THREE.TextureLoader();
 
-    loader.load("./glTF/LOGO CHROME_Less Soft.gltf", (gltf) => {
-      console.log("LOADING BABY");
+    loader.load(logo_gltf, (gltf) => {
       const root = gltf.scene;
       //scene.add(root);
       coinDisc = root.getObjectByName("Fixed_Logo");
@@ -80,14 +80,13 @@ export const HomeLogo = () => {
       coinDisc.scale.set(0.1, 0.1, 0.1);
       // HDRI setup
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
-      const hdrLoader = new THREE.TextureLoader();
       hdrLoader.load(
-        hdri_img,
+        logo_tex,
         function (texture) {
           const prefilteredCubeMap =
             pmremGenerator.fromEquirectangular(texture).texture;
           // Set the texture as the environment map for a material
-          coinDisc.material.envMap = prefilteredCubeMap;
+          //coinDisc.material.envMap = prefilteredCubeMap;
           pmremGenerator.dispose();
           // console.log(texture.status);
           //coinDisc.material.emissive = new THREE.Color(0xffffff);
@@ -132,34 +131,59 @@ export const HomeLogo = () => {
     renderer.render(scene, camera);
     const frame = Math.PI / 360;
     function animate() {
+      //updating texture if necessary
+      if (hdriLoaded.current) {
+        const strapiBaseURL = "http://localhost:1337";
+        const imageUrl = `${strapiBaseURL}${test_hdri}`;
+        console.log(imageUrl);
+        const pmremGenerator = new THREE.PMREMGenerator(renderer);
+        //if(hdriImg){
+          hdrLoader.load(
+            imageUrl,
+            function (texture) {
+              const prefilteredCubeMap =
+                pmremGenerator.fromEquirectangular(texture).texture;
+              // Set the texture as the environment map for a material
+              coinDisc.material.envMap = prefilteredCubeMap;
+              pmremGenerator.dispose();
+              console.log("adding")
+              scene.add(coinDisc);
+              hdriLoaded.current = false; // Mark as loaded
+            }
+          );
+        //}
+      }
+      else{
+        console.log(coinDisc.material.envMap);
+        console.log(hdriLoaded.current)
+      }
       // Translating camera on a fixed orbit
       let r = 100;
       if (Date.now() - loadTime >= 2000) {
         rotating = true;
       }
       if (rotating) {
-        theta -= frame; // This gives the illusion of rotation by orbiting the camera horizontally
+        theta += frame; // This gives the illusion of rotation by orbiting the camera horizontally
       }
       // The mesh rotates one way
-      // Rotate coinDisc mesh around local x-axis and global y-axis
       coinDisc.rotateY(frame * directionX);
-      coinDisc.rotateOnAxis(new THREE.Vector3(1, 0, 0), frame * directionY);
+      //coinDisc.rotateOnAxis(new THREE.Vector3(1, 0, 0), frame * directionY);
 
-      // Extract position and quaternion (rotation) from coinDisc's world matrix
-      coinDisc.updateMatrixWorld();
-      let position = new THREE.Vector3();
-      let quaternion = new THREE.Quaternion();
-      coinDisc.matrixWorld.decompose(position, quaternion, new THREE.Vector3());
+      // The camera orbits the opposite way
+      theta -= frame * directionX;
+      phi -= frame * directionY;
 
-      // Apply coinDisc's world position and rotation to camera
-      camera.position.copy(position);
-      camera.quaternion.copy(quaternion);
-      
-      // Add a translation along the viewing direction of the camera
-      camera.translateZ(r);
+      let coordinates = calculate_orbit(r, theta, phi);
 
-      // Look at the origin
+      // Updating camera position
+      camera.position.x = coordinates[0];
+      //camera.position.y = coordinates[1];
+      camera.position.z = coordinates[2];
+
+      // Rotating camera to track origin
       camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+      renderer.render(scene, camera);
     }    
     
     return () => {
@@ -168,7 +192,7 @@ export const HomeLogo = () => {
         canvasRef.current.removeEventListener("mousemove", handleMouseMove);
       clearThree(scene);
     };
-  }, []); // The empty array ensures that this effect only runs once when the component mounts
+  }, [test_hdri]); // The empty array ensures that this effect only runs once when the component mounts
   /*useEffect (() => {
     if(!showLoading){
       setTimeout(animate, 2000);
@@ -195,9 +219,9 @@ export default HomeLogo;
 
 // Draws a circular orbit around (0,0)
 function calculate_orbit(r, theta, phi) {
-  var x = r * Math.sin(phi) * Math.cos(theta);
+  var x = r * Math.cos(theta);
   var y = r * Math.cos(phi);
-  var z = r * Math.sin(phi) * Math.sin(theta);
+  var z = r * Math.sin(theta);
   return [x, y, z];
 }
 

@@ -30,3 +30,12 @@ export const getConfig = () => {
         }
     })
 };
+
+export const getHdri = () => {
+    let url = `http://${endpoint}/api/logotexture?populate=*`
+    return axios.get(url, {
+        headers: {
+            'Authorization': `${auth}`,
+        }
+    })
+}
