@@ -106,11 +106,11 @@ export const HomeLogo = () => {
       canvas: canvasRef.current,
       antialias: true,
     });
-    renderer.setClearColor(0xffffff, 1);
-    renderer.setSize(canvasRef.current.width, canvasRef.current.height);
+    renderer.setClearColor(0xffffff, 0);
+    //renderer.setSize(canvasRef.current.width, canvasRef.current.height);
     renderer.setAnimationLoop(animate);
     const camera = new THREE.PerspectiveCamera(
-      75,
+      55,
       canvasRef.current.width / canvasRef.current.height,
       0.1,
       1000
@@ -171,8 +171,8 @@ export const HomeLogo = () => {
           ref={canvasRef}
           className="three"
           style={{ maxHeight: "100%", maxWidth: "100%" }}
-          width="1000px"
-          height="1000px"
+          width="1500px"
+          height="900px"
         />
     </div>
       </Fade>

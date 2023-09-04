@@ -12,6 +12,7 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     // height: '100vh',
     alignItems: "center",
+    overFlow:"hidden",
   },
   
   assetContainer: {
