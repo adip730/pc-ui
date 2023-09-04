@@ -3,7 +3,7 @@ import makeStyles from "@mui/styles/makeStyles";
 import { Typography } from "@mui/material";
 import InfoRender from "../threejs/InfoRender";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import Footer from "./Footer";
+//import Footer from "./Footer";//
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -13,13 +13,13 @@ const useStyles = makeStyles(() => ({
     // height: '100vh',
     alignItems: "center",
   },
-  
   assetContainer: {
     height: "100vh",
     // border: "1px solid black",
     textAlign: "center",
     width: '100%',
   },
+
   textContainer: {
     height: "40rem",
     width: "40rem",
@@ -27,6 +27,7 @@ const useStyles = makeStyles(() => ({
     bottom: "10px",
     left: "40vw",
     textAlign: "left",
+    
   },
 }));
 
@@ -36,7 +37,7 @@ export const AboutPage = (props) => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.assetContainer} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <div className={classes.assetContainer}>
         <InfoRender />
       </div>
       <div className={classes.textContainer} style={{width: largeScreen ? '35%' : '100%', padding: largeScreen ? 0 : '64px 20px 20px 20px', boxSizing: 'border-box', bottom: largeScreen ? '0rem' : "16px", left: largeScreen ? '20px' : 0, right: largeScreen ? '' : 0, textAlign: largeScreen ? 'left' : 'center'}}>
@@ -48,7 +49,7 @@ export const AboutPage = (props) => {
             bottom: "0",
             right: "0",
             paddingBottom:"10px",
-           }}
+          }}
         >
           Pleasure Craft is a NYC-based creative studio and directing duo that
           specializes in CGI and live-action cinematography. The world they
@@ -58,7 +59,7 @@ export const AboutPage = (props) => {
       </div>
       <div style={{ width: "100%", position: "absolute", bottom: 0 }}>
         {/*<Footer/>*/}
-        </div>
+      </div>
     </div>
   );
 };

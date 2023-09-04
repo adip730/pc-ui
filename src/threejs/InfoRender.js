@@ -22,6 +22,7 @@ import GPGPU_Water from './gpgpuWater.js';
 export const InfoRender = () => {
   // Canvas ref
   const canvasRef = useRef(null);
+<<<<<<< Updated upstream
 
   const clearThree = (obj) => {
     while (obj.children.length > 0) {
@@ -43,6 +44,9 @@ export const InfoRender = () => {
   };
 
   const sceneHeight = window.innerHeight;
+=======
+  const sceneHeight = window.innerHeight + 5;
+>>>>>>> Stashed changes
   const sceneWidth = window.innerWidth;
   const sceneRatio = window.devicePixelRatio;
 
@@ -55,7 +59,7 @@ export const InfoRender = () => {
     // Create the loading div
     const loadingDiv = document.createElement('div');
     loadingDiv.id = 'loading';
-    loadingDiv.innerText = 'Loading...';
+    loadingDiv.innerText = 'LOADING';
 
     // Set the CSS properties to grey out the screen
     // Set the CSS properties for the loading div
@@ -64,11 +68,11 @@ export const InfoRender = () => {
     loadingDiv.style.left = '0';
     loadingDiv.style.width = '100%';
     loadingDiv.style.height = '100%';
-    loadingDiv.style.background = 'rgba(0, 0, 0, 0.2)'; // semi-transparent black
-    loadingDiv.style.color = 'white'; // set the text color to white
+    loadingDiv.style.background = 'rgb(237,239,240)'; // semi-transparent black
+    loadingDiv.style.color = 'black'; // set the text color to white
     loadingDiv.style.padding = '20px'; // add 20px padding around the text
-    loadingDiv.style.fontSize = '24px'; // set the font size to 24px
-    loadingDiv.style.fontWeight = 'bold'; // make the text bold
+    loadingDiv.style.fontSize = '.7rem'; // set the font size to 24px
+    loadingDiv.style.fontWeight = 'normal'; // make the text bold
     loadingDiv.style.textAlign = 'center'; // center the text horizontally
     loadingDiv.style.lineHeight = '100vh'; // center the text vertically*/
 

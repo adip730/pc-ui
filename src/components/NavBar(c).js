@@ -12,15 +12,16 @@ import logo_gif from "../../public/logo-gif.gif";
 const useStyles = makeStyles(() => ({
 
   gradient:{
-    position:"fixed",
-    zIndex:"1",
-    right:"0",
-    left:"0",
-    height:"60px",
-    background: "linear-gradient(to bottom, rgba(221,225,225, 0) 0%, rgba(221,225,225, .5) 5%, rgba(221,225,225, .5) 60%, rgba(221,225,225, 0) 100%)",
-},
+      position:"fixed",
+      zIndex:"1",
+      right:"0",
+      left:"0",
+      height:"60px",
+      background: "linear-gradient(to bottom, rgba(221,225,225, 0) 0%, rgba(221,225,225, .5) 5%, rgba(221,225,225, .5) 60%, rgba(221,225,225, 0) 100%)",
+  },
 
-navBar: {
+
+  navBar: {
     minWidth: "100%",
     background: "rgb(0,0,0,0)",
     width: "100%",
@@ -81,6 +82,7 @@ navBar: {
       opacity: 1,
     },
   },
+
   "@keyframes fadeout": {
     "0%": {
       opacity: 1,
@@ -233,7 +235,7 @@ export const NavBar = (props) => {
           xs={6}
           sm={5}
           style={{
-            display: "none",
+            display: "flex",
             alignItems: "center",
             justifyContent: "flex-end",
             visibility: hideLogo ? "hidden" : "visible",
@@ -254,11 +256,11 @@ export const NavBar = (props) => {
 
       </Grid>
     
-    </div>
+      </div>
       <div className={classes.gradient}
 >
       </div></>
-    );
+  );
 };
 
 export default NavBar;
