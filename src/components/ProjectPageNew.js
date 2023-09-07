@@ -417,7 +417,7 @@ export const ProjectPageNew = (props) => {
               textAlign: "left",
             }}
           >
-            {projectName.toUpperCase()}
+            {projectName?.toUpperCase()}
           </Typography>
         </Grid>
         <Grid item xs={6}>
@@ -441,7 +441,7 @@ export const ProjectPageNew = (props) => {
               textAlign: "left",
             }}
           >
-            {role.toUpperCase()}
+            {role?.toUpperCase()}
           </Typography>
         </Grid>
         <Grid item xs={6}>
@@ -465,7 +465,7 @@ export const ProjectPageNew = (props) => {
               textAlign: "left",
             }}
           >
-            {client.toUpperCase()}
+            {client?.toUpperCase()}
           </Typography>
         </Grid>
         {creditsArr.map((cred) => {
@@ -480,7 +480,7 @@ export const ProjectPageNew = (props) => {
                     textAlign: "right",
                   }}
                 >
-                  {cred[0].toUpperCase()}
+                  {cred[0]?.toUpperCase()}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -492,7 +492,7 @@ export const ProjectPageNew = (props) => {
                     textAlign: "left",
                   }}
                 >
-                  {cred[1].toUpperCase()}
+                  {cred[1]?.toUpperCase()}
                 </Typography>
               </Grid>
             </>
@@ -508,7 +508,7 @@ export const ProjectPageNew = (props) => {
               fontSize: largeScreen ? ".75rem" : ".6rem",
             }}
           >
-            {writeup.toUpperCase()}
+            {writeup?.toUpperCase()}
           </Typography>
         </Grid>
       </Grid>
