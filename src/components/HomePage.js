@@ -13,6 +13,8 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     width: "100%",
     justifyContent: "center",
+    //backgroundColor: "rgb(237,239,240)",
+    backgroundColor:"#dde1e1", //#d5d8d6, 
   },
   scrollView: {
     width: "100%",
@@ -43,7 +45,10 @@ const useStyles = makeStyles(() => ({
     width: "100vw",
     top: 0,
     left: 0,
-    backgroundColor: "white",
+    fontSize:".7rem",
+    //backgroundColor: "white",//
+    //backgroundColor: "rgb(237,239,240)",
+    backgroundColor:"#dde1e1", 
     opacity: 1,
     color: "black",
     display: "flex",
@@ -82,7 +87,7 @@ export const HomePage = (props) => {
   let logoObserverOptions = {
     root: null,
     rootMargin: "0px",
-    threshold: 0.8,
+    threshold: 0.2,
   };
 
   let playObserverOptions = {
@@ -102,7 +107,7 @@ export const HomePage = (props) => {
   return (
     <div className={classes.root}>
       <Fade in={showLoading} unmountOnExit timeout={500}>
-        <div className={classes.loadingScreen}>Loading</div>
+        <div className={classes.loadingScreen}>LOADING</div>
       </Fade>
       <div className={classes.scrollView} ref={viewRef} id="scrollview">
         <div className={classes.viewContainer} /*style={{height: largeScreen ? '100vh' : '100%'}}*/ id="logo-container">

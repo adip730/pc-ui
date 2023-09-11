@@ -18,15 +18,29 @@ import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
 //import fragmentShader from './FragmentShader.js';
 import GPGPU_Water from './gpgpuWater.js';
 
-import "./colorBalance.css";
-
 // About page scene demo
 export const InfoRender = () => {
   // Canvas ref
   const canvasRef = useRef(null);
-  const sceneHeight = window.innerHeight + 5;
-  const sceneWidth = window.innerWidth;
-  const sceneRatio = window.devicePixelRatio;
+
+  const clearThree = (obj) => {
+    while (obj.children.length > 0) {
+      clearThree(obj.children[0]);
+      obj.remove(obj.children[0]);
+    }
+    if (obj.geometry) obj.geometry.dispose();
+    if (obj.material) {
+      Object.keys(obj.material).forEach((prop) => {
+        if (!obj.material[prop]) return;
+        if (
+          obj.material[prop] !== null &&
+          typeof obj.material[prop].dispose === "function"
+        )
+          obj.material[prop].dispose();
+      });
+      obj.material.dispose();
+    }
+  };
 
   //const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -46,7 +60,7 @@ export const InfoRender = () => {
     loadingDiv.style.left = '0';
     loadingDiv.style.width = '100%';
     loadingDiv.style.height = '100%';
-    loadingDiv.style.background = 'rgba(237,239,240)'; // semi-transparent black
+    loadingDiv.style.background = 'rgb(237,239,240)'; // semi-transparent black
     loadingDiv.style.color = 'black'; // set the text color to white
     loadingDiv.style.padding = '20px'; // add 20px padding around the text
     loadingDiv.style.fontSize = '.7rem'; // set the font size to 24px
@@ -58,9 +72,14 @@ export const InfoRender = () => {
     // Add the loading div to the DOM
     document.body.appendChild(loadingDiv);
 
+    // Scene
+    const scene = new THREE.Scene();
+
     // variables for control 
     var mattAvatar = new THREE.Mesh();
     let derekAvatar = new THREE.Mesh();
+    let camera = new THREE.PerspectiveCamera(75, canvasRef.current.width / canvasRef.current.height, 0.1, 4000);
+    camera.position.set(333, 100, 0);
 
     const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath("decoder/draco/");
@@ -72,24 +91,25 @@ export const InfoRender = () => {
     const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, antialias:true });
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.setClearColor(0xffffff, 1);
-    renderer.setPixelRatio( sceneRatio );
-		renderer.setSize( sceneWidth, sceneHeight );
+    renderer.setPixelRatio( window.devicePixelRatio );
+    //renderer.setSize(canvasRef.current.width, canvasRef.current.height);
 
-    let camera = new THREE.PerspectiveCamera(75, canvasRef.current.width / canvasRef.current.height, 0.1, 4000);
-    camera.position.set(333, 100, 0);
 
-    // Scene
-    const scene = new THREE.Scene();
-    
+//    function OnResize ()
+//    {
+//        camera.aspect = canvas.width / canvas.height;
+//        camera.updateProjectionMatrix ();
+//        renderer.setSize (canvas.width, canvas.height);
+ //   };
+
 
     //Manual water 
     const waterGeometry = new THREE.PlaneGeometry(6000, 6000, 1, 1);
 
-
     const mirror = new Reflector(waterGeometry, {
       clipBias: 0.003,
-      textureWidth: sceneWidth * sceneRatio,
-      textureHeight: sceneHeight * sceneRatio,
+      textureWidth: window.innerWidth * window.devicePixelRatio,
+      textureHeight: window.innerHeight * window.devicePixelRatio,
       color: 0x777777,
     });
     mirror.rotation.x = -Math.PI/2;
@@ -183,6 +203,19 @@ export const InfoRender = () => {
         derekAvatar.getObjectByName("Sunnies_D").material.map = texture;
         mattAvatar.getObjectByName("Sunnies_M").material.map = texture;
       });
+      /*avatrText.load('/Textures/ClothesM_Cust.png', function(texture) {
+        texture.flipY = false;
+        texture.encoding = THREE.sRGBEncoding;
+        texture.magFilter = THREE.LinearFilter;
+        texture.minFilter = THREE.LinearFilter;
+        texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+        texture.wrapS = THREE.MirroredRepeatWrapping;
+        texture.wrapT = THREE.MirroredRepeatWrapping;
+        mattAvatar.getObjectByName("Clothes_M").material.roughness = 0.5;
+        mattAvatar.getObjectByName("Clothes_M").material.metalness = 0;
+        mattAvatar.getObjectByName("Clothes_M").material.map = texture;
+        mattAvatar.getObjectByName("Clothes_M").material.map.needsUpdate = true;
+      });*/
       avatrText.load('/Textures/Matt_Cust.png', function(texture) {
         texture.flipY = false;
         texture.encoding = THREE.sRGBEncoding;
@@ -291,8 +324,6 @@ export const InfoRender = () => {
       water.render();
       //scene.add(water.waterMesh);
 
-      
-
       // Render the scene
       //renderer.render(scene, camera);
       requestAnimationFrame(animate);
@@ -309,7 +340,7 @@ export const InfoRender = () => {
 
 return (
   <div id = "main">
-    <canvas ref={canvasRef} className = "three" width={sceneWidth} height={sceneHeight} />
+    <canvas ref={canvasRef} className = "three" style={{maxHeight:"100%", maxWidth:"100%"}} width="1920px" height="1080px" />
   </div>
 );
 }
@@ -403,26 +434,6 @@ function getWaveInfo( x, z, time ) {
     a.download = 'image.png';
     a.click();
 }
-
-const clearThree = (obj) => {
-  while (obj.children.length > 0) {
-    clearThree(obj.children[0]);
-    obj.remove(obj.children[0]);
-  }
-  if (obj.geometry) obj.geometry.dispose();
-  if (obj.material) {
-    Object.keys(obj.material).forEach((prop) => {
-      if (!obj.material[prop]) return;
-      if (
-        obj.material[prop] !== null &&
-        typeof obj.material[prop].dispose === "function"
-      )
-        obj.material[prop].dispose();
-    });
-    obj.material.dispose();
-  }
-};
-
 
   
   

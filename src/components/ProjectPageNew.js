@@ -43,7 +43,7 @@ const useStyles = makeStyles(() => ({
     overflow: "auto",
     boxSizing: "border-box",
     justifyContent: "flex-start",
-    // border: '1px solid green',
+    
   },
   window: {
     height: "60%",
