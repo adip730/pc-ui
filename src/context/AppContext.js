@@ -187,6 +187,8 @@ export const AppContextProvider = (props) => {
       if (config.length === loadedVids.length) {
         setShowLoading(false);
       }
+    } else {
+      setShowLoading(false);
     }
   }, [config, loadedVids]);
 

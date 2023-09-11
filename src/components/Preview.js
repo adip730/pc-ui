@@ -103,17 +103,7 @@ export const Preview = (props) => {
 
   const [playing, setPlaying] = useState(false);
 
-  const [hasChanged, setHasChanged] = useState(false);
-
   useEffect(() => {
-    // let vid = document.getElementById(`videoFrame-${name}`);
-    // console.log("name: ", name, "width: ", vid.clientWidth);
-    // if (!vid.clientWidth % 2 === 0) {
-    //   console.log("got here");
-    //   let newWidth = vid.clientWidth + 1;
-    //   console.log(newWidth);
-    //   vid.style.width = newWidth;
-    // }
     let observer = new IntersectionObserver(doGrow, options);
     let playObserver = new IntersectionObserver(togglePlay, playOptions);
     let target = document.getElementById(`window-${name}`);

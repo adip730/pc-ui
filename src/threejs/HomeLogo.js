@@ -157,7 +157,7 @@ export const HomeLogo = () => {
 
         <canvas
           ref={canvasRef}
-          className="three"
+          className="three-logo"
           style={{ maxHeight: "100%", maxWidth: "100%" }}
           width="1000px"
           height="1000px"
