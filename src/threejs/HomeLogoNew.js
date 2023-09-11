@@ -8,6 +8,7 @@ import { Cache } from "three";
 import { isPlainObject } from "@mui/utils";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import Fade from '@mui/material/Fade';
+import logo_tex from "../../public/Textures/HDRI_Chrome_Soft.png";
 
 // Homepage logo demo
 
@@ -21,6 +22,16 @@ export const HomeLogo = () => {
   const { state, api } = useContext(AppContext);
   const { showLoading } = state;
   const { setShowLoading } = api;
+
+  const {test_hdri} = state;
+  const [hdri_img, setHdriImg] = useState(logo_tex);
+
+  useEffect(() => {
+    if (test_hdri) {
+      console.log('test: ',test_hdri)
+      setHdriImg(test_hdri.data.attributes.url || logo_tex);
+    }
+  }, [test_hdri]);
 
   const clearThree = (obj) => {
     while (obj.children.length > 0) {
@@ -61,6 +72,7 @@ export const HomeLogo = () => {
     loader.setDRACOLoader(dracoLoader);
 
     loader.load("./glTF/LOGO CHROME_Less Soft.gltf", (gltf) => {
+      console.log("LOADING BABY");
       const root = gltf.scene;
       //scene.add(root);
       coinDisc = root.getObjectByName("Fixed_Logo");
@@ -70,7 +82,7 @@ export const HomeLogo = () => {
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
       const hdrLoader = new THREE.TextureLoader();
       hdrLoader.load(
-        "./Textures/HDRI_Chrome_Soft.png",
+        hdri_img,
         function (texture) {
           const prefilteredCubeMap =
             pmremGenerator.fromEquirectangular(texture).texture;

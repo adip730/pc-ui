@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
-import { getProjects, getConfig } from "../api/api";
+import { getProjects, getConfig, getHdri } from "../api/api";
 
 import * as THREE from "three";
 
@@ -12,6 +12,7 @@ export const AppContextProvider = (props) => {
   const [projects, setProjects] = useState([]);
   const [projectRoutes, setProjectRoutes] = useState([]);
   const [config, setConfig] = useState([]);
+  const [test_hdri, setTestHdri] = useState(null);
 
   const [showNav, setShowNav] = useState(true);
   const [showLogo, setShowLogo] = useState(true);
@@ -130,12 +131,13 @@ export const AppContextProvider = (props) => {
         console.log("couldnt fetch projects");
       });
   };
+
   const invokeGetConfig = async () => {
     await getConfig()
       .then((res) => {
         let ret = [];
-        if (res && res.data && res.data.data) {
-          let conf = res.data.data.attributes.featuredIds;
+        if (res && res.data && res.data.data && res.data.data.data) {
+          let conf = res.data.data.data.attributes.featuredIds;
           let arr = conf.split(",");
           arr.forEach((el) => ret.push(el.trim()));
         }
@@ -146,6 +148,20 @@ export const AppContextProvider = (props) => {
         setConfig([]);
       });
   };
+
+  const invokeGetHdri = async () => {
+    await getHdri()
+      .then((res) => {
+        if (res && res.data && res.data.data) {
+        let ret = res.data.data.attributes.testHdri.data.attributes.url;
+        setTestHdri(ret);
+        }
+      })
+      .catch(() => {
+        console.log("couldnt fetch hdri");
+        setTestHdri("default")
+      });
+    };
 
   // const invokeGetMedia = async () => {
   //     await getMedia().then((res) => {
@@ -171,12 +187,15 @@ export const AppContextProvider = (props) => {
       if (config.length === loadedVids.length) {
         setShowLoading(false);
       }
+    } else {
+      setShowLoading(false);
     }
   }, [config, loadedVids]);
 
   const invokeStart = () => {
     invokeGetProjects();
     invokeGetConfig();
+    invokeGetHdri();
     // doLoad();
     // doHdrLoad();
     // invokeGetMedia();
@@ -196,6 +215,7 @@ export const AppContextProvider = (props) => {
     loadedHdr: loadedHdr,
     gltf: gltf,
     texture: texture,
+    test_hdri: test_hdri,
   };
   const api = {
     invokeStart: invokeStart,
@@ -207,6 +227,7 @@ export const AppContextProvider = (props) => {
     doLoad: doLoad,
     setLoaded: setLoaded,
     setGltf: setGltf,
+    setTestHdri: setTestHdri,
   };
   return (
     <AppContext.Provider value={{ state, api }}>

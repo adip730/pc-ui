@@ -7,7 +7,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Cache } from "three";
 import { isPlainObject } from "@mui/utils";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
-import Fade from '@mui/material/Fade';
+import Fade from "@mui/material/Fade";
 import logo_gltf from "../../public/glTF/LOGO CHROME_Less Soft.gltf";
 import logo_tex from "../../public/Textures/HDRI_Chrome_Soft.png";
 
@@ -24,7 +24,7 @@ export const HomeLogo = () => {
   const { showLoading } = state;
   const { setShowLoading } = api;
 
-  const {test_hdri} = state;
+  const { test_hdri } = state;
   const hdriLoaded = useRef(false);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export const HomeLogo = () => {
     // Primary floating object
     var coinDisc = new THREE.Mesh();
     const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('/decoder/draco/');
+    dracoLoader.setDecoderPath("/decoder/draco/");
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
     const hdrLoader = new THREE.TextureLoader();
@@ -80,22 +80,19 @@ export const HomeLogo = () => {
       coinDisc.scale.set(0.1, 0.1, 0.1);
       // HDRI setup
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
-      hdrLoader.load(
-        logo_tex,
-        function (texture) {
-          const prefilteredCubeMap =
-            pmremGenerator.fromEquirectangular(texture).texture;
-          // Set the texture as the environment map for a material
-          //coinDisc.material.envMap = prefilteredCubeMap;
-          pmremGenerator.dispose();
-          // console.log(texture.status);
-          //coinDisc.material.emissive = new THREE.Color(0xffffff);
-          //coinDisc.material.emissiveIntensity = 0.1;
-          scene.add(coinDisc);
-          loadTime = Date.now();
-          theta = Math.PI / 2;
-        }
-      );
+      hdrLoader.load(logo_tex, function (texture) {
+        const prefilteredCubeMap =
+          pmremGenerator.fromEquirectangular(texture).texture;
+        // Set the texture as the environment map for a material
+        //coinDisc.material.envMap = prefilteredCubeMap;
+        pmremGenerator.dispose();
+        // console.log(texture.status);
+        //coinDisc.material.emissive = new THREE.Color(0xffffff);
+        //coinDisc.material.emissiveIntensity = 0.1;
+        scene.add(coinDisc);
+        loadTime = Date.now();
+        theta = Math.PI / 2;
+      });
       //console.log(dumpObject(root).join('\n'));
       let end = Date.now().toLocaleString("en-us", {
         hour12: false,
@@ -104,7 +101,7 @@ export const HomeLogo = () => {
         second: "2-digit",
         fractionalSecondDigits: 3,
       });
-      console.log('end time: ', end);
+      console.log("end time: ", end);
       setShowLoading(false);
     });
     // Set up the Three.js scene, camera, and renderer
@@ -138,24 +135,20 @@ export const HomeLogo = () => {
         console.log(imageUrl);
         const pmremGenerator = new THREE.PMREMGenerator(renderer);
         //if(hdriImg){
-          hdrLoader.load(
-            imageUrl,
-            function (texture) {
-              const prefilteredCubeMap =
-                pmremGenerator.fromEquirectangular(texture).texture;
-              // Set the texture as the environment map for a material
-              coinDisc.material.envMap = prefilteredCubeMap;
-              pmremGenerator.dispose();
-              console.log("adding")
-              scene.add(coinDisc);
-              hdriLoaded.current = false; // Mark as loaded
-            }
-          );
+        hdrLoader.load(imageUrl, function (texture) {
+          const prefilteredCubeMap =
+            pmremGenerator.fromEquirectangular(texture).texture;
+          // Set the texture as the environment map for a material
+          coinDisc.material.envMap = prefilteredCubeMap;
+          pmremGenerator.dispose();
+          console.log("adding");
+          scene.add(coinDisc);
+          hdriLoaded.current = false; // Mark as loaded
+        });
         //}
-      }
-      else{
+      } else {
         console.log(coinDisc.material.envMap);
-        console.log(hdriLoaded.current)
+        console.log(hdriLoaded.current);
       }
       // Translating camera on a fixed orbit
       let r = 100;
@@ -184,8 +177,8 @@ export const HomeLogo = () => {
       camera.lookAt(new THREE.Vector3(0, 0, 0));
 
       renderer.render(scene, camera);
-    }    
-    
+    }
+
     return () => {
       canvasRef &&
         canvasRef.current &&
@@ -199,9 +192,8 @@ export const HomeLogo = () => {
     }
   },[showLoading]);*/
   return (
-      <Fade in={!showLoading} timeout={500}>
-    <div id="main">
-
+    <Fade in={!showLoading} timeout={500}>
+      <div id="main">
         <canvas
           ref={canvasRef}
           className="three"
@@ -209,11 +201,10 @@ export const HomeLogo = () => {
           width="1000px"
           height="1000px"
         />
-    </div>
-      </Fade>
+      </div>
+    </Fade>
   );
 };
-
 
 export default HomeLogo;
 
@@ -225,13 +216,12 @@ function calculate_orbit(r, theta, phi) {
   return [x, y, z];
 }
 
-
 // Tracks user interaction
 let timeout;
 const handleMouseMove = (event) => {
   const coefficient = 0.69;
   directionX = event.movementX * coefficient;
-  directionY = -event.movementY * coefficient;  // Notice the - sign for correct vertical rotation direction
+  directionY = -event.movementY * coefficient; // Notice the - sign for correct vertical rotation direction
   clearTimeout(timeout);
   timeout = setTimeout(() => {
     directionX = 0;
@@ -251,7 +241,8 @@ function handleScroll(event) {
 function dumpObject(obj, lines = [], isLast = true, prefix = "") {
   const localPrefix = isLast ? "└─" : "├─";
   lines.push(
-    `${prefix}${prefix ? localPrefix : ""}${obj.name || "*no-name*"} [${obj.type
+    `${prefix}${prefix ? localPrefix : ""}${obj.name || "*no-name*"} [${
+      obj.type
     }]`
   );
   const newPrefix = prefix + (isLast ? "  " : "│ ");

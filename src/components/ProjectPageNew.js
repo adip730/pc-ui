@@ -296,10 +296,10 @@ export const ProjectPageNew = (props) => {
     }
   }, [expanded]);
 
-  //   const host = document.getElementById("videoFrame");
-  //   var sheet = new CSSStyleSheet();
-  //   sheet.replaceSync(`-webkit-media-controls::- { color: rgb(255, 0, 0) }`);
-  //   host.shadowRoot.adoptedStyleSheets = [sheet];
+  // const host = document.getElementById("videoFrame");
+  // var sheet = new CSSStyleSheet();
+  // sheet.replaceSync(`-webkit-media-controls::- { color: rgb(255, 0, 0) }`);
+  // host.shadowRoot.adoptedStyleSheets = [sheet];
 
   return (
     <div

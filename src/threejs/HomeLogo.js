@@ -1,5 +1,5 @@
 //import { useRef, useEffect } from 'react';
-import React, { useEffect, useRef, useContext } from "react";
+import React, { useEffect, useRef, useContext, useState } from "react";
 import AppContext from "../context/AppContext";
 import * as THREE from "three";
 //import GLTFLoader from 'three-gltf-loader';
@@ -24,26 +24,11 @@ export const HomeLogo = () => {
   const { showLoading } = state;
   const { setShowLoading } = api;
 
-  const clearThree = (obj) => {
-    while (obj.children.length > 0) {
-      clearThree(obj.children[0]);
-      obj.remove(obj.children[0]);
-    }
-    if (obj.geometry) obj.geometry.dispose();
-    if (obj.material) {
-      Object.keys(obj.material).forEach((prop) => {
-        if (!obj.material[prop]) return;
-        if (
-          obj.material[prop] !== null &&
-          typeof obj.material[prop].dispose === "function"
-        )
-          obj.material[prop].dispose();
-      });
-      obj.material.dispose();
-    }
-  };
+  //const hdriLoaded = useRef(false);
 
   useEffect(() => {
+    if (!state.test_hdri) return;
+    const {test_hdri} = state;
     // Get user input
     let start = Date.now().toLocaleString("en-us", {
       hour12: false,
@@ -61,6 +46,7 @@ export const HomeLogo = () => {
     dracoLoader.setDecoderPath('/decoder/draco/');
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
+    const hdrLoader = new THREE.TextureLoader();
 
     loader.load(logo_gltf, (gltf) => {
       const root = gltf.scene;
@@ -70,9 +56,10 @@ export const HomeLogo = () => {
       coinDisc.scale.set(0.1, 0.1, 0.1);
       // HDRI setup
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
-      const hdrLoader = new THREE.TextureLoader();
+      const strapiBaseURL = "http://localhost:1337";
+      const imageUrl = `${strapiBaseURL}${test_hdri}`;
       hdrLoader.load(
-        logo_tex,
+        test_hdri != "default" ? imageUrl:logo_tex,
         function (texture) {
           const prefilteredCubeMap =
             pmremGenerator.fromEquirectangular(texture).texture;
@@ -122,6 +109,7 @@ export const HomeLogo = () => {
     renderer.render(scene, camera);
     const frame = Math.PI / 360;
     function animate() {
+
       // Translating camera on a fixed orbit
       let r = 100;
       if (Date.now() - loadTime >= 2000) {
@@ -157,7 +145,7 @@ export const HomeLogo = () => {
         canvasRef.current.removeEventListener("mousemove", handleMouseMove);
       clearThree(scene);
     };
-  }, []); // The empty array ensures that this effect only runs once when the component mounts
+  }, [state.test_hdri]); // The empty array ensures that this effect only runs once when the component mounts
   /*useEffect (() => {
     if(!showLoading){
       setTimeout(animate, 2000);
@@ -169,7 +157,7 @@ export const HomeLogo = () => {
 
         <canvas
           ref={canvasRef}
-          className="three"
+          className="three-logo"
           style={{ maxHeight: "100%", maxWidth: "100%" }}
           width="1500px"
           height="900px"
@@ -227,3 +215,22 @@ function dumpObject(obj, lines = [], isLast = true, prefix = "") {
   });
   return lines;
 }
+
+const clearThree = (obj) => {
+  while (obj.children.length > 0) {
+    clearThree(obj.children[0]);
+    obj.remove(obj.children[0]);
+  }
+  if (obj.geometry) obj.geometry.dispose();
+  if (obj.material) {
+    Object.keys(obj.material).forEach((prop) => {
+      if (!obj.material[prop]) return;
+      if (
+        obj.material[prop] !== null &&
+        typeof obj.material[prop].dispose === "function"
+      )
+        obj.material[prop].dispose();
+    });
+    obj.material.dispose();
+  }
+};

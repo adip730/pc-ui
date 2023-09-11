@@ -121,7 +121,6 @@ export const Preview = (props) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  console.log(index);
   const [featuredUrl, setFeaturedUrl] = useState("");
   const [galleryUrls, setGalleryUrls] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
