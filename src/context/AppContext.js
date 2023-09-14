@@ -27,26 +27,6 @@ export const AppContextProvider = (props) => {
   const [gltf, setGltf] = useState(null);
   const [texture, setTexture] = useState(null);
 
-  // let mattAvatar = new THREE.Mesh();
-  // let derekAvatar = new THREE.Mesh();
-  // const renderer = new THREE.WebGLRenderer({
-  //   canvas: canvasRef.current,
-  //   antialias: true,
-  // });
-
-  // const scene = new THREE.Scene();
-
-  // const sphereGeometry = new THREE.SphereGeometry(3000);
-  // const sphereMaterial = new THREE.MeshStandardMaterial({
-  //   metalness: 1,
-  //   roughness: 0,
-  //   side: THREE.BackSide,
-  //   envMapIntensity: 1, // Set the environment map intensity
-  // });
-
-  // const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-
-  // const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
   const doHdrLoad = async () => {
     if (!loadedHdr && !texture) {
@@ -136,8 +116,8 @@ export const AppContextProvider = (props) => {
     await getConfig()
       .then((res) => {
         let ret = [];
-        if (res && res.data && res.data.data && res.data.data.data) {
-          let conf = res.data.data.data.attributes.featuredIds;
+        if (res && res.data && res.data.data) {
+          let conf = res.data.data.attributes.featuredIds;
           let arr = conf.split(",");
           arr.forEach((el) => ret.push(el.trim()));
         }

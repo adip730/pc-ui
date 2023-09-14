@@ -6,8 +6,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import AppContext from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -23,8 +21,6 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     minWidth: "100%",
     aspectRatio: 16 / 9,
-    // borderRadius: "40px",
-    // overflow: "hidden",
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
@@ -39,11 +35,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: useMediaQuery("(min-width: 600px)") ? "" : "flex-start",
     paddingTop: useMediaQuery("(min-width: 600px)") ? "0" : "80px",
     position: "relative",
-    // top: "13.33%",
-    // bottom: "13.33%",
     height: "100%",
     width: "100%",
-    // overflow: "hidden",
   },
   cont: {
     height: useMediaQuery("(min-width:600px)") ? "100%" : "75%",
@@ -59,9 +52,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "8px",
     position: "absolute",
     bottom: 0,
-    // bottom: 0,
-    // marginLeft: useMediaQuery("(min-width:600px)") ? '' : 'auto',
-    // marginRight: useMediaQuery("(min-width:600px)") ? '' : 'auto',
     flexGrow: 1,
     width: "85%",
     maxWidth: "85%",
@@ -90,7 +80,7 @@ export const Preview = (props) => {
   const navigate = useNavigate();
   const { state, api } = useContext(AppContext);
   const { videoMap, loadedVids } = state;
-  const { setShowNav, setVideoMap, setLoadedVids } = api;
+  const { setLoadedVids } = api;
 
   const [previewUrl, setPreviewUrl] = useState("");
 
@@ -98,8 +88,6 @@ export const Preview = (props) => {
     data;
 
   const [showSubtitle, setShowSubtitle] = useState(false);
-
-  const [url, setUrl] = useState(null);
 
   const [playing, setPlaying] = useState(false);
 
@@ -131,27 +119,9 @@ export const Preview = (props) => {
         : featured.data.attributes.url;
     setPreviewUrl(prevUrl);
 
-    // if (!videoMap[`${name}-preview`]) {
-    //   setUrl(`http://${endpoint}${prevUrl}`);
-    // } else {
-    //   setUrl(videoMap[`${name}-preview`]);
-    // }
   }, []);
 
-  // useEffect(() => {
-  //   console.log("url in useeffect: ", url);
-  //   if (url && !videoMap[`${name}-preview`]) {
-  //     fetch(url)
-  //       .then((res) => res.blob())
-  //       .then((blob) => {
-  //         let temp = videoMap;
-  //         let tempUrl = URL.createObjectURL(blob);
-  //         temp[`${name}-preview`] = tempUrl;
-  //         setUrl(tempUrl);
-  //         setVideoMap(temp);
-  //       });
-  //   }
-  // }, [url]);
+
 
   const switchView = () => {
     navigate(`project/${data.name}`);
@@ -166,7 +136,6 @@ export const Preview = (props) => {
     container.style.width = "95%";
     container.style.height = "95%";
     container.style.borderRadius = "10px";
-    // setShowNav(false);
   }
 
   function doGrow(entry) {
@@ -182,13 +151,8 @@ export const Preview = (props) => {
       container.style.width = "85%";
       container.style.height = "75%";
       container.style.borderRadius = "40px";
-      // setShowNav(true);
     }
   }
-
-  // function growTimerLarge(container) {
-  //   container.style.width = "100%";
-  // }
 
   useEffect(() => {
     if (largeScreen) {
@@ -217,26 +181,6 @@ export const Preview = (props) => {
       }
     }
   }, [showSubtitle, largeScreen]);
-
-  // SCROLL SKEW ANIMATION
-  // useEffect(() => {
-  //   // if (largeScreen) {
-  //     let container = document.getElementById(`container-${name}`);
-  //     let vwh = window.innerHeight;
-  //     let factor = window.innerHeight * (largeScreen ? 0.65 : .85);
-  //     let subtract = (scrollPos - (1 + index) * vwh).toFixed(0);
-  //     let scale = 100 - ((subtract * 100) / factor).toFixed(0);
-  //     let scaleReverse = 100 - ((subtract * -100) / factor).toFixed(0);
-  //     if (subtract < factor && subtract > 0) {
-  //       container.style.transformOrigin = "top";
-  //       container.style.transform = `scaleY(${scale}%)`;
-  //     }
-  //     if (subtract > -1 * factor && subtract < 0) {
-  //       container.style.transformOrigin = "bottom";
-  //       container.style.transform = `scaleY(${scaleReverse}%)`;
-  //     }
-  //   // }
-  // }, [scrollPos]);
 
   return (
     <div className={classes.root}>

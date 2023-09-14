@@ -309,7 +309,7 @@ export const InfoRender = () => {
 
 return (
   <div id = "main">
-    <canvas ref={canvasRef} className = "three" width={sceneWidth} height={sceneHeight} />
+    <canvas ref={canvasRef} className = "three" width={sceneWidth} height={sceneHeight}/>
   </div>
 );
 }

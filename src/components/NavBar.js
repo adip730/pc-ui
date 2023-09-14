@@ -238,7 +238,6 @@ export const NavBar = (props) => {
             justifyContent: "flex-end",
             visibility: hideLogo ? "hidden" : "visible",
           }}
-          direction="row"
         >
           {largeScreen ? (
             <Fade in={showLogo} unmountOnExit timeout={500}>
