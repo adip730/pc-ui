@@ -12,7 +12,7 @@ export const AppContextProvider = (props) => {
   const [projects, setProjects] = useState([]);
   const [projectRoutes, setProjectRoutes] = useState([]);
   const [config, setConfig] = useState([]);
-  const [test_hdri, setTestHdri] = useState(null);
+  const [test_hdri, setTestHdri] = useState("default");
 
   const [showNav, setShowNav] = useState(true);
   const [showLogo, setShowLogo] = useState(true);
@@ -167,8 +167,8 @@ export const AppContextProvider = (props) => {
       if (config.length === loadedVids.length) {
         setShowLoading(false);
       }
-    } else {
-      setShowLoading(false);
+    // } else {
+    //   setShowLoading(false);
     }
   }, [config, loadedVids]);
 

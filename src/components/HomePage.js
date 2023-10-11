@@ -59,7 +59,7 @@ const useStyles = makeStyles(() => ({
 export const HomePage = (props) => {
   const { state, api } = useContext(AppContext);
   const { projects, config, showLoading } = state;
-  const { setShowLogo } = api;
+  const { setShowLogo, setShowLoading } = api;
 
   const largeScreen = useMediaQuery("(min-width:600px)");
 
@@ -103,6 +103,9 @@ export const HomePage = (props) => {
     }
   }
 
+  useEffect(() => {
+    setShowLoading(true);
+  }, [])
   return (
     <div className={classes.root}>
       <Fade in={showLoading} unmountOnExit timeout={500}>

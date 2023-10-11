@@ -23,7 +23,6 @@ export const HomeLogo = () => {
   const { state, api } = useContext(AppContext);
   const { showLoading } = state;
   const { setShowLoading } = api;
-
   //const hdriLoaded = useRef(false);
 
   useEffect(() => {
