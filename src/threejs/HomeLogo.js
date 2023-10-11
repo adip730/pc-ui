@@ -55,7 +55,8 @@ export const HomeLogo = () => {
       coinDisc.scale.set(0.1, 0.1, 0.1);
       // HDRI setup
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
-      const strapiBaseURL = "http://localhost:1337";
+      // const strapiBaseURL = "http://localhost:1337";
+      const strapiBaseURL = "http://" + process.env.REACT_APP_STRAPIURL;
       const imageUrl = `${strapiBaseURL}${test_hdri}`;
       hdrLoader.load(
         test_hdri != "default" ? imageUrl:logo_tex,

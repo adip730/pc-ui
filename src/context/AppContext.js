@@ -12,7 +12,7 @@ export const AppContextProvider = (props) => {
   const [projects, setProjects] = useState([]);
   const [projectRoutes, setProjectRoutes] = useState([]);
   const [config, setConfig] = useState([]);
-  const [test_hdri, setTestHdri] = useState("default");
+  const [test_hdri, setTestHdri] = useState(null);
 
   const [showNav, setShowNav] = useState(true);
   const [showLogo, setShowLogo] = useState(true);
@@ -26,7 +26,6 @@ export const AppContextProvider = (props) => {
 
   const [gltf, setGltf] = useState(null);
   const [texture, setTexture] = useState(null);
-
 
   const doHdrLoad = async () => {
     if (!loadedHdr && !texture) {
@@ -130,18 +129,18 @@ export const AppContextProvider = (props) => {
   };
 
   const invokeGetHdri = async () => {
-    await getHdri()
-      .then((res) => {
-        if (res && res.data && res.data.data) {
-        let ret = res.data.data.attributes.testHdri.data.attributes.url;
-        setTestHdri(ret);
-        }
-      })
-      .catch(() => {
-        console.log("couldnt fetch hdri");
-        setTestHdri("default")
-      });
-    };
+      await getHdri()
+        .then((res) => {
+          if (res && res.data && res.data.data) {
+            let ret = res.data.data.attributes.testHdri.data.attributes.url;
+            setTestHdri(ret);
+          }
+        })
+        .catch(() => {
+          console.log("couldnt fetch hdri");
+          setTestHdri("default");
+        });
+  };
 
   // const invokeGetMedia = async () => {
   //     await getMedia().then((res) => {
@@ -167,8 +166,8 @@ export const AppContextProvider = (props) => {
       if (config.length === loadedVids.length) {
         setShowLoading(false);
       }
-    // } else {
-    //   setShowLoading(false);
+      // } else {
+      //   setShowLoading(false);
     }
   }, [config, loadedVids]);
 
