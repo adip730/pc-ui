@@ -162,8 +162,8 @@ export const AppContextProvider = (props) => {
   // };
 
   useEffect(() => {
-    if (config && config.length > 0) {
-      if (config.length === loadedVids.length) {
+    if (config && config?.length > 0) {
+      if (config?.length === loadedVids?.length) {
         setShowLoading(false);
       }
       // } else {
