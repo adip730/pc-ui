@@ -11,7 +11,7 @@ body {
 @font-face {
   font-family: "Square721";
   src: local("Square721"),
-    url("fonts/Square_721_Extended.ttf") format("truetype");
+    url("./fonts/Square_721_Extended.ttf") format("truetype");
     font-weight: normal
 }
 

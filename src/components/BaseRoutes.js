@@ -4,7 +4,6 @@ import AppContext from "../context/AppContext";
 import HomePage from "./HomePage";
 import IndexPage from "./IndexPage";
 import AboutPage from "./AboutPage";
-import ProjectPage from "./ProjectPage";
 import ProjectPageNew from "./ProjectPageNew";
 
 export const BaseRoutes = () => {
@@ -14,7 +13,7 @@ export const BaseRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/index" element={<IndexPage />} />
+      <Route path="/projectindex" element={<IndexPage />} />
       <Route path="/info" element={<AboutPage />} />
       {projectRoutes &&
         projectRoutes.map((route) => (

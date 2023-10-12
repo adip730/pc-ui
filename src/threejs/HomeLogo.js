@@ -82,7 +82,6 @@ export const HomeLogo = () => {
         second: "2-digit",
         fractionalSecondDigits: 3,
       });
-      console.log('end time: ', end);
       setShowLoading(false);
     });
     // Set up the Three.js scene, camera, and renderer

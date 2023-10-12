@@ -1,8 +1,9 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const webpack = require("webpack");
 const path = require("path");
 const dotenv = require("dotenv");
-
+const options = {};
 dotenv.config();
 
 module.exports = {
@@ -74,5 +75,6 @@ module.exports = {
     new webpack.DefinePlugin({
       "process.env": JSON.stringify(process.env),
     }),
+    new WebpackManifestPlugin(options)
   ],
 };

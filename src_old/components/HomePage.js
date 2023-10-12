@@ -3,10 +3,9 @@ import makeStyles from "@mui/styles/makeStyles";
 import Fade from "@mui/material/Fade";
 import AppContext from "../context/AppContext";
 import Preview from "./Preview";
-import PreviewPage from "./PreviewPage";
 import HomeLogo from "../threejs/HomeLogo";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import ReactPlayer from "react-player";
+
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -116,11 +115,9 @@ export const HomePage = (props) => {
       <div
         className={classes.scrollView}
         ref={viewRef}
-        // onScroll={handleScroll}
         id="scrollview"
       >
         <div className={classes.viewContainer} id="logo-container">
-          {/* <p>Spinning Logo goes here</p> */}
           <HomeLogo />
         </div>
         {projects.map(
@@ -133,7 +130,6 @@ export const HomePage = (props) => {
                   playOptions={playObserverOptions}
                   data={proj}
                   index={ind}
-                  // scrollPos={scrollPos}
                 />
               </div>
             )

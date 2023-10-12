@@ -221,7 +221,7 @@ export const NavBar = (props) => {
               padding: 0,
               fontSize: largeScreen ? ".7rem" : ".55rem",
             }}
-            onClick={(e) => navigate("/index")}
+            onClick={(e) => navigate("/projectindex")}
           >
             Index
           </Button>

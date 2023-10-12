@@ -54,7 +54,6 @@ export const AppContextProvider = (props) => {
 
   const doLoad = async () => {
     if (!loaded && !gltf) {
-      console.log("got to load gltf");
 
       const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath("decoder/draco/");
@@ -65,21 +64,7 @@ export const AppContextProvider = (props) => {
         loader.load(
           "/glTF/About Us_v3_Avatars Only.glb",
           function (gltf) {
-            console.log("GLTF id in AppContext: ", gltf.scene.uuid);
-            // setLoaded(true);
-            // setGltf(gltf);
-
-            let gltfTime = Date.now().toLocaleString("en-us", {
-              hour12: false,
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-              fractionalSecondDigits: 3,
-            });
-            console.log("time to finish gltf load: ", gltfTime);
-            // setGltf(gltf);
             resolve(gltf);
-            // return gltf;
           },
           undefined,
           function (error) {
