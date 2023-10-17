@@ -19,8 +19,6 @@ import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
 import GPGPU_Water from './gpgpuWater.js';
 
 import "./colorBalance.css";
-// import avatarGlb from '../../public/gltf/avatars.glb';
-import avatarGlb from '../../public/glTF/avatars.glb'
 
 // About page scene demo
 export const InfoRender = () => {
@@ -141,7 +139,7 @@ export const InfoRender = () => {
 
     });
     // Importing entire scene from c4d export
-    loader.load(avatarGlb, (gltf) => {
+    loader.load('./glTF/avatars.glb', (gltf) => {
       const root = gltf.scene;
 
       root.rotateY(Math.PI/2);
