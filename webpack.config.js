@@ -63,6 +63,10 @@ module.exports = {
           }
         ]
       },
+      {
+        test: /\.glb$/,
+        use: 'file-loader',
+      },
     ],
   },
   plugins: [
