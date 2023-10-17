@@ -17,7 +17,7 @@ import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
 //import vertexShader from './VertexShader.js';
 //import fragmentShader from './FragmentShader.js';
 import GPGPU_Water from './gpgpuWater.js';
-import avatarsGlb from '../../public/glTF/avatars.glb';
+
 import "./colorBalance.css";
 
 // About page scene demo
@@ -64,7 +64,7 @@ export const InfoRender = () => {
 
     const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath("decoder/draco/");
-      // dracoLoader.setDecoderConfig({ type: 'js' });
+
       const loader = new GLTFLoader();
       loader.setDRACOLoader(dracoLoader);
 
@@ -139,7 +139,7 @@ export const InfoRender = () => {
 
     });
     // Importing entire scene from c4d export
-    loader.load(avatarsGlb, (gltf) => {
+    loader.load('./glTF/avatars.glb', (gltf) => {
       const root = gltf.scene;
 
       root.rotateY(Math.PI/2);
