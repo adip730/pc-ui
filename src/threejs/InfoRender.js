@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 
 import * as THREE from "three";
 //import GLTFLoader from 'three-gltf-loader';
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 //import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 // import { createCanvas } from "canvas";
@@ -19,6 +19,8 @@ import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
 import GPGPU_Water from './gpgpuWater.js';
 
 import "./colorBalance.css";
+// import avatarGlb from '../../public/gltf/avatars.glb';
+import avatarGlb from '../../public/glTF/avatars.glb'
 
 // About page scene demo
 export const InfoRender = () => {
@@ -139,10 +141,9 @@ export const InfoRender = () => {
 
     });
     // Importing entire scene from c4d export
-    loader.load('./glTF/avatars.glb', (gltf) => {
+    loader.load(avatarGlb, (gltf) => {
       const root = gltf.scene;
 
-      console.log(dumpObject(root).join('\n'));
       root.rotateY(Math.PI/2);
       mattAvatar = root.getObjectByName('Matt');
       derekAvatar = root.getObjectByName('Derek');

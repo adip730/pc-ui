@@ -1,9 +1,9 @@
 //import { useRef, useEffect } from 'react';
-import React, { useEffect, useRef, useContext, useState } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import AppContext from "../context/AppContext";
 import * as THREE from "three";
 //import GLTFLoader from 'three-gltf-loader';
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Cache } from "three";
 import { isPlainObject } from "@mui/utils";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
