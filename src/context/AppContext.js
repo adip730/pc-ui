@@ -54,7 +54,6 @@ export const AppContextProvider = (props) => {
 
   const doLoad = async () => {
     if (!loaded && !gltf) {
-
       const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath("decoder/draco/");
 
@@ -114,56 +113,55 @@ export const AppContextProvider = (props) => {
   };
 
   const invokeGetHdri = async () => {
-      await getHdri()
-        .then((res) => {
-          if (res && res.data && res.data.data) {
-            let ret = res.data.data.attributes.testHdri.data.attributes.url;
-            setTestHdri(ret);
-          }
-        })
-        .catch(() => {
-          console.log("couldnt fetch hdri");
-          setTestHdri("default");
-        });
+    return await getHdri()
+      .then((res) => {
+        if (res && res.data && res.data.data) {
+          let ret = res.data.data.attributes.testHdri.data.attributes.url;
+          // setTestHdri(ret);
+          return ret;
+        }
+      })
+      .catch(() => {
+        console.log("couldnt fetch hdri");
+        return "default"
+        // setTestHdri("default");
+      });
   };
 
-  // const invokeGetMedia = async () => {
-  //     await getMedia().then((res) => {
-  //         let med = res.data
-  //         setMedia([...med]);
-  //     }).catch(() => {
-  //         console.log('couldnt fetch media');
-  //     });
-  // };
+  const handleHdri = async () => {
+    return await new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        reject("default");
+        setTestHdri("default");
+      }, 4000) // wait 10 sec
+    
+      invokeGetHdri().then(value => {
+        clearTimeout(timeoutId)
+        resolve(value)
+        setTestHdri(value);
+      })
+    })
+  }
 
-  // const invokeGetFolders = async () => {
-  //     await getFolders().then((res) => {
-  //         console.log(res);
-  //         // let fold = res.data
-  //         // setFolders([...fold]);
-  //     }).catch(() => {
-  //         console.log('couldnt fetch folders');
-  //     });
-  // };
-
-  useEffect(() => {
-    if (config && config?.length > 0) {
-      if (config?.length === loadedVids?.length) {
-        setShowLoading(false);
-      }
-      // } else {
-      //   setShowLoading(false);
-    }
-  }, [config, loadedVids]);
+  // useEffect(() => {
+  //   if (
+  //     config &&
+  //     config?.length > 0 &&
+  //     config?.length === loadedVids?.length &&
+  //     !test_hdri
+  //   ) {
+  //     setTestHdri("default")
+  //     setShowLoading(false);
+  //     console.log("in app context useeffect");
+  //   }
+  //   // } else {
+  //   //   setShowLoading(false);
+  // }, [config, loadedVids, test_hdri]);
 
   const invokeStart = () => {
     invokeGetProjects();
     invokeGetConfig();
-    invokeGetHdri();
-    // doLoad();
-    // doHdrLoad();
-    // invokeGetMedia();
-    // invokeGetFolders();
+    handleHdri();
   };
 
   const state = {
