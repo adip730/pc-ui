@@ -9,7 +9,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Footer from "./Footer";
 import Button from "@mui/material/Button";
 
-
 const useStyles = makeStyles(() => ({
   viewContainer: {
     position: "relative",
@@ -22,9 +21,8 @@ const useStyles = makeStyles(() => ({
     padding: "84px 64px 64px 64px",
     boxSizing: "border-box",
     //background: "rgb(237,239,240)",
-    backgroundColor:"#dde1e1",
+    backgroundColor: "#dde1e1",
   },
-
 
   previewContainer: {
     height: "100%",
@@ -50,7 +48,8 @@ const useStyles = makeStyles(() => ({
     overflow: "hidden",
     //boxShadow: '1px 1px 1px 1px grey',
     zIndex: 2,
-    boxShadow: "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
+    boxShadow:
+      "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
   },
 
   bottomBox: {
@@ -62,9 +61,6 @@ const useStyles = makeStyles(() => ({
     // paddingBottom: '64px',
     zIndex: 1,
   },
-
-
-  
 }));
 
 const endpoint = process.env.REACT_APP_STRAPIURL;
@@ -103,12 +99,11 @@ export const IndexPage = (props) => {
     navigate(`../project/${route}`, { replace: true });
   };
 
-
   return (
     <div
       className={classes.viewContainer}
       style={{
-        padding: largeScreen ? "84px 24px 44px 24px" : "84px 32px 64px 32px",
+        padding: largeScreen ? "84px 24px 44px 24px" : "84px 32px 96px 32px",
       }}
     >
       <div className={classes.bottomBox}>
@@ -136,46 +131,61 @@ export const IndexPage = (props) => {
                 onMouseLeave={(e) => setHover("")}
               >
                 <Button
-
-                className={classes.indexButton}
-                style={{
-                  display:"block",
-                  position:"absolute",
-                  width:"90%",
-                }}
-                onClick={() => goTo(proj.name)}
-              >
-                </Button>
-
-
-          
+                  className={classes.indexButton}
+                  style={{
+                    display: "block",
+                    position: "absolute",
+                    width: "90%",
+                  }}
+                  onClick={() => goTo(proj.name)}
+                />
                 <Typography
                   color="primary"
                   style={{
                     fontFamily: "Square721",
                     fontSize: largeScreen ? ".75rem" : ".6rem",
-                    lineHeight:".6rem",
+                    lineHeight: ".6rem",
                   }}
                 >
                   {proj.projectName.toUpperCase()}
                 </Typography>
               </Grid>
 
-
-
               <Grid item xs={1} md={3} sx={{ textAlign: "left" }}>
-                <Typography
-                  color="primary"
-                  style={{
-                    fontFamily: "Square721",
-                    fontSize: largeScreen ? ".75rem" : ".6rem",
-                    lineHeight:".6rem",
-
-                  }}
-                >
-                  {proj.client.toUpperCase()}
-                </Typography>
-                
+                {largeScreen ? (
+                  <Typography
+                    color="primary"
+                    style={{
+                      fontFamily: "Square721",
+                      fontSize: largeScreen ? ".75rem" : ".6rem",
+                      lineHeight: ".6rem",
+                    }}
+                  >
+                    {proj.client.toUpperCase()}
+                  </Typography>
+                ) : (
+                  <>
+                    <Button
+                      className={classes.indexButton}
+                      style={{
+                        display: "block",
+                        position: "absolute",
+                        width: "90%",
+                      }}
+                      onClick={() => goTo(proj.name)}
+                    />
+                    <Typography
+                      color="primary"
+                      style={{
+                        fontFamily: "Square721",
+                        fontSize: largeScreen ? ".75rem" : ".6rem",
+                        lineHeight: ".6rem",
+                      }}
+                    >
+                      {proj.client.toUpperCase()}
+                    </Typography>
+                  </>
+                )}
               </Grid>
               <Grid item xs={1} md={3} sx={{ textAlign: "center" }}>
                 <Typography
@@ -183,8 +193,7 @@ export const IndexPage = (props) => {
                   style={{
                     fontFamily: "Square721",
                     fontSize: largeScreen ? ".75rem" : ".6rem",
-                    lineHeight:".6rem",
-
+                    lineHeight: ".6rem",
                   }}
                 >
                   {proj.role.toUpperCase()}
@@ -203,8 +212,7 @@ export const IndexPage = (props) => {
                   style={{
                     fontFamily: "Square721",
                     fontSize: largeScreen ? ".75rem" : ".6rem",
-                    lineHeight:".6rem",
-
+                    lineHeight: ".6rem",
                   }}
                 >
                   {proj.director.toUpperCase()}
@@ -223,8 +231,7 @@ export const IndexPage = (props) => {
                   style={{
                     fontFamily: "Square721",
                     fontSize: largeScreen ? ".75rem" : ".6rem",
-                    lineHeight:".6rem",
-
+                    lineHeight: ".6rem",
                   }}
                 >
                   {proj.code.toUpperCase()}
@@ -244,7 +251,7 @@ export const IndexPage = (props) => {
         >
           <div
             className={classes.viewWindow}
-            style={{ display: isLoaded ? '' : 'none'}}
+            style={{ display: isLoaded ? "" : "none" }}
           >
             <video
               onLoadedData={() => setIsLoaded(true)}
@@ -256,7 +263,7 @@ export const IndexPage = (props) => {
                 maxWidth: "100%",
                 maxHeight: "100%",
                 overflow: "hidden",
-              borderRadius: "20px",
+                borderRadius: "20px",
               }}
               src={videoMap[hover] ? videoMap[hover] : featuredUrl}
             />
