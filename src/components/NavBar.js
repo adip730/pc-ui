@@ -10,17 +10,17 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import logo_gif from "../../public/logo-gif.gif";
 
 const useStyles = makeStyles(() => ({
+  gradient: {
+    position: "fixed",
+    zIndex: 4,
+    right: "0",
+    left: "0",
+    height: "60px",
+    background:
+      "linear-gradient(to bottom, rgba(221,225,225, 0) 0%, rgba(221,225,225, .5) 5%, rgba(221,225,225, .5) 60%, rgba(221,225,225, 0) 100%)",
+  },
 
-  gradient:{
-    position:"fixed",
-    zIndex:"1",
-    right:"0",
-    left:"0",
-    height:"60px",
-    background: "linear-gradient(to bottom, rgba(221,225,225, 0) 0%, rgba(221,225,225, .5) 5%, rgba(221,225,225, .5) 60%, rgba(221,225,225, 0) 100%)",
-},
-
-navBar: {
+  navBar: {
     minWidth: "100%",
     background: "rgb(0,0,0,0)",
     width: "100%",
@@ -29,7 +29,7 @@ navBar: {
     right: 0,
     left: 0,
     height: "30px",
-    zIndex: 3,
+    zIndex: 6,
     marginBottom: 0,
     display: "flex",
     flexDirection: "row",
@@ -39,7 +39,7 @@ navBar: {
     boxSizing: "border-box",
     transformOrigin: "top",
     backdropFilter: "blur(7.1px) contrast(1) invert(0.00)",
-    borderRadius:"5rem",
+    borderRadius: "5rem",
     //boxShadow: "rgba(50, 50, 93, 0.25) 0px 3px 17px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
     //boxShadow: "rgba(50, 50, 93, 0.25) 0px 10px 10px -20px, rgba(0, 0, 0, 0.3) 0px 3px 6px -3px",
   },
@@ -50,7 +50,7 @@ navBar: {
     flexDirection: "row",
     alignItems: "flex-start",
     height: "100%",
-    zIndex: 2,
+    zIndex: 5,
   },
   menuButton: {
     fontFamily: "Square721",
@@ -64,10 +64,10 @@ navBar: {
     fontFamily: "Square721",
   },
   logo: {
-    position:"relative",
+    position: "relative",
     height: "130px",
-    marginTop:"-1.8rem",
-    marginRight:"-90px",
+    marginTop: "-1.8rem",
+    marginRight: "-90px",
   },
   logoOut: {
     animation: "$fadeout 000ms",
@@ -134,130 +134,123 @@ export const NavBar = (props) => {
     }
   }, [location]);
 
-
   //const audio = new Audio("");
   //const buttons = document.querySelectorAll("button");
-  
+
   //buttons.forEach(button => {
   //  button.addEventListener("click", () => {
   //    audio.play();
   //  });
- // });
- 
-
+  // });
 
   return (
-    <><div
-      className={classes.navBar}
-      style={{
-        transform: showNav ? "scaleY(1)" : "scaleY(0)",
-        padding: largeScreen ? "5px 5px" : "5px 5px",
-        background: invertColor
-          ? "rgba(255,255,255,0)"
-          : "rgba(255, 255, 255, 0)",
-      }}
-    >
-      <Grid
-        container
-        className={classes.toolbar}
+    <>
+      <div
+        className={classes.navBar}
         style={{
-          padding: largeScreen ? "0px 5px" : "0px",
-          minWidth: largeScreen && showLogo ? "100%" : "60%",
+          transform: showNav ? "scaleY(1)" : "scaleY(0)",
+          padding: largeScreen ? "5px 5px" : "5px 5px",
+          background: invertColor
+            ? "rgba(255,255,255,0)"
+            : "rgba(255, 255, 255, 0)",
         }}
       >
         <Grid
-          item
-          xs={6}
-          sm={4}
-          sx={{ display: "flex", justifyContent: "flex-start" }}
-        >
-          <Button
-            className={classes.menuButton}
-            style={{
-              fontFamily: "Square721",
-              fontWeight: "500",
-              color: invertColor ? "#000000" : "#000000",
-              padding: 0,
-              fontSize: largeScreen ? ".7rem" : ".55rem",
-            }}
-            onClick={(e) => navigate("/")}
-          >
-            Pleasure Craft
-          </Button>
-        </Grid>
-        <Grid
-          item
-          xs={0}
-          sm={0}
-          sx={{ display: "flex", justifyContent: "flex-end" }}
-        >
-          <Button
-            className={classes.menuButton}
-            style={{
-              fontFamily: "Square721",
-              fontWeight: "500",
-              color: invertColor ? "#000000" : "#000000",
-              padding: 0,
-              fontSize: largeScreen ? ".7rem" : ".55rem",
-            }}
-            onClick={(e) => navigate("/info")}
-          >
-            Info
-          </Button>
-        </Grid>
-        <Grid
-          item
-          xs={2}
-          sm={2}
-          sx={{ display: "flex", justifyContent: "flex-end" }}
-        >
-          <Button
-            className={classes.menuButton}
-            style={{
-              fontFamily: "Square721",
-              fontWeight: "500",
-              //color: invertColor ? "#FFFFFF" : "#000000",//
-              color: invertColor ? "#000000" : "#000000",
-              padding: 0,
-              fontSize: largeScreen ? ".7rem" : ".55rem",
-            }}
-            onClick={(e) => navigate("/projectindex")}
-          >
-            Index
-          </Button>
-        </Grid>
-
-
-        <Grid
-          item
-          xs={6}
-          sm={5}
+          container
+          className={classes.toolbar}
           style={{
-            display: "none",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            visibility: hideLogo ? "hidden" : "visible",
+            padding: largeScreen ? "0px 5px" : "0px",
+            minWidth: largeScreen && showLogo ? "100%" : "60%",
           }}
         >
-          {largeScreen ? (
-            <Fade in={showLogo} unmountOnExit timeout={500}>
-              <img
-                className={classes.logo}
-                src={logo_gif}
-                onClick={(e) => navigate("/")} />
-            </Fade>
-          ) : null}
+          <Grid
+            item
+            xs={6}
+            sm={4}
+            sx={{ display: "flex", justifyContent: "flex-start" }}
+          >
+            <Button
+              className={classes.menuButton}
+              style={{
+                fontFamily: "Square721",
+                fontWeight: "500",
+                color: invertColor ? "#000000" : "#000000",
+                padding: 0,
+                fontSize: largeScreen ? ".7rem" : ".55rem",
+              }}
+              onClick={(e) => navigate("/")}
+            >
+              Pleasure Craft
+            </Button>
+          </Grid>
+          <Grid
+            item
+            xs={0}
+            sm={0}
+            sx={{ display: "flex", justifyContent: "flex-end" }}
+          >
+            <Button
+              className={classes.menuButton}
+              style={{
+                fontFamily: "Square721",
+                fontWeight: "500",
+                color: invertColor ? "#000000" : "#000000",
+                padding: 0,
+                fontSize: largeScreen ? ".7rem" : ".55rem",
+              }}
+              onClick={(e) => navigate("/info")}
+            >
+              Info
+            </Button>
+          </Grid>
+          <Grid
+            item
+            xs={2}
+            sm={2}
+            sx={{ display: "flex", justifyContent: "flex-end" }}
+          >
+            <Button
+              className={classes.menuButton}
+              style={{
+                fontFamily: "Square721",
+                fontWeight: "500",
+                //color: invertColor ? "#FFFFFF" : "#000000",//
+                color: invertColor ? "#000000" : "#000000",
+                padding: 0,
+                fontSize: largeScreen ? ".7rem" : ".55rem",
+              }}
+              onClick={(e) => navigate("/projectindex")}
+            >
+              Index
+            </Button>
+          </Grid>
+
+          <Grid
+            item
+            xs={6}
+            sm={5}
+            style={{
+              display: "none",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              visibility: hideLogo ? "hidden" : "visible",
+            }}
+          >
+            {largeScreen ? (
+              <Fade in={showLogo} unmountOnExit timeout={500}>
+                <img
+                  className={classes.logo}
+                  src={logo_gif}
+                  onClick={(e) => navigate("/")}
+                />
+              </Fade>
+            ) : null}
+          </Grid>
         </Grid>
-
-
-
-      </Grid>
-    
-    </div>
-      <div className={classes.gradient}
->
-      </div></>
-    );
+      </div>
+      <div className={classes.gradient}></div>
+    </>
+  );
 };
 
 export default NavBar;

@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import ReactPlayer from "react-player/file";
 import makeStyles from "@mui/styles/makeStyles";
 import AppContext from "../context/AppContext";
 import Typography from "@mui/material/Typography";

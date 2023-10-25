@@ -218,6 +218,7 @@ export const Preview = (props) => {
               playing={playing}
               loop
               muted
+              playsinline
               onReady={() => {
                 let vids = [...loadedVids];
                 if (!vids.includes(name)) {
