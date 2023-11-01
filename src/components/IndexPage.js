@@ -239,7 +239,7 @@ export const IndexPage = (props) => {
           );
         })}
       </div>
-      <div style={{ width: "100%", position: "fixed", bottom: 0 }}>
+      <div style={{ width: "100%", position: "absolute", bottom: 0 }}>
         <Footer />
       </div>
       {hover !== "" && (
