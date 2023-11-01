@@ -28,11 +28,6 @@ const useStyles = makeStyles(() => ({
       opacity: 1,
     },
   },
-  scrollView: {
-    width: "100%",
-    height: "100vh",
-    overflowY: "scroll",
-  },
   root: {
     animation: "$fadein 1000ms",
     position: "absolute",
@@ -40,8 +35,8 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     alignItems: "center",
     position: "relative",
-    // padding: "84px 64px 0 64px",
-    paddingTop: '84px',
+    padding: "84px 64px 0 64px",
+    // paddingTop: "84px",
     height: "100vh",
     width: "100%",
     overflowY: "scroll",
@@ -97,7 +92,8 @@ const useStyles = makeStyles(() => ({
     position: "relative",
     height: "auto",
     width: "100%",
-    padding: "16px 64px",
+    // padding: "16px 64px",
+    padding: '16px 0',
     marginBottom: "32px",
     display: "flex",
   },
@@ -291,7 +287,9 @@ export const ProjectPageNew = (props) => {
   return (
     <div
       className={classes.root}
-
+      style={{
+        padding: largeScreen ? "84px 64px 0px 64px" : "84px 32px 0px 32px",
+      }}
       id="pageRoot"
     >
       <div
@@ -378,7 +376,7 @@ export const ProjectPageNew = (props) => {
         sx={{
           display: expanded ? "none" : "flex",
           marginBottom: largeScreen ? "48px" : "32px",
-          padding: largeScreen ? '16px 64px' : '16px 32px',
+          // padding: largeScreen ? '16px 64px' : '16px 32px',
         }}
       >
         <Grid item xs={6}>
@@ -497,7 +495,15 @@ export const ProjectPageNew = (props) => {
           </Typography>
         </Grid>
       </Grid>
-      <div style={{ width: "100%", marginTop: "auto" }}>
+      <div
+        style={{
+          width: largeScreen ? "calc(100% + 128px)" : "calc(100% + 64px)",
+          // marginTop: "auto",
+          // marginLeft: '-64px',
+          // marginRight: '-64px',
+          margin: largeScreen ? 'auto -64px 0 -64px' : 'auto -32px 0 -32px',
+        }}
+      >
         <Footer />
       </div>
     </div>
