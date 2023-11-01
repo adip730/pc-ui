@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-end",
-    padding: "84px 24px 44px 24px",
+    padding: "84px 24px 0 24px",
     boxSizing: "border-box",
     //background: "rgb(237,239,240)",
     backgroundColor: "#dde1e1",
@@ -57,7 +57,7 @@ const useStyles = makeStyles(() => ({
     height: "auto",
     maxHeight: "80%",
     overflowY: "auto",
-    // paddingBottom: '64px',
+    paddingBottom: '64px',
   },
 }));
 
@@ -101,7 +101,7 @@ export const IndexPage = (props) => {
     <div
       className={classes.viewContainer}
       style={{
-        padding: largeScreen ? "84px 24px 44px 24px" : "84px 24px 64px 24px",
+        padding: largeScreen ? "84px 24px 0px 24px" : "84px 24px 0px 24px",
       }}
     >
       <div className={classes.bottomBox}>
@@ -239,7 +239,15 @@ export const IndexPage = (props) => {
           );
         })}
       </div>
-      <div style={{ width: "100%", position: "absolute", bottom: 0 }}>
+      <div
+        style={{
+          width: "100%",
+          position: "relative",
+          width: "calc(100% + 48px)",
+          margin: "-44px -48px 0 -48px",
+          // bottom: 0,
+        }}
+      >
         <Footer />
       </div>
       {hover !== "" && (
