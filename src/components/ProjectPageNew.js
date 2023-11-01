@@ -28,6 +28,11 @@ const useStyles = makeStyles(() => ({
       opacity: 1,
     },
   },
+  scrollView: {
+    width: "100%",
+    height: "100vh",
+    overflowY: "scroll",
+  },
   root: {
     animation: "$fadein 1000ms",
     position: "absolute",
@@ -35,10 +40,11 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     alignItems: "center",
     position: "relative",
-    padding: "84px 64px 0 64px",
+    // padding: "84px 64px 0 64px",
+    paddingTop: '84px',
     height: "100vh",
     width: "100%",
-    overflow: "auto",
+    overflowY: "scroll",
     boxSizing: "border-box",
     justifyContent: "flex-start",
     backgroundColor: "#dde1e1",
@@ -91,7 +97,7 @@ const useStyles = makeStyles(() => ({
     position: "relative",
     height: "auto",
     width: "100%",
-    padding: "16px 0",
+    padding: "16px 64px",
     marginBottom: "32px",
     display: "flex",
   },
@@ -229,7 +235,7 @@ export const ProjectPageNew = (props) => {
     }
   };
 
-// Manual Video Expansion
+  // Manual Video Expansion
   // useEffect(() => {
   //   let container = document.getElementById("container");
   //   let player = document.getElementById("player-wrapper");
@@ -272,7 +278,7 @@ export const ProjectPageNew = (props) => {
   //   }
   // }, [expanded]);
 
-// Controls styling
+  // Controls styling
   // const host = document.getElementById("videoFrame");
   // // host?.attachShadow({mode: 'open'})
   // var sheet = new CSSStyleSheet();
@@ -285,10 +291,8 @@ export const ProjectPageNew = (props) => {
   return (
     <div
       className={classes.root}
+
       id="pageRoot"
-      style={{
-        padding: largeScreen ? "84px 64px 0px 64px" : "84px 32px 0px 32px",
-      }}
     >
       <div
         className={classes.window}
@@ -374,6 +378,7 @@ export const ProjectPageNew = (props) => {
         sx={{
           display: expanded ? "none" : "flex",
           marginBottom: largeScreen ? "48px" : "32px",
+          padding: largeScreen ? '16px 64px' : '16px 32px',
         }}
       >
         <Grid item xs={6}>

@@ -26,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     transition: "width .75s",
     cursor: "pointer",
+    willChange: "transform",
+    transform: 'translate3d(0, 0, 0)',
   },
   window: {
     display: "flex",
@@ -37,6 +39,8 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     height: "100%",
     width: "100%",
+    willChange: "transform",
+    transform: 'translate3d(0, 0, 0)',
   },
   cont: {
     height: useMediaQuery("(min-width:600px)") ? "100%" : "75%",
@@ -47,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     borderRadius: "40px",
     boxSizing: "border-box",
+    willChange: "transform",
+    transform: 'translate3d(0, 0, 0)',
   },
   subtitle: {
     marginTop: "8px",
@@ -118,10 +124,7 @@ export const Preview = (props) => {
         ? preview.data.attributes.url
         : featured.data.attributes.url;
     setPreviewUrl(prevUrl);
-
   }, []);
-
-
 
   const switchView = () => {
     navigate(`project/${data.name}`);
@@ -130,12 +133,16 @@ export const Preview = (props) => {
   const largeScreen = useMediaQuery("(min-width:600px)");
 
   function growTimer(container, wind) {
-    wind.style.paddingTop = "80px";
     // container.style.transition = "width .75s, height .5s";
-    container.style.transition = "all .5s ease-in-out";
-    container.style.width = "95%";
-    container.style.height = "95%";
-    container.style.borderRadius = "10px";
+    const animate = () => {
+      wind.style.paddingTop = "80px";
+      container.style.transition = "all .5s ease-in-out";
+      container.style.width = "95%";
+      container.style.height = "95%";
+      container.style.borderRadius = "10px";
+    };
+
+    window.requestAnimationFrame(animate);
   }
 
   function doGrow(entry) {
@@ -147,10 +154,13 @@ export const Preview = (props) => {
       this.grow = setTimeout(() => growTimer(container, wind), 500);
     } else {
       clearTimeout(this.grow);
-      wind.style.paddingTop = "80px";
-      container.style.width = "85%";
-      container.style.height = "75%";
-      container.style.borderRadius = "40px";
+      const animateReset = () => {
+        wind.style.paddingTop = "80px";
+        container.style.width = "85%";
+        container.style.height = "75%";
+        container.style.borderRadius = "40px";
+      };
+      window.requestAnimationFrame(animateReset);
     }
   }
 
@@ -160,23 +170,30 @@ export const Preview = (props) => {
       let element = document.getElementById(`featured-${name}`);
       if (element) {
         if (showSubtitle) {
-          container.style.transitionDuration = ".5s, 1s";
-          container.style.transitionDelay = "0ms, 150ms";
-          container.style.transitionProperty = "height, transform";
-          container.style.height = "calc(100% - 32px)";
-          // container.style.width = "100%";
-          // container.style.transition = 'transform 1s';
-          container.style.transform = `scale(${100 / 85}, 1)`;
-          element.style.transition = "transform 1s";
-          element.style.transform = `scale(1, ${100 / 85})`;
+          const grow = () => {
+            container.style.transitionDuration = ".5s, 1s";
+            container.style.transitionDelay = "0ms, 150ms";
+            container.style.transitionProperty = "height, transform";
+            container.style.height = "calc(100% - 32px)";
+            // container.style.width = "100%";
+            // container.style.transition = 'transform 1s';
+            container.style.transform = `scale(${100 / 85}, 1)`;
+            element.style.transition = "transform 1s";
+            element.style.transform = `scale(1, ${100 / 85})`;
+          };
+
+          window.requestAnimationFrame(grow);
           // setTimeout(() => growTimerLarge(container), 2000);
         } else {
-          // container.style.transitionDelay = "0ms, 0ms";
-          // container.style.transitionProperty = "height, width";
-          // container.style.minWidth = "85%";
-          container.style.height = "100%";
-          container.style.transform = "scale(1, 1)";
-          element.style.transform = "scale(1, 1)";
+          const shrink = () => {
+            // container.style.transitionDelay = "0ms, 0ms";
+            // container.style.transitionProperty = "height, width";
+            // container.style.minWidth = "85%";
+            container.style.height = "100%";
+            container.style.transform = "scale(1, 1)";
+            element.style.transform = "scale(1, 1)";
+          };
+          window.requestAnimationFrame(shrink);
         }
       }
     }
