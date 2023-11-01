@@ -43,9 +43,9 @@ export const InfoRender = () => {
     // Set the CSS properties for the loading div
     loadingDiv.style.position = 'fixed';
     loadingDiv.style.top = '0';
-    loadingDiv.style.left = '0';
+    loadingDiv.style.left = '-20px';
     loadingDiv.style.width = '100%';
-    loadingDiv.style.height = '100%';
+    loadingDiv.style.height = '100vh';
     loadingDiv.style.background = 'rgba(237,239,240)'; // semi-transparent black
     loadingDiv.style.color = 'black'; // set the text color to white
     loadingDiv.style.padding = '20px'; // add 20px padding around the text
