@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-end",
-    padding: "84px 64px 64px 64px",
+    padding: "84px 24px 44px 24px",
     boxSizing: "border-box",
     //background: "rgb(237,239,240)",
     backgroundColor: "#dde1e1",
@@ -58,7 +58,6 @@ const useStyles = makeStyles(() => ({
     maxHeight: "80%",
     overflowY: "auto",
     // paddingBottom: '64px',
-    zIndex: 1,
   },
 }));
 
@@ -102,7 +101,7 @@ export const IndexPage = (props) => {
     <div
       className={classes.viewContainer}
       style={{
-        padding: largeScreen ? "84px 24px 44px 24px" : "84px 32px 96px 32px",
+        padding: largeScreen ? "84px 24px 44px 24px" : "84px 24px 64px 24px",
       }}
     >
       <div className={classes.bottomBox}>
