@@ -20,6 +20,8 @@ import GPGPU_Water from './gpgpuWater.js';
 import avatarsGlb from '../../public/glTF/avatars.glb';
 import "./colorBalance.css";
 
+import backup_graphic from "../../public/backup/about_us.gif"
+
 // About page scene demo
 export const InfoRender = () => {
   // Canvas ref
@@ -27,6 +29,16 @@ export const InfoRender = () => {
   const sceneHeight = window.innerHeight + 5;
   const sceneWidth = window.innerWidth;
   const sceneRatio = window.devicePixelRatio;
+
+  const ios = isIOS();
+
+  if (ios) {
+    return (
+      <div id="main">
+        <img src={backup_graphic} alt="Info fallback" style={{ maxHeight: "100%", maxWidth: "100%" }} />
+      </div>
+    );
+  }
 
   //const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -422,6 +434,9 @@ const clearThree = (obj) => {
   }
 };
 
-
+function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.platform) || 
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
   
   
