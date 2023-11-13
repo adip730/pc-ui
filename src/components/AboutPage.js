@@ -57,7 +57,7 @@ export const AboutPage = (props) => {
           create becomes a portal that trancends from the ordinary to the
           surreal.
         </Typography>
-      </div>
+          </div>
       <div style={{ width: "100%", position: "absolute", bottom: 0 }}>
         {/*<Footer/>*/}
         </div>

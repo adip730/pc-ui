@@ -56,6 +56,13 @@ module.exports = {
         type: 'asset/resource',
       },
       {
+        test: /\.(mp4)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/videos/[name][hash][ext][query]'
+        }
+      },
+      {
         test: /\.(gltf)$/,
         use: [
           {
