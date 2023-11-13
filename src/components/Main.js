@@ -15,6 +15,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+window.onresize = function() {
+  document.body.height = window.innerHeight;
+}
+window.onresize();
+
 export const Main = (props) => {
   const { api } = useContext(AppContext);
   const { invokeStart } = api;
