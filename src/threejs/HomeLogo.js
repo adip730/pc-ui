@@ -10,6 +10,8 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import Fade from '@mui/material/Fade';
 import logo_gltf from "../../public/glTF/LOGO CHROME_Less Soft.gltf";
 import logo_tex from "../../public/Textures/HDRI_Chrome_Soft.png";
+//import backup_graphic from "../../public/backup/logo.gif"
+import backup_graphic from "../../public/backup/logo.gif"
 
 // Homepage logo demo
 
@@ -24,6 +26,17 @@ export const HomeLogo = () => {
   const { showLoading } = state;
   const { setShowLoading } = api;
   //const hdriLoaded = useRef(false);
+
+  const ios = isIOS();
+
+  if (ios) {
+    setShowLoading(false);
+    return (
+      <div id="main">
+        <img src={backup_graphic} alt="Logo fallback" style={{ maxHeight: "100%", maxWidth: "100%" }} />
+      </div>
+    );
+  }
 
   useEffect(() => {
     if (!state.test_hdri) return;
@@ -233,3 +246,8 @@ const clearThree = (obj) => {
     obj.material.dispose();
   }
 };
+
+function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.platform) || 
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
