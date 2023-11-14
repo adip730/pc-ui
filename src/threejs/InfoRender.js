@@ -38,7 +38,7 @@ export const InfoRender = () => {
   if (ios) {
     return (
       <div id="main" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', overflow: 'hidden' }}>
-        <video className="video-container video-container-overlay" autoPlay loop muted playsInline controls="false" preload="auto" style={{ height: '100vh', objectFit: 'cover' }}>
+        <video className="video-container video-container-overlay" autoPlay loop muted playsInline preload="auto" style={{ height: '100vh', objectFit: 'cover' }}>
             <source src={ backup_mov } type="video/mp4" />
         </video>
       </div>
