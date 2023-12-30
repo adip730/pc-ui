@@ -12,8 +12,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    height: "100vh",
-    width: "100%",
+    height: "85vh",
+    width: "80%",
     alignItems: "center",
     justifyContent: "center",
     boxSizing: "border-box",
@@ -52,27 +52,26 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     overflow: "hidden",
-    borderRadius: "40px",
+    borderRadius: "20px",
     boxSizing: "border-box",
   },
   subtitle: {
-    marginTop: "8px",
+    marginTop: "0px",
     position: "absolute",
-    bottom: 0,
-    // bottom: 0,
-    // marginLeft: useMediaQuery("(min-width:600px)") ? '' : 'auto',
-    // marginRight: useMediaQuery("(min-width:600px)") ? '' : 'auto',
+    bottom: "14px",
     flexGrow: 1,
-    width: "85%",
-    maxWidth: "85%",
+    width: "100%",
+    maxWidth: "100%",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: useMediaQuery("(min-width: 600px)")
       ? "space-evenly"
       : "center",
-    transition: "display 1s",
+    transition: "display 12s",
   },
+
+
   smallSubtitle: {
     position: "absolute",
     bottom: 50,
@@ -162,11 +161,15 @@ export const Preview = (props) => {
   function growTimer(container, wind) {
     wind.style.paddingTop = "80px";
     // container.style.transition = "width .75s, height .5s";
-    container.style.transition = "all .5s ease-in-out";
-    container.style.width = "95%";
-    container.style.height = "95%";
-    container.style.borderRadius = "10px";
-    // setShowNav(false);
+    const animate = () => {
+      wind.style.paddingTop = "80px";
+      container.style.transition = "all .5s ease-in-out";
+      container.style.width = "95%";
+      container.style.height = "95%";
+      container.style.borderRadius = "40px";
+    };
+
+    window.requestAnimationFrame(animate);
   }
 
   function doGrow(entry) {
@@ -196,15 +199,19 @@ export const Preview = (props) => {
       let element = document.getElementById(`featured-${name}`);
       if (element) {
         if (showSubtitle) {
-          container.style.transitionDuration = ".5s, 1s";
-          container.style.transitionDelay = "0ms, 150ms";
-          container.style.transitionProperty = "height, transform";
-          container.style.height = "calc(100% - 32px)";
-          // container.style.width = "100%";
-          // container.style.transition = 'transform 1s';
-          container.style.transform = `scale(${100 / 85}, 1)`;
-          element.style.transition = "transform 1s";
-          element.style.transform = `scale(1, ${100 / 85})`;
+          const grow = () => {
+            container.style.transitionDuration = ".5s, 1s";
+            container.style.transitionDelay = "0ms, 300ms";
+            container.style.transitionProperty = "height, transform";
+            container.style.height = "calc(100% - 32px)";
+            // container.style.width = "100%";
+            // container.style.transition = 'transform 1s';
+            container.style.transform = `scale(${100 / 85}, 1)`;
+            element.style.transition = "transform 1s";
+            element.style.transform = `scale(1, ${100 / 85})`;
+          };
+
+          window.requestAnimationFrame(grow);
           // setTimeout(() => growTimerLarge(container), 2000);
         } else {
           // container.style.transitionDelay = "0ms, 0ms";
@@ -246,6 +253,7 @@ export const Preview = (props) => {
             id={`featured-${name}`}
             className={classes.wrapper}
             onMouseEnter={() => setShowSubtitle(true)}
+            //onMouseEnter={() => setTimeout(() => {setShowSubtitle(true)} ,2000)}
             onMouseLeave={() => setShowSubtitle(false)}
             onClick={switchView}
           >
@@ -291,7 +299,7 @@ export const Preview = (props) => {
                   color="primary"
                   style={{
                     fontFamily: "Square721",
-                    fontSize: largeScreen ? ".75rem" : ".6rem",
+                    fontSize: largeScreen ? ".7rem" : ".55rem",
                   }}
                 >
                   {projectName.toUpperCase()}
@@ -306,7 +314,7 @@ export const Preview = (props) => {
               color="primary"
               style={{
                 fontFamily: "Square721",
-                fontSize: largeScreen ? ".75rem" : ".6rem",
+                fontSize: largeScreen ? ".7rem" : ".55rem",
               }}
             >
               {projectName.toUpperCase()}
@@ -316,7 +324,7 @@ export const Preview = (props) => {
                 color="primary"
                 style={{
                   fontFamily: "Square721",
-                  fontSize: largeScreen ? ".75rem" : ".6rem",
+                  fontSize: largeScreen ? ".7rem" : ".55rem",
                 }}
               >
                 {role.toUpperCase()}
@@ -327,7 +335,7 @@ export const Preview = (props) => {
                 color="primary"
                 style={{
                   fontFamily: "Square721",
-                  fontSize: largeScreen ? ".75rem" : ".6rem",
+                  fontSize: largeScreen ? ".7rem" : ".55rem",
                 }}
               >
                 {director.toUpperCase()}
@@ -338,7 +346,7 @@ export const Preview = (props) => {
                 color="primary"
                 style={{
                   fontFamily: "Square721",
-                  fontSize: largeScreen ? ".75rem" : ".6rem",
+                  fontSize: largeScreen ? ".7rem" : ".55rem",
                 }}
               >
                 {code.toUpperCase()}
