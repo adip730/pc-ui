@@ -82,8 +82,8 @@ export const IndexPage = (props) => {
     if (hover !== "") {
       if (projects.some((proj) => proj.name === hover)) {
         let proj = projects[projects.findIndex((proj) => proj.name === hover)];
-        if (proj.featured) {
-          let url = proj.featured.data.attributes.url;
+        if (proj.preview && proj.preview.data && proj.preview.data.attributes) {
+          let url = proj.preview.data.attributes.url;
           setFeaturedUrl(`http://${endpoint}${url}`);
         }
       }
@@ -213,7 +213,7 @@ export const IndexPage = (props) => {
                     lineHeight: ".6rem",
                   }}
                 >
-                  {proj.director.toUpperCase()}
+                  {proj.roles?.toUpperCase()}
                 </Typography>
               </Grid>
               <Grid

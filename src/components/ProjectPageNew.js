@@ -194,6 +194,7 @@ export const ProjectPageNew = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [videoDuration, setVideoDuration] = useState(0);
   const [seeking, setSeeking] = useState(false);
+  const [played, setPlayed] = useState(false);
 
   useEffect(() => {
     let featUrl = featured.data.attributes.url;
@@ -221,6 +222,12 @@ export const ProjectPageNew = (props) => {
       setShowOverlay(true);
     }
   }, [playing, isLoaded]);
+
+  useEffect(() => {
+    if (playing) {
+      setPlayed(true);
+    }
+  }, [playing])
 
   const handleProgress = (changeState) => {
     if (changeState.played === 1) {
@@ -356,7 +363,7 @@ export const ProjectPageNew = (props) => {
                   </Typography>
                 </IconButton>
               </div>
-              {thumbnailUrl !== "" && (
+              {!played && thumbnailUrl !== "" && (
                 <img
                   className={classes.thumbnail}
                   src={`http://${endpoint}${thumbnailUrl}`}
