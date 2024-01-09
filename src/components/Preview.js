@@ -10,8 +10,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    height: "100vh",
-    width: "100%",
+    height: "85vh",
+    width: "80%",
     alignItems: "center",
     justifyContent: "center",
     boxSizing: "border-box",
@@ -49,15 +49,15 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     overflow: "hidden",
-    borderRadius: "40px",
+    borderRadius: "20px",
     boxSizing: "border-box",
     willChange: "transform",
     transform: "translate3d(0, 0, 0)",
   },
   subtitle: {
-    marginTop: "8px",
+    marginTop: "0px",
     position: "absolute",
-    bottom: 0,
+    bottom: "14px",
     flexGrow: 1,
     width: "100%",
     maxWidth: "100%",
@@ -67,8 +67,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: useMediaQuery("(min-width: 600px)")
       ? "space-between"
       : "center",
-    transition: "display 1s",
+    transition: "display 12s",
   },
+
+
   smallSubtitle: {
     position: "absolute",
     bottom: 50,
@@ -149,7 +151,7 @@ export const Preview = (props) => {
       container.style.transition = "all .5s ease-in-out";
       container.style.width = "95%";
       container.style.height = "95%";
-      container.style.borderRadius = "10px";
+      container.style.borderRadius = "40px";
     };
 
     window.requestAnimationFrame(animate);
@@ -185,7 +187,7 @@ export const Preview = (props) => {
         if (showSubtitle) {
           const grow = () => {
             container.style.transitionDuration = ".5s, 1s";
-            container.style.transitionDelay = "0ms, 150ms";
+            container.style.transitionDelay = "0ms, 300ms";
             container.style.transitionProperty = "height, transform";
             container.style.height = "calc(100% - 32px)";
             // container.style.width = "100%";
@@ -222,6 +224,7 @@ export const Preview = (props) => {
             id={`featured-${name}`}
             className={classes.wrapper}
             onMouseEnter={() => setShowSubtitle(true)}
+            //onMouseEnter={() => setTimeout(() => {setShowSubtitle(true)} ,2000)}
             onMouseLeave={() => setShowSubtitle(false)}
             onClick={switchView}
           >
@@ -268,7 +271,7 @@ export const Preview = (props) => {
                   color="primary"
                   style={{
                     fontFamily: "Square721",
-                    fontSize: largeScreen ? ".75rem" : ".6rem",
+                    fontSize: largeScreen ? ".7rem" : ".55rem",
                   }}
                 >
                   {projectName.toUpperCase()}
@@ -283,7 +286,7 @@ export const Preview = (props) => {
               color="primary"
               style={{
                 fontFamily: "Square721",
-                fontSize: largeScreen ? ".75rem" : ".6rem",
+                fontSize: largeScreen ? ".7rem" : ".55rem",
               }}
             >
               {projectName.toUpperCase()}
@@ -293,7 +296,7 @@ export const Preview = (props) => {
                 color="primary"
                 style={{
                   fontFamily: "Square721",
-                  fontSize: largeScreen ? ".75rem" : ".6rem",
+                  fontSize: largeScreen ? ".7rem" : ".55rem",
                 }}
               >
                 {role.toUpperCase()}
@@ -304,7 +307,7 @@ export const Preview = (props) => {
                 color="primary"
                 style={{
                   fontFamily: "Square721",
-                  fontSize: largeScreen ? ".75rem" : ".6rem",
+                  fontSize: largeScreen ? ".7rem" : ".55rem",
                 }}
               >
                 {roles?.toUpperCase()}
@@ -315,7 +318,7 @@ export const Preview = (props) => {
                 color="primary"
                 style={{
                   fontFamily: "Square721",
-                  fontSize: largeScreen ? ".75rem" : ".6rem",
+                  fontSize: largeScreen ? ".7rem" : ".55rem",
                 }}
               >
                 {code.toUpperCase()}

@@ -391,7 +391,7 @@ export const ProjectPageNew = (props) => {
             color="primary"
             sx={{
               fontFamily: "Square721",
-              fontSize: largeScreen ? ".75rem" : ".6rem",
+              fontSize: largeScreen ? ".7rem" : ".7rem",
               textAlign: "right",
             }}
           >
@@ -403,7 +403,7 @@ export const ProjectPageNew = (props) => {
             color="primary"
             sx={{
               fontFamily: "Square721",
-              fontSize: largeScreen ? ".75rem" : ".6rem",
+              fontSize: largeScreen ? ".7rem" : ".7rem",
               textAlign: "left",
             }}
           >
@@ -415,7 +415,7 @@ export const ProjectPageNew = (props) => {
             color="primary"
             sx={{
               fontFamily: "Square721",
-              fontSize: largeScreen ? ".75rem" : ".6rem",
+              fontSize: largeScreen ? ".7rem" : ".7rem",
               textAlign: "right",
             }}
           >
@@ -427,7 +427,7 @@ export const ProjectPageNew = (props) => {
             color="primary"
             sx={{
               fontFamily: "Square721",
-              fontSize: largeScreen ? ".75rem" : ".6rem",
+              fontSize: largeScreen ? ".7rem" : ".7rem",
               textAlign: "left",
             }}
           >
@@ -439,7 +439,7 @@ export const ProjectPageNew = (props) => {
             color="primary"
             sx={{
               fontFamily: "Square721",
-              fontSize: largeScreen ? ".75rem" : ".6rem",
+              fontSize: largeScreen ? ".7rem" : ".7rem",
               textAlign: "right",
             }}
           >
@@ -451,14 +451,15 @@ export const ProjectPageNew = (props) => {
             color="primary"
             sx={{
               fontFamily: "Square721",
-              fontSize: largeScreen ? ".75rem" : ".6rem",
+              fontSize: largeScreen ? ".7rem" : ".7rem",
               textAlign: "left",
             }}
           >
             {client?.toUpperCase()}
           </Typography>
         </Grid>
-        {creditsArr.map((cred) => {
+
+        {/* {creditsArr.map((cred) => {
           return (
             <>
               <Grid item xs={6}>
@@ -466,7 +467,7 @@ export const ProjectPageNew = (props) => {
                   color="primary"
                   style={{
                     fontFamily: "Square721",
-                    fontSize: largeScreen ? ".75rem" : ".6rem",
+                    fontSize: largeScreen ? ".7rem" : ".7rem",
                     textAlign: "right",
                   }}
                 >
@@ -478,7 +479,7 @@ export const ProjectPageNew = (props) => {
                   color="primary"
                   sx={{
                     fontFamily: "Square721",
-                    fontSize: largeScreen ? ".75rem" : ".6rem",
+                    fontSize: largeScreen ? ".7rem" : ".7rem",
                     textAlign: "left",
                   }}
                 >
@@ -487,7 +488,7 @@ export const ProjectPageNew = (props) => {
               </Grid>
             </>
           );
-        })}
+        })} */}
 
         <Grid item xs={12} className={classes.row} sx={{ marginTop: "32px" }}>
           <Typography
@@ -495,10 +496,15 @@ export const ProjectPageNew = (props) => {
             style={{
               fontFamily: "Square721",
               textAlign: "center",
-              fontSize: largeScreen ? ".75rem" : ".6rem",
+              fontSize: largeScreen ? ".7rem" : ".7rem",
+              padding: largeScreen ? "0 10rem 0 10rem" : "0",
+              maxWidth:largeScreen ? "50%" : "90%",
+              margin:"0 auto",
+              whiteSpace: "pre-line",
             }}
           >
-            {writeup?.toUpperCase()}
+            {/* {writeup?.toUpperCase()} */}
+            {writeup}
           </Typography>
         </Grid>
       </Grid>

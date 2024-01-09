@@ -27,6 +27,7 @@ const useStyles = makeStyles(() => ({
     position: "fixed",
     top: "0px",
     right: 0,
+    flexWrap: "nowrap",
     left: 0,
     height: "30px",
     zIndex: 6,
@@ -64,23 +65,32 @@ const useStyles = makeStyles(() => ({
     fontFamily: "Square721",
   },
   logo: {
-    position: "relative",
-    height: "130px",
-    marginTop: "-1.8rem",
-    marginRight: "-90px",
+    paddingRight: "10px",
+    paddingTop: "10px",
+    top: "0px",
+    right: "0px",
+    position: "absolute",
+    height: "70px",
+    // marginRight:"-4rem",
+    // animation: "$fadein 2000ms",
+    // animationDelay: "150ms",
   },
-  logoOut: {
-    animation: "$fadeout 000ms",
-  },
+  // logoOut: {
+  //   animation: "$fadeout 000ms",
+  // },
 
   "@keyframes fadein": {
     "0%": {
+      opacity: 0,
+    },
+    "50%": {
       opacity: 0,
     },
     "100%": {
       opacity: 1,
     },
   },
+
   "@keyframes fadeout": {
     "0%": {
       opacity: 1,
@@ -126,13 +136,13 @@ export const NavBar = (props) => {
     }
   }, [location]);
 
-  useEffect(() => {
-    if (location.pathname.includes("info")) {
-      sethideLogo(true);
-    } else {
-      sethideLogo(false);
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (location.pathname.includes("info")) {
+  //     sethideLogo(false);
+  //   } else {
+  //     sethideLogo(false);
+  //   }
+  // }, [location]);
 
   //const audio = new Audio("");
   //const buttons = document.querySelectorAll("button");
@@ -150,6 +160,7 @@ export const NavBar = (props) => {
         style={{
           transform: showNav ? "scaleY(1)" : "scaleY(0)",
           padding: largeScreen ? "5px 5px" : "5px 5px",
+          flexWrap: largeScreen ? "nowrap" : "nowrap",
           background: invertColor
             ? "rgba(255,255,255,0)"
             : "rgba(255, 255, 255, 0)",
@@ -159,6 +170,7 @@ export const NavBar = (props) => {
           container
           className={classes.toolbar}
           style={{
+            flexWrap: largeScreen ? "nowrap" : "nowrap",
             padding: largeScreen ? "0px 5px" : "0px",
             minWidth: largeScreen && showLogo ? "100%" : "60%",
           }}
@@ -166,8 +178,12 @@ export const NavBar = (props) => {
           <Grid
             item
             xs={6}
-            sm={4}
-            sx={{ display: "flex", justifyContent: "flex-start" }}
+            sm={2}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              flexwrap: "nowrap",
+            }}
           >
             <Button
               className={classes.menuButton}
@@ -177,6 +193,8 @@ export const NavBar = (props) => {
                 color: invertColor ? "#000000" : "#000000",
                 padding: 0,
                 fontSize: largeScreen ? ".7rem" : ".55rem",
+                flexWrap: largeScreen ? "nowrap" : "nowrap",
+                whiteSpace: "nowrap",
               }}
               onClick={(e) => navigate("/")}
             >
@@ -205,8 +223,8 @@ export const NavBar = (props) => {
           </Grid>
           <Grid
             item
-            xs={2}
-            sm={2}
+            xs={6}
+            sm={1}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
             <Button
@@ -227,17 +245,24 @@ export const NavBar = (props) => {
 
           <Grid
             item
-            xs={6}
-            sm={5}
+            xs={8}
+            sm={8}
             style={{
-              display: "none",
+              display: "block",
               alignItems: "center",
               justifyContent: "flex-end",
               visibility: hideLogo ? "hidden" : "visible",
+              // position:"relative",
             }}
+            onClick={(e) => navigate("/")}
           >
             {largeScreen ? (
-              <Fade in={showLogo} unmountOnExit timeout={500}>
+              <Fade
+                in={showLogo}
+                mountOnEnter
+                unmountOnExit
+                timeout={{ appear: 2500, enter: 2500, exit: 500 }}
+              >
                 <img
                   className={classes.logo}
                   src={logo_gif}
@@ -247,6 +272,69 @@ export const NavBar = (props) => {
             ) : null}
           </Grid>
         </Grid>
+        {/*         
+        <Grid
+          item
+          xs={0}
+          sm={0}
+          sx={{ display: "flex", justifyContent: "flex-end" }}
+        >
+          <Button
+            className={classes.menuButton}
+            style={{
+              fontFamily: "Square721",
+              fontWeight: "500",
+              color: invertColor ? "#000000" : "#000000",
+              padding: 0,
+              fontSize: largeScreen ? ".7rem" : ".55rem",
+            }}
+            onClick={(e) => navigate("/info")}
+          >
+            Info
+          </Button>
+        </Grid>
+        <Grid
+          item
+          xs={2}
+          sm={2}
+          sx={{ display: "flex", justifyContent: "flex-end" }}
+        >
+          <Button
+            className={classes.menuButton}
+            style={{
+              fontFamily: "Square721",
+              fontWeight: "500",
+              //color: invertColor ? "#FFFFFF" : "#000000",//
+              color: invertColor ? "#000000" : "#000000",
+              padding: 0,
+              fontSize: largeScreen ? ".7rem" : ".55rem",
+            }}
+            onClick={(e) => navigate("/index")}
+          >
+            Index
+          </Button>
+        </Grid> */}
+
+        {/* <Grid
+          item
+          xs={6}
+          sm={5}
+          style={{
+            padding: largeScreen ? "0px 5px" : "0px",
+            minWidth: largeScreen && showLogo ? "100%" : "60%",
+          }}
+        >
+          {largeScreen ? (
+            <Fade in={showLogo} unmountOnExit timeout={500}>
+              <img
+                className={classes.logo}
+                src={logo_gif}
+                onClick={(e) => navigate("/")} />
+            </Fade>
+          ) : null}
+        </Grid> */}
+
+        {/* </Grid> */}
       </div>
       <div className={classes.gradient}></div>
     </>
