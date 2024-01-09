@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import makeStyles from "@mui/styles/makeStyles";
 import Fade from "@mui/material/Fade";
 import AppContext from "../context/AppContext";
@@ -13,8 +13,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     width: "100%",
     justifyContent: "center",
-    //backgroundColor: "rgb(237,239,240)",
-    backgroundColor:"#dde1e1", //#d5d8d6, 
+    backgroundColor: "#dde1e1", //#d5d8d6,
   },
   scrollView: {
     width: "100%",
@@ -45,10 +44,10 @@ const useStyles = makeStyles(() => ({
     width: "100vw",
     top: 0,
     left: 0,
-    fontSize:".7rem",
+    fontSize: ".7rem",
     //backgroundColor: "white",//
     //backgroundColor: "rgb(237,239,240)",
-    backgroundColor:"#dde1e1", 
+    backgroundColor: "#dde1e1",
     opacity: 1,
     color: "black",
     display: "flex",
@@ -60,7 +59,7 @@ const useStyles = makeStyles(() => ({
 export const HomePage = (props) => {
   const { state, api } = useContext(AppContext);
   const { projects, config, showLoading } = state;
-  const { setShowLogo } = api;
+  const { setShowLogo, setShowLoading } = api;
 
   const largeScreen = useMediaQuery("(min-width:600px)");
 
@@ -104,20 +103,26 @@ export const HomePage = (props) => {
     }
   }
 
+  useEffect(() => {
+    setShowLoading(true);
+  }, [])
   return (
     <div className={classes.root}>
       <Fade in={showLoading} unmountOnExit timeout={500}>
         <div className={classes.loadingScreen}>LOADING</div>
       </Fade>
       <div className={classes.scrollView} ref={viewRef} id="scrollview">
-        <div className={classes.viewContainer} /*style={{height: largeScreen ? '100vh' : '100%'}}*/ id="logo-container">
+        <div className={classes.viewContainer} id="logo-container">
           <HomeLogo />
         </div>
         {projects.map(
           (proj, ind) =>
             ((config && config === []) ||
               (config && config.length > 0 && config.includes(proj.name))) && (
-              <div className={classes.viewContainer}>
+              <div
+                key={`${proj.name}-preview`}
+                className={classes.viewContainer}
+              >
                 <Preview
                   options={videoObserverOptions}
                   playOptions={playObserverOptions}

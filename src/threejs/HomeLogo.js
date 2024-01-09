@@ -1,15 +1,17 @@
 //import { useRef, useEffect } from 'react';
-import React, { useEffect, useRef, useContext, useState } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import AppContext from "../context/AppContext";
 import * as THREE from "three";
 //import GLTFLoader from 'three-gltf-loader';
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Cache } from "three";
 import { isPlainObject } from "@mui/utils";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import Fade from '@mui/material/Fade';
 import logo_gltf from "../../public/glTF/LOGO CHROME_Less Soft.gltf";
 import logo_tex from "../../public/Textures/HDRI_Chrome_Soft.png";
+//import backup_graphic from "../../public/backup/logo.gif"
+import backup_graphic from "../../public/backup/logo.gif"
 
 // Homepage logo demo
 
@@ -23,8 +25,18 @@ export const HomeLogo = () => {
   const { state, api } = useContext(AppContext);
   const { showLoading } = state;
   const { setShowLoading } = api;
-
   //const hdriLoaded = useRef(false);
+
+  const ios = isIOS();
+
+  if (ios) {
+    setShowLoading(false);
+    return (
+      <div id="main">
+        <img src={backup_graphic} alt="Logo fallback" style={{ maxHeight: "100%", maxWidth: "100%" }} />
+      </div>
+    );
+  }
 
   useEffect(() => {
     if (!state.test_hdri) return;
@@ -56,7 +68,8 @@ export const HomeLogo = () => {
       coinDisc.scale.set(0.1, 0.1, 0.1);
       // HDRI setup
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
-      const strapiBaseURL = "http://localhost:1337";
+      // const strapiBaseURL = "http://localhost:1337";
+      const strapiBaseURL = "http://" + process.env.REACT_APP_STRAPIURL;
       const imageUrl = `${strapiBaseURL}${test_hdri}`;
       hdrLoader.load(
         test_hdri != "default" ? imageUrl:logo_tex,
@@ -82,7 +95,6 @@ export const HomeLogo = () => {
         second: "2-digit",
         fractionalSecondDigits: 3,
       });
-      console.log('end time: ', end);
       setShowLoading(false);
     });
     // Set up the Three.js scene, camera, and renderer
@@ -234,3 +246,8 @@ const clearThree = (obj) => {
     obj.material.dispose();
   }
 };
+
+function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.platform) || 
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}

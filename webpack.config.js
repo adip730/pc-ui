@@ -1,8 +1,9 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const webpack = require("webpack");
 const path = require("path");
 const dotenv = require("dotenv");
-
+const options = {};
 dotenv.config();
 
 module.exports = {
@@ -55,12 +56,23 @@ module.exports = {
         type: 'asset/resource',
       },
       {
+        test: /\.(mp4)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/videos/[name][hash][ext][query]'
+        }
+      },
+      {
         test: /\.(gltf)$/,
         use: [
           {
             loader: "gltf-webpack-loader"
           }
         ]
+      },
+      {
+        test: /\.glb$/,
+        use: 'file-loader',
       },
     ],
   },
@@ -74,5 +86,6 @@ module.exports = {
     new webpack.DefinePlugin({
       "process.env": JSON.stringify(process.env),
     }),
+    new WebpackManifestPlugin(options)
   ],
 };

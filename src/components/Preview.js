@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import ReactPlayer from "react-player/file";
 import makeStyles from "@mui/styles/makeStyles";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AppContext from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
-
-import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,13 +21,13 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     minWidth: "100%",
     aspectRatio: 16 / 9,
-    // borderRadius: "40px",
-    // overflow: "hidden",
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
     transition: "width .75s",
     cursor: "pointer",
+    willChange: "transform",
+    transform: "translate3d(0, 0, 0)",
   },
   window: {
     display: "flex",
@@ -39,11 +37,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: useMediaQuery("(min-width: 600px)") ? "" : "flex-start",
     paddingTop: useMediaQuery("(min-width: 600px)") ? "0" : "80px",
     position: "relative",
-    // top: "13.33%",
-    // bottom: "13.33%",
     height: "100%",
     width: "100%",
-    // overflow: "hidden",
+    willChange: "transform",
+    transform: "translate3d(0, 0, 0)",
   },
   cont: {
     height: useMediaQuery("(min-width:600px)") ? "100%" : "75%",
@@ -54,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     borderRadius: "20px",
     boxSizing: "border-box",
+    willChange: "transform",
+    transform: "translate3d(0, 0, 0)",
   },
   subtitle: {
     marginTop: "0px",
@@ -66,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: useMediaQuery("(min-width: 600px)")
-      ? "space-evenly"
+      ? "space-between"
       : "center",
     transition: "display 12s",
   },
@@ -89,16 +88,24 @@ export const Preview = (props) => {
   const navigate = useNavigate();
   const { state, api } = useContext(AppContext);
   const { videoMap, loadedVids } = state;
-  const { setShowNav, setVideoMap, setLoadedVids } = api;
+  const { setLoadedVids } = api;
 
   const [previewUrl, setPreviewUrl] = useState("");
 
-  const { projectName, name, role, client, director, code, featured, preview } =
-    data;
+  const {
+    projectName,
+    name,
+    role,
+    client,
+    roles,
+    director,
+    code,
+    featured,
+    preview,
+  } = data;
 
   const [showSubtitle, setShowSubtitle] = useState(false);
-
-  const [url, setUrl] = useState(null);
+  const [growFinished, setGrowFinished] = useState(false);
 
   const [playing, setPlaying] = useState(false);
 
@@ -129,28 +136,7 @@ export const Preview = (props) => {
         ? preview.data.attributes.url
         : featured.data.attributes.url;
     setPreviewUrl(prevUrl);
-
-    // if (!videoMap[`${name}-preview`]) {
-    //   setUrl(`http://${endpoint}${prevUrl}`);
-    // } else {
-    //   setUrl(videoMap[`${name}-preview`]);
-    // }
   }, []);
-
-  // useEffect(() => {
-  //   console.log("url in useeffect: ", url);
-  //   if (url && !videoMap[`${name}-preview`]) {
-  //     fetch(url)
-  //       .then((res) => res.blob())
-  //       .then((blob) => {
-  //         let temp = videoMap;
-  //         let tempUrl = URL.createObjectURL(blob);
-  //         temp[`${name}-preview`] = tempUrl;
-  //         setUrl(tempUrl);
-  //         setVideoMap(temp);
-  //       });
-  //   }
-  // }, [url]);
 
   const switchView = () => {
     navigate(`project/${data.name}`);
@@ -159,7 +145,6 @@ export const Preview = (props) => {
   const largeScreen = useMediaQuery("(min-width:600px)");
 
   function growTimer(container, wind) {
-    wind.style.paddingTop = "80px";
     // container.style.transition = "width .75s, height .5s";
     const animate = () => {
       wind.style.paddingTop = "80px";
@@ -181,23 +166,24 @@ export const Preview = (props) => {
       this.grow = setTimeout(() => growTimer(container, wind), 500);
     } else {
       clearTimeout(this.grow);
-      wind.style.paddingTop = "80px";
-      container.style.width = "85%";
-      container.style.height = "75%";
-      container.style.borderRadius = "40px";
-      // setShowNav(true);
+      const animateReset = () => {
+        wind.style.paddingTop = "80px";
+        container.style.width = "85%";
+        container.style.height = "75%";
+        container.style.borderRadius = "40px";
+      };
+      window.requestAnimationFrame(animateReset);
     }
   }
 
-  // function growTimerLarge(container) {
-  //   container.style.width = "100%";
-  // }
+  const subtitleTimer = useRef(null);
 
   useEffect(() => {
     if (largeScreen) {
       let container = document.getElementById(`container-${name}`);
       let element = document.getElementById(`featured-${name}`);
       if (element) {
+
         if (showSubtitle) {
           const grow = () => {
             container.style.transitionDuration = ".5s, 1s";
@@ -212,38 +198,23 @@ export const Preview = (props) => {
           };
 
           window.requestAnimationFrame(grow);
-          // setTimeout(() => growTimerLarge(container), 2000);
+          subtitleTimer.current = setTimeout(() => setGrowFinished(true), 1000);
         } else {
-          // container.style.transitionDelay = "0ms, 0ms";
-          // container.style.transitionProperty = "height, width";
-          // container.style.minWidth = "85%";
-          container.style.height = "100%";
-          container.style.transform = "scale(1, 1)";
-          element.style.transform = "scale(1, 1)";
+          const shrink = () => {
+            // container.style.transitionDelay = "0ms, 0ms";
+            // container.style.transitionProperty = "height, width";
+            // container.style.minWidth = "85%";
+            clearTimeout(subtitleTimer.current);
+            setGrowFinished(false);
+            container.style.height = "100%";
+            container.style.transform = "scale(1, 1)";
+            element.style.transform = "scale(1, 1)";
+          };
+          window.requestAnimationFrame(shrink);
         }
       }
     }
   }, [showSubtitle, largeScreen]);
-
-  // SCROLL SKEW ANIMATION
-  // useEffect(() => {
-  //   // if (largeScreen) {
-  //     let container = document.getElementById(`container-${name}`);
-  //     let vwh = window.innerHeight;
-  //     let factor = window.innerHeight * (largeScreen ? 0.65 : .85);
-  //     let subtract = (scrollPos - (1 + index) * vwh).toFixed(0);
-  //     let scale = 100 - ((subtract * 100) / factor).toFixed(0);
-  //     let scaleReverse = 100 - ((subtract * -100) / factor).toFixed(0);
-  //     if (subtract < factor && subtract > 0) {
-  //       container.style.transformOrigin = "top";
-  //       container.style.transform = `scaleY(${scale}%)`;
-  //     }
-  //     if (subtract > -1 * factor && subtract < 0) {
-  //       container.style.transformOrigin = "bottom";
-  //       container.style.transform = `scaleY(${scaleReverse}%)`;
-  //     }
-  //   // }
-  // }, [scrollPos]);
 
   return (
     <div className={classes.root}>
@@ -282,6 +253,7 @@ export const Preview = (props) => {
               playing={playing}
               loop
               muted
+              playsinline
               onReady={() => {
                 let vids = [...loadedVids];
                 if (!vids.includes(name)) {
@@ -308,7 +280,7 @@ export const Preview = (props) => {
             )}
           </div>
         </div>
-        {showSubtitle && largeScreen && (
+        {showSubtitle && largeScreen && growFinished && (
           <div className={classes.subtitle}>
             <Typography
               color="primary"
@@ -330,7 +302,7 @@ export const Preview = (props) => {
                 {role.toUpperCase()}
               </Typography>
             )}
-            {largeScreen && (
+            {largeScreen && !!roles && (
               <Typography
                 color="primary"
                 style={{
@@ -338,7 +310,7 @@ export const Preview = (props) => {
                   fontSize: largeScreen ? ".7rem" : ".55rem",
                 }}
               >
-                {director.toUpperCase()}
+                {roles?.toUpperCase()}
               </Typography>
             )}
             {largeScreen && (

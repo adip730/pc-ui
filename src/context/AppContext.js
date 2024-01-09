@@ -27,27 +27,6 @@ export const AppContextProvider = (props) => {
   const [gltf, setGltf] = useState(null);
   const [texture, setTexture] = useState(null);
 
-  // let mattAvatar = new THREE.Mesh();
-  // let derekAvatar = new THREE.Mesh();
-  // const renderer = new THREE.WebGLRenderer({
-  //   canvas: canvasRef.current,
-  //   antialias: true,
-  // });
-
-  // const scene = new THREE.Scene();
-
-  // const sphereGeometry = new THREE.SphereGeometry(3000);
-  // const sphereMaterial = new THREE.MeshStandardMaterial({
-  //   metalness: 1,
-  //   roughness: 0,
-  //   side: THREE.BackSide,
-  //   envMapIntensity: 1, // Set the environment map intensity
-  // });
-
-  // const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-
-  // const pmremGenerator = new THREE.PMREMGenerator(renderer);
-
   const doHdrLoad = async () => {
     if (!loadedHdr && !texture) {
       const hdrLoader = new THREE.TextureLoader();
@@ -75,8 +54,6 @@ export const AppContextProvider = (props) => {
 
   const doLoad = async () => {
     if (!loaded && !gltf) {
-      console.log("got to load gltf");
-
       const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath("decoder/draco/");
 
@@ -86,21 +63,7 @@ export const AppContextProvider = (props) => {
         loader.load(
           "/glTF/About Us_v3_Avatars Only.glb",
           function (gltf) {
-            console.log("GLTF id in AppContext: ", gltf.scene.uuid);
-            // setLoaded(true);
-            // setGltf(gltf);
-
-            let gltfTime = Date.now().toLocaleString("en-us", {
-              hour12: false,
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-              fractionalSecondDigits: 3,
-            });
-            console.log("time to finish gltf load: ", gltfTime);
-            // setGltf(gltf);
             resolve(gltf);
-            // return gltf;
           },
           undefined,
           function (error) {
@@ -136,8 +99,8 @@ export const AppContextProvider = (props) => {
     await getConfig()
       .then((res) => {
         let ret = [];
-        if (res && res.data && res.data.data && res.data.data.data) {
-          let conf = res.data.data.data.attributes.featuredIds;
+        if (res && res.data && res.data.data) {
+          let conf = res.data.data.attributes.featuredIds;
           let arr = conf.split(",");
           arr.forEach((el) => ret.push(el.trim()));
         }
@@ -150,56 +113,55 @@ export const AppContextProvider = (props) => {
   };
 
   const invokeGetHdri = async () => {
-    await getHdri()
+    return await getHdri()
       .then((res) => {
         if (res && res.data && res.data.data) {
-        let ret = res.data.data.attributes.testHdri.data.attributes.url;
-        setTestHdri(ret);
+          let ret = res.data.data.attributes.testHdri.data.attributes.url;
+          // setTestHdri(ret);
+          return ret;
         }
       })
       .catch(() => {
         console.log("couldnt fetch hdri");
-        setTestHdri("default")
+        return "default"
+        // setTestHdri("default");
       });
-    };
+  };
 
-  // const invokeGetMedia = async () => {
-  //     await getMedia().then((res) => {
-  //         let med = res.data
-  //         setMedia([...med]);
-  //     }).catch(() => {
-  //         console.log('couldnt fetch media');
-  //     });
-  // };
+  const handleHdri = async () => {
+    return await new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        reject("default");
+        setTestHdri("default");
+      }, 4000) // wait 10 sec
+    
+      invokeGetHdri().then(value => {
+        clearTimeout(timeoutId)
+        resolve(value)
+        setTestHdri(value);
+      })
+    })
+  }
 
-  // const invokeGetFolders = async () => {
-  //     await getFolders().then((res) => {
-  //         console.log(res);
-  //         // let fold = res.data
-  //         // setFolders([...fold]);
-  //     }).catch(() => {
-  //         console.log('couldnt fetch folders');
-  //     });
-  // };
-
-  useEffect(() => {
-    if (config && config.length > 0) {
-      if (config.length === loadedVids.length) {
-        setShowLoading(false);
-      }
-    } else {
-      setShowLoading(false);
-    }
-  }, [config, loadedVids]);
+  // useEffect(() => {
+  //   if (
+  //     config &&
+  //     config?.length > 0 &&
+  //     config?.length === loadedVids?.length &&
+  //     !test_hdri
+  //   ) {
+  //     setTestHdri("default")
+  //     setShowLoading(false);
+  //     console.log("in app context useeffect");
+  //   }
+  //   // } else {
+  //   //   setShowLoading(false);
+  // }, [config, loadedVids, test_hdri]);
 
   const invokeStart = () => {
     invokeGetProjects();
     invokeGetConfig();
-    invokeGetHdri();
-    // doLoad();
-    // doHdrLoad();
-    // invokeGetMedia();
-    // invokeGetFolders();
+    handleHdri();
   };
 
   const state = {

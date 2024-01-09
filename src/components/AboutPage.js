@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     // height: '100vh',
     alignItems: "center",
-    overFlow:"hidden",
+    overflow:"hidden",
   },
   
   assetContainer: {
@@ -22,6 +22,7 @@ const useStyles = makeStyles(() => ({
     // border: "1px solid black",
     textAlign: "right",
     width: '100%',
+    padding: 0,
   },
 
   textContainer: {

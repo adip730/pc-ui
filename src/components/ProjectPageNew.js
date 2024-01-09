@@ -36,14 +36,13 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     position: "relative",
     padding: "84px 64px 0 64px",
-    // maxHeight: "calc(100%-60)",
+    // paddingTop: "84px",
     height: "100vh",
     width: "100%",
-    // flexGrow: 1,
-    overflow: "auto",
+    overflowY: "scroll",
     boxSizing: "border-box",
     justifyContent: "flex-start",
-    
+    backgroundColor: "#dde1e1",
   },
   window: {
     height: "60%",
@@ -57,10 +56,10 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: "24px",
+    background: "#dde1e1 !important",
   },
   videoWrapper: {
     height: "100%",
-    // width: "100%",
     borderRadius: "20px",
     overflow: "hidden",
     position: "relative",
@@ -68,9 +67,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     boxSizing: "border-box",
     aspectRatio: 16 / 9,
-    // borderRadius: "20px",
-    // marginRight: "64px",
-    // objectFit: "cover",
+    backgroundColor: "#dde1e1",
   },
   overlay: {
     height: "100%",
@@ -78,7 +75,6 @@ const useStyles = makeStyles(() => ({
     position: "absolute",
     top: 0,
     left: 0,
-    // backgroundColor: "#00000033",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -94,26 +90,17 @@ const useStyles = makeStyles(() => ({
   },
   infoSection: {
     position: "relative",
-    // bottom: 0,
-    // marginTop: "auto",
     height: "auto",
     width: "100%",
-    // boxSizing: "border-box",
-    padding: "16px 0",
+    // padding: "16px 64px",
+    padding: '16px 0',
     marginBottom: "32px",
     display: "flex",
-    // flexDirection: "column",
-    // marginBottom: "16px",
-    // rowGap: "24px",
-    // justifyContent: "flex-start",
   },
   row: {
     marginTop: "32px",
     textAlign: "center",
-
     maxWidth: "75%",
-    // alignItems: "center",
-    // justifyContent: "center",
   },
   controls: {
     display: "flex",
@@ -201,11 +188,13 @@ export const ProjectPageNew = (props) => {
 
   const [expanded, setExpanded] = useState(false);
   const [playing, setPlaying] = useState(false);
-  const [volume, setVolume] = useState(0);
+  const [volume, setVolume] = useState(1);
   const [showControls, setShowControls] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(true);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [videoDuration, setVideoDuration] = useState(0);
   const [seeking, setSeeking] = useState(false);
+  const [played, setPlayed] = useState(false);
 
   useEffect(() => {
     let featUrl = featured.data.attributes.url;
@@ -229,21 +218,16 @@ export const ProjectPageNew = (props) => {
   }, []);
 
   useEffect(() => {
-    if (!largeScreen) {
-      if (!expanded) {
-        setShowOverlay(true);
-        setPlaying(false);
-      }
+    if (!playing && isLoaded) {
+      setShowOverlay(true);
     }
-  }, [expanded]);
+  }, [playing, isLoaded]);
 
-  /*useEffect(() => {
-    if (!largeScreen) {
-      if (playing) {
-        setExpanded(true);
-      }
+  useEffect(() => {
+    if (playing) {
+      setPlayed(true);
     }
-  }, [playing]);*/
+  }, [playing])
 
   const handleProgress = (changeState) => {
     if (changeState.played === 1) {
@@ -254,71 +238,82 @@ export const ProjectPageNew = (props) => {
     }
   };
 
-  useEffect(() => {
-    let container = document.getElementById("container");
-    let player = document.getElementById("player-wrapper");
-    let root = document.getElementById("pageRoot");
-    if (container && player) {
-      if (expanded) {
-        setShowNav(false);
-        player.style.transition = ".25s";
-        container.style.transition = "all 1s ease-in-out";
-        player.style.transformOrigin = "0 50%";
-        container.style.transformOrigin = "center";
-        player.style.borderRadius = 0;
-        container.style.height = "100vh";
-        player.style.paddingTop = "56.25%";
-        player.style.height = "auto";
-        player.style.width = "100%";
-        container.style.width = "100vw";
-        container.style.position = "fixed";
-        container.style.top = 0;
-        container.style.left = 0;
-        container.style.right = 0;
-        container.style.bottom = 0;
-        container.style.marginBottom = 0;
-        container.style.borderRadius = 0;
-        container.style.backgroundColor = "#1a1a1a";
-      } else {
-        setShowNav(true);
-        container.style.transition = "0s";
-        container.style.height = "60%";
-        container.style.width = "100%";
-        container.style.position = "relative";
-        container.style.marginBottom = "24px";
-        container.style.borderRadius = "20px";
-        container.style.backgroundColor = "#FFFFFF";
-        player.style.borderRadius = "20px";
-        player.style.paddingTop = 0;
-        player.style.height = "100%";
-        player.style.width = "";
-      }
-    }
-  }, [expanded]);
+  // Manual Video Expansion
+  // useEffect(() => {
+  //   let container = document.getElementById("container");
+  //   let player = document.getElementById("player-wrapper");
+  //   let root = document.getElementById("pageRoot");
+  //   if (container && player) {
+  //     if (expanded) {
+  //       setShowNav(false);
+  //       player.style.transition = ".25s";
+  //       container.style.transition = "all 1s ease-in-out";
+  //       player.style.transformOrigin = "0 50%";
+  //       container.style.transformOrigin = "center";
+  //       player.style.borderRadius = 0;
+  //       container.style.height = "100vh";
+  //       player.style.paddingTop = "56.25%";
+  //       player.style.height = "auto";
+  //       player.style.width = "100%";
+  //       container.style.width = "100vw";
+  //       container.style.position = "fixed";
+  //       container.style.top = 0;
+  //       container.style.left = 0;
+  //       container.style.right = 0;
+  //       container.style.bottom = 0;
+  //       container.style.marginBottom = 0;
+  //       container.style.borderRadius = 0;
+  //       container.style.backgroundColor = "#1a1a1a";
+  //     } else {
+  //       setShowNav(true);
+  //       container.style.transition = "0s";
+  //       container.style.height = "60%";
+  //       container.style.width = "100%";
+  //       container.style.position = "relative";
+  //       container.style.marginBottom = "24px";
+  //       container.style.borderRadius = "20px";
+  //       container.style.backgroundColor = "#FFFFFF";
+  //       player.style.borderRadius = "20px";
+  //       player.style.paddingTop = 0;
+  //       player.style.height = "100%";
+  //       player.style.width = "";
+  //     }
+  //   }
+  // }, [expanded]);
 
+  // Controls styling
   // const host = document.getElementById("videoFrame");
+  // // host?.attachShadow({mode: 'open'})
   // var sheet = new CSSStyleSheet();
   // sheet.replaceSync(`-webkit-media-controls::- { color: rgb(255, 0, 0) }`);
-  // host.shadowRoot.adoptedStyleSheets = [sheet];
+  // // console.log(host);
+  // // console.log(host?.shadowRoot);
+  // const elemStyleSheets = host?.shadowRoot?.adoptedStyleSheets;
+  // elemStyleSheets?.push(sheet);
 
   return (
     <div
       className={classes.root}
-      id="pageRoot"
       style={{
         padding: largeScreen ? "84px 64px 0px 64px" : "84px 32px 0px 32px",
       }}
+      id="pageRoot"
     >
       <div
         className={classes.window}
         id="container"
-        onMouseEnter={() => expanded && setShowControls(true)}
-        onMouseLeave={() => expanded && setShowControls(false)}
+        // onMouseEnter={() => expanded && setShowControls(true)}
+        // onMouseLeave={() => expanded && setShowControls(false)}
+        onMouseEnter={() => playing && setShowOverlay(true)}
+        onMouseLeave={() => playing && setShowOverlay(false)}
       >
         <div
           className={classes.videoWrapper}
-          onMouseEnter={() => !expanded && setShowControls(true)}
-          onMouseLeave={() => !expanded && setShowControls(false)}
+          onClick={() => setPlaying(!playing)}
+          // onMouseEnter={() => !expanded && setShowControls(true)}
+          // onMouseLeave={() => !expanded && setShowControls(false)}
+          onMouseEnter={() => playing && setShowOverlay(true)}
+          onMouseLeave={() => playing && setShowOverlay(false)}
           id="player-wrapper"
         >
           <ReactPlayer
@@ -336,18 +331,15 @@ export const ProjectPageNew = (props) => {
               alignContent: "center",
             }}
             url={`http://${endpoint}${featuredUrl}`}
-            // width="100%"
-            // height='auto'
             width={expanded ? "auto" : "100%"}
             height={expanded ? "100%" : "auto"}
             playing={playing}
-            // loop
             volume={volume}
-            // muted
             playsinline
-            controls={showControls}
+            controls={false}
             progressInterval={100}
             onProgress={handleProgress}
+            onReady={() => setIsLoaded(true)}
           />
 
           {showOverlay && (
@@ -357,24 +349,21 @@ export const ProjectPageNew = (props) => {
                   size="large"
                   style={{ color: "#FFFFFF" }}
                   onClick={() => {
-                    setShowOverlay(false);
-                    setPlaying(true);
+                    setShowOverlay(!showOverlay);
+                    setPlaying(!playing);
                   }}
                 >
-                  {/* <PlayCircleOutlinedIcon
-                    style={{ height: "60px", width: "60px" }}
-                  /> */}
                   <Typography
                     sx={{
                       fontFamily: "Square721",
-                      fontSize: '1rem',
+                      fontSize: "1rem",
                     }}
                   >
-                    PLAY
+                    {playing ? "PAUSE" : "PLAY"}
                   </Typography>
                 </IconButton>
               </div>
-              {thumbnailUrl !== "" && (
+              {!played && thumbnailUrl !== "" && (
                 <img
                   className={classes.thumbnail}
                   src={`http://${endpoint}${thumbnailUrl}`}
@@ -394,6 +383,7 @@ export const ProjectPageNew = (props) => {
         sx={{
           display: expanded ? "none" : "flex",
           marginBottom: largeScreen ? "48px" : "32px",
+          // padding: largeScreen ? '16px 64px' : '16px 32px',
         }}
       >
         <Grid item xs={6}>
@@ -518,7 +508,6 @@ export const ProjectPageNew = (props) => {
           </Typography>
         </Grid>
       </Grid>
-
       <div
         style={{
           width: largeScreen ? "calc(100% + 128px)" : "calc(100% + 64px)",
@@ -530,18 +519,6 @@ export const ProjectPageNew = (props) => {
       >
         <Footer />
       </div>
-      {/* )} */}
-      {/* {xlargeScreen && (
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            width: "100%",
-            marginTop: "auto",
-          }}
-        >
-          <Footer />
-        </div> */}
     </div>
   );
 };

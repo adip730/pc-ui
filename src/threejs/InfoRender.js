@@ -1,9 +1,9 @@
 //import { useRef, useEffect } from 'react';
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import * as THREE from "three";
 //import GLTFLoader from 'three-gltf-loader';
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 //import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 // import { createCanvas } from "canvas";
@@ -17,19 +17,71 @@ import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
 //import vertexShader from './VertexShader.js';
 //import fragmentShader from './FragmentShader.js';
 import GPGPU_Water from './gpgpuWater.js';
-
+import avatarsGlb from '../../public/glTF/avatars.glb';
 import "./colorBalance.css";
+import "./infostyles.css"
 
+import backup_graphic from "../../public/backup/about_us.gif"
+//import vertical_graphic from "../../public/backup/vertical.gif"
+import backup_mov from "../../public/backup/about_us.mp4"
 // About page scene demo
 export const InfoRender = () => {
   // Canvas ref
   const canvasRef = useRef(null);
   const sceneHeight = window.innerHeight + 5;
+  //const [sceneHeight, setSceneHeight] = useState(window.innderHeight + 5);
   const sceneWidth = window.innerWidth;
   const sceneRatio = window.devicePixelRatio;
 
+  const ios = isIOS();
+
+  if (ios) {
+    return (
+      <div id="main" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', overflow: 'hidden' }}>
+        <video className="video-container video-container-overlay" autoPlay loop muted playsInline preload="auto" style={{ height: '100vh', objectFit: 'cover' }}>
+            <source src={ backup_mov } type="video/mp4" />
+        </video>
+      </div>
+    );/*
+    //if(sceneWidth>sceneHeight){
+      return (
+        <div id="main" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', overflow: 'hidden' }}>
+          <img src={backup_graphic} alt="Info fallback" style={{ height: {sceneHeight}, objectFit: 'cover' }} />
+        </div>
+      );
+    /*}
+    else{
+      return (
+        <div id="main" style={{ width: {sceneWidth}, height: {sceneHeight}, overflow: 'hidden' }}>
+          <img src={vertical_graphic} alt="Info fallback" style={{ height: {sceneHeight}, objectFit: 'cover' }} />
+        </div>
+      );
+    }
+    
+    
+    eturn (
+      <div id="main">
+        <video className="video-container video-container-overlay" autoPlay="true" loop muted="true">
+            <source src={ backup_mov } type="video/mp4" />
+        </video>
+      </div>
+    );*/
+  }
+
   //const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
+
+    const onWindowResize = () => {
+      const newWidth = window.innerWidth;
+      const newHeight = window.innerHeight;
+    
+      //setSceneHeight(newHeight + 5); // Update the state variables
+    
+      camera.aspect = newWidth / newHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(newWidth, newHeight);
+    };
+
     // Get user input 
     const canvas = canvasRef.current;
     //canvas.addEventListener('wheel', handleScroll);
@@ -45,15 +97,16 @@ export const InfoRender = () => {
     loadingDiv.style.top = '0';
     loadingDiv.style.left = '0';
     loadingDiv.style.width = '100%';
-    loadingDiv.style.height = '100%';
+    loadingDiv.style.height = '100vh';
     loadingDiv.style.background = 'rgba(237,239,240)'; // semi-transparent black
     loadingDiv.style.color = 'black'; // set the text color to white
-    loadingDiv.style.padding = '20px'; // add 20px padding around the text
+    // loadingDiv.style.padding = '20px'; // add 20px padding around the text
     loadingDiv.style.fontSize = '.7rem'; // set the font size to 24px
     loadingDiv.style.fontWeight = 'normal'; // make the text bold
     loadingDiv.style.textAlign = 'center'; // center the text horizontally
     loadingDiv.style.lineHeight = '100vh'; // center the text vertically*/
 
+    window.addEventListener('resize', onWindowResize);
 
     // Add the loading div to the DOM
     document.body.appendChild(loadingDiv);
@@ -64,7 +117,7 @@ export const InfoRender = () => {
 
     const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath("decoder/draco/");
-
+      // dracoLoader.setDecoderConfig({ type: 'js' });
       const loader = new GLTFLoader();
       loader.setDRACOLoader(dracoLoader);
 
@@ -139,10 +192,9 @@ export const InfoRender = () => {
 
     });
     // Importing entire scene from c4d export
-    loader.load('./glTF/avatars.glb', (gltf) => {
+    loader.load(avatarsGlb, (gltf) => {
       const root = gltf.scene;
 
-      console.log(dumpObject(root).join('\n'));
       root.rotateY(Math.PI/2);
       mattAvatar = root.getObjectByName('Matt');
       derekAvatar = root.getObjectByName('Derek');
@@ -303,13 +355,14 @@ export const InfoRender = () => {
     return () => {
       //water.renderer.domElement.removeEventListener("mousemove", updateMousePosition);
       canvas.removeEventListener("pointermove", updateMousePosition);
+      window.removeEventListener('resize', onWindowResize);
       clearThree(scene);
     }
   }, []); // The empty array ensures that this effect only runs once when the component mounts
 
 return (
   <div id = "main">
-    <canvas ref={canvasRef} className = "three" width={sceneWidth} height={sceneHeight} />
+    <canvas ref={canvasRef} className = "three" width={sceneWidth} height={sceneHeight}/>
   </div>
 );
 }
@@ -422,6 +475,12 @@ const clearThree = (obj) => {
     obj.material.dispose();
   }
 };
+
+function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.platform) || 
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
 
 
   

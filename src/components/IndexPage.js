@@ -1,8 +1,6 @@
 // CHANGE THE VIDEO TO PREVIEW VIDEOS
 
-
 import React, { useState, useContext, useEffect } from "react";
-import ReactPlayer from "react-player/file";
 import makeStyles from "@mui/styles/makeStyles";
 import AppContext from "../context/AppContext";
 import Typography from "@mui/material/Typography";
@@ -11,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Footer from "./Footer";
 import Button from "@mui/material/Button";
-
 
 const useStyles = makeStyles(() => ({
   viewContainer: {
@@ -27,9 +24,8 @@ const useStyles = makeStyles(() => ({
     //background: "rgb(237,239,240)",
     backgroundColor: "#dde1e1",
     overflow: "hidden",
-    marginTop:"-10px",
+    marginTop: "-10px",
   },
-
 
   previewContainer: {
     height: "100%",
@@ -71,12 +67,11 @@ const useStyles = makeStyles(() => ({
     // paddingBottom:"10px",
   },
 
-// indexButton:{
-//   "&:hover": {
-//   backgroundColor: 'red important!',
-//   }
-// }
-
+  // indexButton:{
+  //   "&:hover": {
+  //   backgroundColor: 'red important!',
+  //   }
+  // }
 }));
 
 const endpoint = process.env.REACT_APP_STRAPIURL;
@@ -96,10 +91,25 @@ export const IndexPage = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    
     if (hover !== "") {
       if (projects.some((proj) => proj.name === hover)) {
         let proj = projects[projects.findIndex((proj) => proj.name === hover)];
+        if (proj.preview && proj.preview.data && proj.preview.data.attributes) {
+          let url = proj.preview.data.attributes.url;
+          setFeaturedUrl(`http://${endpoint}${url}`);
+        }
+      }
+    } else {
+      setFeaturedUrl("");
+      setIsLoaded(false);
+    }
+  }, [hover]);
+
+  useEffect(() => {
+    if (hover !== "") {
+      if (projects.some((proj) => proj.client === hover)) {
+        let proj =
+          projects[projects.findIndex((proj) => proj.client === hover)];
         if (proj.featured) {
           let url = proj.featured.data.attributes.url;
           setFeaturedUrl(`http://${endpoint}${url}`);
@@ -111,25 +121,9 @@ export const IndexPage = (props) => {
     }
   }, [hover]);
 
-  useEffect(() => {
-  if (hover !== "") {
-    if (projects.some((proj) => proj.client === hover)) {
-      let proj = projects[projects.findIndex((proj) => proj.client === hover)];
-      if (proj.featured) {
-        let url = proj.featured.data.attributes.url;
-        setFeaturedUrl(`http://${endpoint}${url}`);
-      }
-    }
-  } else {
-    setFeaturedUrl("");
-    setIsLoaded(false);
-  }
-}, [hover]);
-
   const goTo = (route) => {
     navigate(`../project/${route}`, { replace: true });
   };
-
 
   return (
     <div
@@ -138,10 +132,12 @@ export const IndexPage = (props) => {
         padding: largeScreen ? "0px 24px 0px 24px" : "0px 24px 0px 24px",
       }}
     >
-      <div className={classes.bottomBox}
-            style={{
-              paddingBottom: largeScreen ? "84px" : "34px",
-            }}>
+      <div
+        className={classes.bottomBox}
+        style={{
+          paddingBottom: largeScreen ? "84px" : "34px",
+        }}
+      >
         {projects.map((proj, index) => {
           return (
             <Grid
@@ -153,7 +149,7 @@ export const IndexPage = (props) => {
               key={`${proj.projectName}-${index}`}
               sx={{ padding: "4px 0 4px 0" }}
               style={{
-                marginBottom:"2px",
+                marginBottom: "2px",
               }}
             >
               <Grid
@@ -181,20 +177,24 @@ export const IndexPage = (props) => {
                   style={{
                     fontFamily: "Square721",
                     fontSize: largeScreen ? ".75rem" : ".6rem",
-                    lineHeight:".6rem",
+                    lineHeight: ".6rem",
                   }}
                 >
                   {proj.client.toUpperCase()}
                 </Typography>
               </Grid>
 
-              <Grid item xs={0} md={5} 
-              sx={{ 
-                display: { xs: "none", md: "block" },
-                textAlign: "left" 
-              }}
+              <Grid
+                item
+                xs={0}
+                md={5}
+                sx={{
+                  display: { xs: "none", md: "block" },
+                  textAlign: "left",
+                }}
                 onMouseEnter={(e) => setHover(proj.client)}
-                onMouseLeave={(e) => setHover("")}>
+                onMouseLeave={(e) => setHover("")}
+              >
                 {largeScreen ? (
                   <Typography
                     color="primary"
@@ -206,7 +206,6 @@ export const IndexPage = (props) => {
                   >
                     {proj.projectName.toUpperCase()}
                   </Typography>
-                  
                 ) : (
                   <>
                     <Button
@@ -215,7 +214,7 @@ export const IndexPage = (props) => {
                         display: "block",
                         position: "absolute",
                         width: "calc(100% - 48px)",
-                        cursor:"pointer",
+                        cursor: "pointer",
                       }}
                       onClick={() => goTo(proj.name)}
                     />
@@ -233,18 +232,21 @@ export const IndexPage = (props) => {
                 )}
               </Grid>
 
-              <Grid item xs={1} md={3} 
-              sx={{
-                textAlign: { xs: "left", md: "left" },
-                paddingLeft:{ xs:"4rem",},
-}}>
+              <Grid
+                item
+                xs={1}
+                md={3}
+                sx={{
+                  textAlign: { xs: "left", md: "left" },
+                  paddingLeft: { xs: "4rem" },
+                }}
+              >
                 <Typography
                   color="primary"
                   style={{
                     fontFamily: "Square721",
                     fontSize: largeScreen ? ".75rem" : ".6rem",
-                    lineHeight:".6rem",
-
+                    lineHeight: ".6rem",
                   }}
                 >
                   {proj.role.toUpperCase()}
@@ -264,11 +266,10 @@ export const IndexPage = (props) => {
                   style={{
                     fontFamily: "Square721",
                     fontSize: largeScreen ? ".75rem" : ".6rem",
-                    lineHeight:".6rem",
-
+                    lineHeight: ".6rem",
                   }}
                 >
-                  {proj.director.toUpperCase()}
+                  {proj.roles?.toUpperCase()}
                 </Typography>
               </Grid>
               <Grid
@@ -285,7 +286,7 @@ export const IndexPage = (props) => {
                     fontFamily: "Square721",
                     fontSize: largeScreen ? ".75rem" : ".6rem",
                     lineHeight: ".6rem",
-                    textAlign:"right",
+                    textAlign: "right",
                   }}
                 >
                   {proj.code.toUpperCase()}
@@ -295,7 +296,6 @@ export const IndexPage = (props) => {
           );
         })}
       </div>
-
       <div
         style={{
           width: "100%",
@@ -305,9 +305,9 @@ export const IndexPage = (props) => {
           // bottom: 0,
         }}
       >
-        <Footer/>
+        <Footer />
       </div>
-      
+
       {hover !== "" && (
         <div
           className={classes.previewContainer}
@@ -315,7 +315,7 @@ export const IndexPage = (props) => {
         >
           <div
             className={classes.viewWindow}
-            style={{ display: isLoaded ? '' : 'none'}}
+            style={{ display: isLoaded ? "" : "none" }}
           >
             <video
               onLoadedData={() => setIsLoaded(true)}
@@ -327,7 +327,7 @@ export const IndexPage = (props) => {
                 maxWidth: "100%",
                 maxHeight: "100%",
                 overflow: "hidden",
-              borderRadius: "20px",
+                borderRadius: "20px",
               }}
               src={videoMap[hover] ? videoMap[hover] : featuredUrl}
             />

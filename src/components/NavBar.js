@@ -10,27 +10,27 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import logo_gif from "../../public/logo-gif.gif";
 
 const useStyles = makeStyles(() => ({
+  gradient: {
+    position: "fixed",
+    zIndex: 4,
+    right: "0",
+    left: "0",
+    height: "60px",
+    background:
+      "linear-gradient(to bottom, rgba(221,225,225, 0) 0%, rgba(221,225,225, .5) 5%, rgba(221,225,225, .5) 60%, rgba(221,225,225, 0) 100%)",
+  },
 
-  gradient:{
-    position:"fixed",
-    zIndex:"1",
-    right:"0",
-    left:"0",
-    height:"60px",
-    background: "linear-gradient(to bottom, rgba(221,225,225, 0) 0%, rgba(221,225,225, .5) 5%, rgba(221,225,225, .5) 60%, rgba(221,225,225, 0) 100%)",
-},
-
-navBar: {
+  navBar: {
     minWidth: "100%",
     background: "rgb(0,0,0,0)",
     width: "100%",
     position: "fixed",
     top: "0px",
     right: 0,
-    flexWrap:"nowrap",
+    flexWrap: "nowrap",
     left: 0,
     height: "30px",
-    zIndex: 3,
+    zIndex: 6,
     marginBottom: 0,
     display: "flex",
     flexDirection: "row",
@@ -40,7 +40,7 @@ navBar: {
     boxSizing: "border-box",
     transformOrigin: "top",
     backdropFilter: "blur(7.1px) contrast(1) invert(0.00)",
-    borderRadius:"5rem",
+    borderRadius: "5rem",
     //boxShadow: "rgba(50, 50, 93, 0.25) 0px 3px 17px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
     //boxShadow: "rgba(50, 50, 93, 0.25) 0px 10px 10px -20px, rgba(0, 0, 0, 0.3) 0px 3px 6px -3px",
   },
@@ -51,7 +51,7 @@ navBar: {
     flexDirection: "row",
     alignItems: "flex-start",
     height: "100%",
-    zIndex: 2,
+    zIndex: 5,
   },
   menuButton: {
     fontFamily: "Square721",
@@ -65,8 +65,8 @@ navBar: {
     fontFamily: "Square721",
   },
   logo: {
-    paddingRight:"10px",
-    paddingTop:"10px",
+    paddingRight: "10px",
+    paddingTop: "10px",
     top: "0px",
     right: "0px",
     position: "absolute",
@@ -144,36 +144,23 @@ export const NavBar = (props) => {
   //   }
   // }, [location]);
 
-
   //const audio = new Audio("");
   //const buttons = document.querySelectorAll("button");
-  
+
   //buttons.forEach(button => {
   //  button.addEventListener("click", () => {
   //    audio.play();
   //  });
- // });
- 
-
+  // });
 
   return (
-    <><div
-      className={classes.navBar}
-      style={{
-        transform: showNav ? "scaleY(1)" : "scaleY(0)",
-        padding: largeScreen ? "5px 5px" : "5px 5px",
-        background: invertColor
-          ? "rgba(255,255,255,0)"
-          : "rgba(255, 255, 255, 0)",
-      }}
-    >
-      <Grid
-        container
-        className={classes.toolbar}
+    <>
+      <div
+        className={classes.navBar}
         style={{
           transform: showNav ? "scaleY(1)" : "scaleY(0)",
           padding: largeScreen ? "5px 5px" : "5px 5px",
-          flexWrap: largeScreen ? "nowrap": "nowrap",
+          flexWrap: largeScreen ? "nowrap" : "nowrap",
           background: invertColor
             ? "rgba(255,255,255,0)"
             : "rgba(255, 255, 255, 0)",
@@ -183,7 +170,7 @@ export const NavBar = (props) => {
           container
           className={classes.toolbar}
           style={{
-            flexWrap: largeScreen ? "nowrap": "nowrap",
+            flexWrap: largeScreen ? "nowrap" : "nowrap",
             padding: largeScreen ? "0px 5px" : "0px",
             minWidth: largeScreen && showLogo ? "100%" : "60%",
           }}
@@ -192,7 +179,11 @@ export const NavBar = (props) => {
             item
             xs={6}
             sm={2}
-            sx={{ display: "flex", justifyContent: "flex-start" , flexwrap:"nowrap",}}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              flexwrap: "nowrap",
+            }}
           >
             <Button
               className={classes.menuButton}
@@ -202,7 +193,7 @@ export const NavBar = (props) => {
                 color: invertColor ? "#000000" : "#000000",
                 padding: 0,
                 fontSize: largeScreen ? ".7rem" : ".55rem",
-                flexWrap: largeScreen ? "nowrap": "nowrap",
+                flexWrap: largeScreen ? "nowrap" : "nowrap",
                 whiteSpace: "nowrap",
               }}
               onClick={(e) => navigate("/")}
@@ -266,9 +257,12 @@ export const NavBar = (props) => {
             onClick={(e) => navigate("/")}
           >
             {largeScreen ? (
-              <Fade in={showLogo} mountOnEnter unmountOnExit timeout={{appear: 2500,
-                enter: 2500,
-                exit: 500}}>
+              <Fade
+                in={showLogo}
+                mountOnEnter
+                unmountOnExit
+                timeout={{ appear: 2500, enter: 2500, exit: 500 }}
+              >
                 <img
                   className={classes.logo}
                   src={logo_gif}
@@ -278,7 +272,7 @@ export const NavBar = (props) => {
             ) : null}
           </Grid>
         </Grid>
-{/*         
+        {/*         
         <Grid
           item
           xs={0}
@@ -321,18 +315,14 @@ export const NavBar = (props) => {
           </Button>
         </Grid> */}
 
-
         {/* <Grid
           item
           xs={6}
           sm={5}
           style={{
-            display: "none",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            visibility: hideLogo ? "hidden" : "visible",
+            padding: largeScreen ? "0px 5px" : "0px",
+            minWidth: largeScreen && showLogo ? "100%" : "60%",
           }}
-          direction="row"
         >
           {largeScreen ? (
             <Fade in={showLogo} unmountOnExit timeout={500}>
@@ -344,15 +334,11 @@ export const NavBar = (props) => {
           ) : null}
         </Grid> */}
 
-
-
-      </Grid>
-    
-    </div>
-      <div className={classes.gradient}
->
-      </div></>
-    );
+        {/* </Grid> */}
+      </div>
+      <div className={classes.gradient}></div>
+    </>
+  );
 };
 
 export default NavBar;
