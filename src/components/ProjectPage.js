@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AppContext from "../context/AppContext";
 import Footer from "./Footer";
+import Carousel from "./Carousel";
 
 import PlayCircleOutlinedIcon from "@mui/icons-material/PlayCircleOutlined";
 import Slider from "@mui/material/Slider";
@@ -166,7 +167,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const endpoint = process.env.REACT_APP_STRAPIURL;
+//const endpoint = process.env.REACT_APP_STRAPIURL;
 
 export const ProjectPage = (props) => {
   const { viewMode, data, media } = props;
@@ -194,10 +195,16 @@ export const ProjectPage = (props) => {
   const largeScreen = useMediaQuery("(min-width:800px)");
   const xlargeScreen = useMediaQuery("(min-width:1200px)");
 
+  //converting the featured array to carousel slides
+  const carouselData = featured.data.map(item => ({
+    ...item
+  }));
+
+
   const playerRef = useRef(null);
 
-  const [featuredUrl, setFeaturedUrl] = useState("");
-  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  //const [featuredUrl, setFeaturedUrl] = useState("");
+  //const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [creditsArr, setCreditsArr] = useState([]);
 
   const [expanded, setExpanded] = useState(false);
@@ -209,13 +216,13 @@ export const ProjectPage = (props) => {
   const [seeking, setSeeking] = useState(false);
 
   useEffect(() => {
-    let featUrl = featured.data.attributes.url;
+    /*let featUrl = featured.data[0].attributes.url;
     let thumbUrl =
       thumbnail && thumbnail.data && thumbnail.data.attributes
         ? thumbnail.data.attributes.url
         : "";
-    setFeaturedUrl(featUrl);
-    setThumbnailUrl(thumbUrl);
+    setFeaturedUrl(featUrl); 
+    setThumbnailUrl(thumbUrl);*/
 
     if (roles) {
       let tempCreds = roles.split(",");
@@ -229,14 +236,14 @@ export const ProjectPage = (props) => {
     }
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (!largeScreen) {
       if (!expanded) {
         setShowOverlay(true);
         setPlaying(false);
       }
     }
-  }, [expanded]);
+  }, [expanded]);*/
 
   /*useEffect(() => {
     if (!largeScreen) {
@@ -317,140 +324,11 @@ export const ProjectPage = (props) => {
           onMouseLeave={() => !expanded && setShowControls(false)}
           id="player-wrapper"
         >
-          <ReactPlayer
-            onClick={() => setPlaying(!playing)}
-            ref={playerRef}
-            id="videoFrame"
-            style={{
-              maxHeight: "100%",
-              maxWidth: "100%",
-              borderRadius: expanded ? "0px" : "20px",
-              overflow: "hidden",
-              position: "absolute",
-              top: 0,
-              left: 0,
-              alignContent: "center",
-            }}
-            url={`http://${endpoint}${featuredUrl}`}
-            // width="100%"
-            // height='auto'
-            width={expanded ? "auto" : "100%"}
-            height={expanded ? "100%" : "auto"}
-            playing={playing}
-            // loop
-            volume={volume}
-            // muted
-            playsinline
-            // fluid={true}
-            controls={showControls}
-            progressInterval={100}
-            onProgress={handleProgress}
+          <Carousel
+            slides={carouselData}
+            thumbnail = {thumbnail}
           />
-          {/* {showControls && !showOverlay && !expanded && (
-            <div className={classes.controls}>
-              <Button
-                className={classes.playPause}
-                onClick={() => setPlaying(!playing)}
-              >
-                {playing ? (
-                  <PauseIcon style={{ color: "white" }} />
-                ) : videoDuration === 1 ? (
-                  <ReplayIcon style={{ color: "white" }} />
-                ) : (
-                  <PlayArrowIcon style={{ color: "white" }} />
-                )}
-              </Button>
-              <Button
-                className={classes.volume}
-                onClick={() => setVolume(volume === 1 ? 0 : 1)}
-              >
-                {volume === 1 ? (
-                  <VolumeUpIcon style={{ color: "white" }} />
-                ) : (
-                  <VolumeOffIcon style={{ color: "white" }} />
-                )}
-              </Button>
-              <div className={classes.scrub}>
-                <Slider
-                  step={1}
-                  value={videoDuration * 100}
-                  className={classes.durationSlider}
-                  onChange={onSeek}
-                  onMouseDown={onSeekMouseDown}
-                  onChangeCommitted={onSeekMouseUp}
-                />
-              </div>
-              <Button
-                className={classes.fullScreen}
-                onClick={() => setExpanded(true)}
-              >
-                <FullscreenIcon style={{ color: "white" }} />
-              </Button>
-            </div>
-          )} */}
-          {showOverlay && (
-            <>
-              <div className={classes.overlay}>
-                <IconButton
-                  size="large"
-                  style={{ color: "#FFFFFF" }}
-                  onClick={() => {
-                    setShowOverlay(false);
-                    setPlaying(true);
-                  }}
-                >
-                  <PlayCircleOutlinedIcon
-                    style={{ height: "60px", width: "60px" }}
-                  />
-                </IconButton>
-              </div>
-              {thumbnailUrl !== "" && (
-                <img
-                  className={classes.thumbnail}
-                  src={`http://${endpoint}${thumbnailUrl}`}
-                />
-              )}
-            </>
-          )}
         </div>
-        {/* {showControls && expanded && (
-          <div className={classes.controls}>
-            <Button
-              className={classes.playPause}
-              onClick={() => setPlaying(!playing)}
-            >
-              {playing ? (
-                <PauseIcon style={{ color: "white" }} />
-              ) : videoDuration === 1 ? (
-                <ReplayIcon style={{ color: "white" }} />
-              ) : (
-                <PlayArrowIcon style={{ color: "white" }} />
-              )}
-            </Button>
-            <Button
-              className={classes.volume}
-              // onClick={}
-            >
-              <VolumeUpIcon style={{ color: "white" }} />
-            </Button>
-            <div className={classes.scrub}>
-              <Slider
-                step={1}
-                value={videoDuration * 100}
-                className={classes.durationSlider}
-                onChange={onSeek}
-                onMouseDown={onSeekMouseDown}
-                onChangeCommitted={onSeekMouseUp}
-              />
-            </div>
-            <Button
-              className={classes.fullScreen}
-              onClick={() => setExpanded(false)}
-            >
-              <FullscreenExitIcon style={{ color: "white" }} />
-            </Button>
-          </div>
-        )} */}
       </div>
 
       <Grid

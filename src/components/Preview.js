@@ -92,7 +92,7 @@ export const Preview = (props) => {
 
   const { projectName, name, role, client, director, code, featured, preview } =
     data;
-
+ 
   const [showSubtitle, setShowSubtitle] = useState(false);
 
   const [playing, setPlaying] = useState(false);
@@ -122,7 +122,7 @@ export const Preview = (props) => {
     let prevUrl =
       preview && preview.data && preview.data.attributes
         ? preview.data.attributes.url
-        : featured.data.attributes.url;
+        : featured.data[0].attributes.url;
     setPreviewUrl(prevUrl);
   }, []);
 
@@ -199,6 +199,7 @@ export const Preview = (props) => {
     }
   }, [showSubtitle, largeScreen]);
 
+    //console.log(featured.data);
   return (
     <div className={classes.root}>
       <div className={classes.window} id={`window-${name}`}>

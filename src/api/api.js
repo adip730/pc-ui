@@ -11,7 +11,17 @@ export const getProjects = () => {
             'Authorization': `${auth}`,
         }
     });
-};
+}; 
+
+/*export const getCarouselData = async () => {
+    return data;
+    let url = `http://${endpoint}/api/carousel?populate=*`
+    return axios.get(url, {
+        headers: {
+            'Authorization': `${auth}`,
+        }
+    })
+};*/
 
 export const getMedia = () => {
     let url = `http://${endpoint}/api/upload/files`

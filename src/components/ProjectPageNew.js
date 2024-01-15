@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AppContext from "../context/AppContext";
 import Footer from "./Footer";
+import Carousel from "./Carousel";
 
 import PlayCircleOutlinedIcon from "@mui/icons-material/PlayCircleOutlined";
 import Slider from "@mui/material/Slider";
@@ -28,13 +29,31 @@ const useStyles = makeStyles(() => ({
       opacity: 1,
     },
   },
+  /*'@global': {
+    '.slick-slide.slick-center img': {
+      transform: 'scale(1.1)',
+      transition: 'transform 0.5s ease',
+      opacity: 1,
+    },
+    '.slick-slide.slick-center .slide': {
+      transform: 'scale(1.1)',
+      transition: 'transform 0.5s ease',
+      opacity: 1,
+    },
+    
+  },*/
+  '@global': {
+    '.slick-track': {
+      margin:"auto",
+    }
+  },
   root: {
     animation: "$fadein 1000ms",
     position: "absolute",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    position: "relative",
+    //position: "relative",
     padding: "84px 64px 0 64px",
     // paddingTop: "84px",
     height: "100vh",
@@ -45,26 +64,46 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "#dde1e1",
   },
   window: {
+    // Add media query for phones
+    "@media (max-width: 600px)": {
+      height: "35%",
+      minHeight: "35%",
+    },
+    "@media (max-width: 800px)": {
+      height: "50%",
+      minHeight: "50%",
+      paddingBottom: "0px",
+    },
+    '@media (max-width: 900px)': {
+      height: "55%",
+      minHeight: "55%",
+      marginBottom: "0px",
+    },
     height: "60%",
     minHeight: "60%",
-    width: "100%",
+    width: "100vw",
+    //overflow: "visible",
     overflow: "hidden",
-    borderRadius: "20px",
+    //borderRadius: "20px",
     position: "relative",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    //flexGrow: 1,
+    //display: "flex",
+    //flexDirection: "column",
+    //alignItems: "center",
+    //justifyContent: "center",
     marginBottom: "24px",
-    background: "#dde1e1 !important",
+    paddingBottom: "24px",
+    //background: "#dde1e1 !important",
   },
   videoWrapper: {
-    height: "100%",
+    //height: "100%",
     borderRadius: "20px",
+    //overflow: "visible",
     overflow: "hidden",
     position: "relative",
-    alignItems: "center",
-    justifyContent: "center",
+    //position: "absolute",
+    //alignItems: "center",
+    //justifyContent: "center",
     boxSizing: "border-box",
     aspectRatio: 16 / 9,
     backgroundColor: "#dde1e1",
@@ -134,6 +173,78 @@ const useStyles = makeStyles(() => ({
   fullScreen: {
     maxWidth: "10%",
   },
+  carouselWrapper: {
+    //height: "100%",
+    //maxWidth: "100vw",
+    //display: "flex",
+    //alignItems: "center",
+    //justifyContent: "center",
+    //boxSizing: "border-box",
+    //overflow: "hidden",
+    //position: "relative",
+  },
+  slide: {
+    //maxWidth: "100vh",
+    "@media (max-width: 600px)": {
+      marginBottom: "0px",
+    },
+    maxHeight: "100%",
+    aspectRatio: 16 / 9,
+    display: 'grid',
+    placeItems: 'center',
+    //margin: 'auto',
+    borderRadius: '20px',
+    marginBottom: "24px",
+    paddingBottom: "24px",
+    overflow: 'hidden',
+    //display: 'flex',
+    //transform: 'scale(0.8)', // Example: scale down
+    //opacity: 0.5, // Example: reduce opacity
+    //'&.slick-center': {
+      //maxWidth: "100vh",
+      //height: '100%',
+    //},
+   //padding: "2%",
+    //height: "100%",
+    //display: "flex",
+    //alignItems: "center", // Aligns items vertically in the center
+    //justifyContent: "center", // Aligns items horizontally in the center
+    //borderRadius: "20px",
+    //boxSizing: "border-box",
+    /*width: '80%', // Width of non-current slides
+    height: '80%',
+    '&.slick-center': {
+      width: '100%', // Width of the current slide
+      height: '100%',
+    },*/
+    //overflow: "visible",
+    //overflow: "hidden",
+    //position: "relative",
+    //minWidth: "33%",
+    //maxWidth: "100%", // limit slide width to the wrapper's width
+    //maxHeight: "100%", // limit slide height to the wrapper's height
+    //aspectRatio: 16 / 9,
+    /*"& img, & ReactPlayer": { // Apply aspect ratio to both images and videos
+      //aspectRatio: 'inherit',
+      //objectFit: 'contain',
+      //alignSelf: "center",
+      //justifySelf: "center",
+      //maxWidth: "100%",
+      //maxHeight: "100%",
+      //width: "100%",
+      //height: "100%",
+    },*/
+    //zIndex: 2,
+  },
+
+  img: {
+    maxWidth: "35vw",
+    maxHeight: "60vh",
+    objectFit: "contain",
+    overflow: "visible",
+    position: "relative",
+    margin: "auto",
+  },
   durationSlider: {
     color: "#FFFFFF",
     // height: 24,
@@ -180,10 +291,10 @@ export const ProjectPageNew = (props) => {
   const largeScreen = useMediaQuery("(min-width:800px)");
   const xlargeScreen = useMediaQuery("(min-width:1200px)");
 
-  const playerRef = useRef(null);
+  //const playerRef = useRef(null);
 
-  const [featuredUrl, setFeaturedUrl] = useState("");
-  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  //const [featuredUrl, setFeaturedUrl] = useState("");
+  //const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [creditsArr, setCreditsArr] = useState([]);
 
   const [expanded, setExpanded] = useState(false);
@@ -196,13 +307,13 @@ export const ProjectPageNew = (props) => {
   const [seeking, setSeeking] = useState(false);
 
   useEffect(() => {
-    let featUrl = featured.data.attributes.url;
+    /*let featUrl = featured.data.attributes.url;
     let thumbUrl =
       thumbnail && thumbnail.data && thumbnail.data.attributes
         ? thumbnail.data.attributes.url
         : "";
     setFeaturedUrl(featUrl);
-    setThumbnailUrl(thumbUrl);
+    setThumbnailUrl(thumbUrl);*/
 
     if (roles) {
       let tempCreds = roles.split(",");
@@ -216,20 +327,20 @@ export const ProjectPageNew = (props) => {
     }
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (!playing && isLoaded) {
       setShowOverlay(true);
     }
-  }, [playing, isLoaded]);
+  }, [playing, isLoaded]);*/
 
-  const handleProgress = (changeState) => {
+  /*const handleProgress = (changeState) => {
     if (changeState.played === 1) {
       setPlaying(false);
     }
     if (!seeking) {
       setVideoDuration(changeState.played);
     }
-  };
+  };*/
 
   // Manual Video Expansion
   // useEffect(() => {
@@ -300,7 +411,7 @@ export const ProjectPageNew = (props) => {
         onMouseEnter={() => playing && setShowOverlay(true)}
         onMouseLeave={() => playing && setShowOverlay(false)}
       >
-        <div
+        {/*<div
           className={classes.videoWrapper}
           onClick={() => setPlaying(!playing)}
           // onMouseEnter={() => !expanded && setShowControls(true)}
@@ -308,8 +419,17 @@ export const ProjectPageNew = (props) => {
           onMouseEnter={() => playing && setShowOverlay(true)}
           onMouseLeave={() => playing && setShowOverlay(false)}
           id="player-wrapper"
-        >
-          <ReactPlayer
+    >*/}
+          <Carousel
+            featured={featured}
+            thumbnail = {thumbnail}
+            setShowNav = {setShowNav}
+            useStyles={useStyles}
+            endpoint={endpoint}
+            largeScreen={largeScreen}
+          />
+          
+          {/*<ReactPlayer
             onClick={() => setPlaying(!playing)}
             ref={playerRef}
             id="videoFrame"
@@ -333,9 +453,8 @@ export const ProjectPageNew = (props) => {
             progressInterval={100}
             onProgress={handleProgress}
             onReady={() => setIsLoaded(true)}
-          />
-
-          {showOverlay && (
+          />*/}
+          {/*showOverlay && (
             <>
               <div className={classes.overlay}>
                 <IconButton
@@ -363,8 +482,8 @@ export const ProjectPageNew = (props) => {
                 />
               )}
             </>
-          )}
-        </div>
+              )*/}
+        {/*</div>*/}
       </div>
 
       <Grid
@@ -508,6 +627,6 @@ export const ProjectPageNew = (props) => {
       </div>
     </div>
   );
-};
+}
 
 export default ProjectPageNew;
