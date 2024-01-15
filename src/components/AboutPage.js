@@ -4,6 +4,8 @@ import { Typography } from "@mui/material";
 import InfoRender from "../threejs/InfoRender";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Footer from "./Footer";
+import Grid from "@mui/material/Grid";
+
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -18,17 +20,22 @@ const useStyles = makeStyles(() => ({
   assetContainer: {
     height: "100vh",
     // border: "1px solid black",
-    textAlign: "center",
+    textAlign: "right",
     width: '100%',
     padding: 0,
   },
+
   textContainer: {
-    height: "40rem",
-    width: "40rem",
-    position: "fixed",
-    bottom: "10px",
-    left: "40vw",
-    textAlign: "left",
+    columnGap: "20px",
+    textAlign: "right",
+    paddingLeft:"20px",
+    paddingRight:"20px",
+    // height: "40rem",
+    // width: "40rem",
+    // position: "fixed",
+    // bottom: "10px",
+    // left: "40vw",
+    // textAlign: "left",
   },
 }));
 
@@ -41,26 +48,83 @@ export const AboutPage = (props) => {
       <div className={classes.assetContainer} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         <InfoRender />
       </div>
-      <div className={classes.textContainer} style={{width: largeScreen ? '35%' : '100%', padding: largeScreen ? 0 : '64px 20px 20px 20px', boxSizing: 'border-box', bottom: largeScreen ? '0rem' : "16px", left: largeScreen ? '20px' : 0, right: largeScreen ? '' : 0, textAlign: largeScreen ? 'left' : 'center'}}>
-        <Typography
+
+      <Grid
+          container
+          className={classes.textContainer} 
           style={{
-            fontFamily: "Square721",
-            fontSize: largeScreen ? ".7rem" : '.6rem',
+            width: largeScreen ? '100%' : '100%', 
+            // padding: largeScreen ? 0 : '64px 20px 20px 20px', 
+            // boxSizing: 'border-box', bottom: largeScreen ? '0rem' : "16px", 
+            flexWrap:"nowrap",
+            alignItems:"flex-end",
             position: "absolute",
             bottom: "0",
-            right: "0",
             paddingBottom:"10px",
-           }}
+            justifyContent: "flex-end",
+          }}
         >
-          Pleasure Craft is a NYC-based creative studio and directing duo that
-          specializes in CGI and live-action cinematography. The world they
-          create becomes a portal that trancends from the ordinary to the
-          surreal.
-        </Typography>
-          </div>
-      <div style={{ width: "100%", position: "absolute", bottom: 0 }}>
-        {/*<Footer/>*/}
-        </div>
+          <Grid
+            item
+            xs={6}
+            sm={12}
+            sx={{ display: "flex", justifyContent: "flex-start" , flexwrap:"nowrap",}}
+          >
+            <Typography
+            style={{
+              fontFamily: "Square721",
+              fontSize: largeScreen ? ".7rem" : ".55rem",
+              // right: "0",
+              // paddingBottom:"10px",
+              textAlign:"left",
+             }}>
+            Pleasure Craft is a NYC-based creative studio and directing duo that specializes in CGI and live-action cinematography to design visual worlds that transcend the ordinary.
+            </Typography>
+          </Grid>
+
+          <Grid
+            item
+            xs={6}
+            sm={12}
+            sx={{ display: "flex", justifyContent: "flex-end" , flexwrap:"nowrap",}}
+            style={{
+            }}
+          >
+            <Typography
+            style={{
+              fontFamily: "Square721",
+              fontSize: largeScreen ? ".7rem" : ".55rem",
+              // right: "0",
+              // paddingBottom:"10px",
+              textTransform:"Uppercase",
+             }}>
+            Info@pleasurecraft.fun
+            </Typography>
+          </Grid>
+
+          <Grid
+            item
+            xs={6}
+            sm={12}
+            sx={{ display: "flex", justifyContent: "flex-end" , flexwrap:"nowrap",}}
+            style={{
+            }}
+          >
+            <Typography
+            style={{
+              fontFamily: "Square721",
+              fontSize: largeScreen ? ".7rem" : ".55rem",
+              textTransform:"Uppercase",
+              // right: "0",
+              // paddingBottom:"10px",
+             }}>
+            Instagram
+            </Typography>
+          </Grid>
+
+      </Grid>
+
+
     </div>
   );
 };

@@ -349,7 +349,7 @@ export const ProjectPage = (props) => {
               color="primary"
               sx={{
                 fontFamily: "Square721",
-                fontSize: largeScreen ? ".75rem" : ".6rem",
+                fontSize: largeScreen ? ".3rem" : ".55rem",
               }}
             >
               PROJECT: {projectName.toUpperCase()}
@@ -360,7 +360,7 @@ export const ProjectPage = (props) => {
               color="primary"
               sx={{
                 fontFamily: "Square721",
-                fontSize: largeScreen ? ".75rem" : ".6rem",
+                fontSize: largeScreen ? ".3rem" : ".55rem",
                 textAlign: "left",
               }}
             >
@@ -372,7 +372,7 @@ export const ProjectPage = (props) => {
               color="primary"
               sx={{
                 fontFamily: "Square721",
-                fontSize: largeScreen ? ".75rem" : ".6rem",
+                fontSize: largeScreen ? ".3rem" : ".55rem",
                 textAlign: "left",
               }}
             >
@@ -387,7 +387,7 @@ export const ProjectPage = (props) => {
             style={{
               fontFamily: "Square721",
               textAlign: "justify",
-              fontSize: largeScreen ? ".75rem" : ".6rem",
+              fontSize: largeScreen ? ".3rem" : ".55rem",
             }}
           >
             {writeup.toUpperCase()}
@@ -399,7 +399,9 @@ export const ProjectPage = (props) => {
           direction="row"
           alignItems="center"
           className={classes.row}
-          style={{ marginBottom: 16 }}
+          style={{ 
+            marginBottom: 16
+          }}
           spacing={2}
         >
           {creditsArr.map((cred) => {
@@ -414,13 +416,14 @@ export const ProjectPage = (props) => {
                   flexDirection: "column",
                   alignItems: "flex-start",
                   justifyContent: "center",
+                  whiteSpace: "pre-line",
                 }}
               >
                 <Typography
                   color="primary"
                   style={{
                     fontFamily: "Square721",
-                    fontSize: largeScreen ? ".75rem" : ".6rem",
+                    fontSize: largeScreen ? ".3rem" : ".55rem",
                   }}
                 >
                   {cred[0].toUpperCase()}
@@ -429,7 +432,8 @@ export const ProjectPage = (props) => {
                   color="primary"
                   style={{
                     fontFamily: "Square721",
-                    fontSize: largeScreen ? ".75rem" : ".6rem",
+                    fontSize: largeScreen ? ".3rem" : ".55rem",
+                    whiteSpace: "pre-line",
                   }}
                 >
                   {cred[1].toUpperCase()}
@@ -438,6 +442,7 @@ export const ProjectPage = (props) => {
             );
           })}
         </Grid>
+
         {!xlargeScreen && (
           <div
             style={{ position: "relative", width: "100%", marginTop: "auto" }}

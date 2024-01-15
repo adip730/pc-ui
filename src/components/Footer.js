@@ -45,11 +45,11 @@ export const Footer = () => {
     >
       <div
         className={classes.text}
-        style={{ fontSize: largeScreen ? ".5rem" : ".6rem" }}
+        style={{ fontSize: largeScreen ? ".5rem" : ".55rem" }}
       >
         © 2023 PLEASURE CRAFT
       </div>
-      <div style={{ fontSize: largeScreen ? ".5rem" : ".6rem" }}>
+      <div style={{ fontSize: largeScreen ? ".5rem" : ".55rem" }}>
         <a
           style={{ color: "#000000", textDecoration: "none" }}
           href="https://www.instagram.com/pleasurecraft.fun"
