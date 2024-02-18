@@ -92,7 +92,7 @@ export const Preview = (props) => {
 
   const [previewUrl, setPreviewUrl] = useState("");
 
-  const { projectName, name, role, client, director, code, featured, preview } =
+  const { projectName, name, role, client, director, roles, code, featured, preview } =
     data;
  
   const [showSubtitle, setShowSubtitle] = useState(false);
