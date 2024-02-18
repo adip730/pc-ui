@@ -3,6 +3,7 @@ import ReactPlayer from "react-player/file";
 import makeStyles from "@mui/styles/makeStyles";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -93,7 +94,7 @@ const useStyles = makeStyles(() => ({
     height: "auto",
     width: "100%",
     // padding: "16px 64px",
-    padding: '16px 0',
+    padding: "16px 0",
     marginBottom: "32px",
     display: "flex",
   },
@@ -105,49 +106,47 @@ const useStyles = makeStyles(() => ({
   controls: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "space-between",
     height: "10%",
     maxHeight: "48px",
-    width: "100%",
-    background: "#000000",
-    opacity: 0.75,
+    maxWidth: "100%",
+    background:
+      "linear-gradient(to bottom, rgba(94,94,94,0), rgba(94,94,94,1))",
     position: "absolute",
     bottom: 0,
     boxSizing: "border-box",
-    padding: "4px 32px",
+    padding: "4px 8px",
+    borderBottomLeftRadius: "20px",
+    borderBottomRightRadius: "20px",
   },
-  playPause: {
-    maxWidth: "10%",
-  },
-  volume: {
-    maxWidth: "10%",
+  buttonContainer: {
+    maxWidth: "8%",
+    minWidth: "5%",
+    padding: "0 4px",
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
   },
   scrub: {
     flexGrow: 1,
-    padding: "0 2%",
+    padding: "0 1%",
     display: "flex",
     alignItems: "center",
-  },
-  fullScreen: {
-    maxWidth: "10%",
+    width: "85%",
   },
   durationSlider: {
     color: "#FFFFFF",
-    // height: 24,
     "& .MuiSlider-track": {
       border: "none",
       backgroundColor: "#FFFFFF",
-      height: "8px",
+      height: "4px",
     },
     "& .MuiSlider-thumb": {
       display: "none",
     },
     "& .MuiSlider-rail": {
       backgroundColor: "#FFFFFF",
-      height: "8px",
+      height: "4px",
     },
   },
 }));
@@ -190,14 +189,14 @@ export const ProjectPageNew = (props) => {
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const [showControls, setShowControls] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [videoDuration, setVideoDuration] = useState(0);
   const [seeking, setSeeking] = useState(false);
   const [played, setPlayed] = useState(false);
 
   useEffect(() => {
-    let featUrl = featured.data.attributes.url;
+    let featUrl = featured.data[0].attributes.url;
     let thumbUrl =
       thumbnail && thumbnail.data && thumbnail.data.attributes
         ? thumbnail.data.attributes.url
@@ -218,16 +217,10 @@ export const ProjectPageNew = (props) => {
   }, []);
 
   useEffect(() => {
-    if (!playing && isLoaded) {
-      setShowOverlay(true);
-    }
-  }, [playing, isLoaded]);
-
-  useEffect(() => {
     if (playing) {
       setPlayed(true);
     }
-  }, [playing])
+  }, [playing]);
 
   const handleProgress = (changeState) => {
     if (changeState.played === 1) {
@@ -238,58 +231,44 @@ export const ProjectPageNew = (props) => {
     }
   };
 
-  // Manual Video Expansion
-  // useEffect(() => {
-  //   let container = document.getElementById("container");
-  //   let player = document.getElementById("player-wrapper");
-  //   let root = document.getElementById("pageRoot");
-  //   if (container && player) {
-  //     if (expanded) {
-  //       setShowNav(false);
-  //       player.style.transition = ".25s";
-  //       container.style.transition = "all 1s ease-in-out";
-  //       player.style.transformOrigin = "0 50%";
-  //       container.style.transformOrigin = "center";
-  //       player.style.borderRadius = 0;
-  //       container.style.height = "100vh";
-  //       player.style.paddingTop = "56.25%";
-  //       player.style.height = "auto";
-  //       player.style.width = "100%";
-  //       container.style.width = "100vw";
-  //       container.style.position = "fixed";
-  //       container.style.top = 0;
-  //       container.style.left = 0;
-  //       container.style.right = 0;
-  //       container.style.bottom = 0;
-  //       container.style.marginBottom = 0;
-  //       container.style.borderRadius = 0;
-  //       container.style.backgroundColor = "#1a1a1a";
-  //     } else {
-  //       setShowNav(true);
-  //       container.style.transition = "0s";
-  //       container.style.height = "60%";
-  //       container.style.width = "100%";
-  //       container.style.position = "relative";
-  //       container.style.marginBottom = "24px";
-  //       container.style.borderRadius = "20px";
-  //       container.style.backgroundColor = "#FFFFFF";
-  //       player.style.borderRadius = "20px";
-  //       player.style.paddingTop = 0;
-  //       player.style.height = "100%";
-  //       player.style.width = "";
-  //     }
-  //   }
-  // }, [expanded]);
+  const onSeek = (e, newVal) => {
+    setVideoDuration(parseFloat(newVal / 100));
+  };
 
-  // Controls styling
-  // const host = document.getElementById("videoFrame");
-  // // host?.attachShadow({mode: 'open'})
-  // var sheet = new CSSStyleSheet();
-  // sheet.replaceSync(`-webkit-media-controls::- { color: rgb(255, 0, 0) }`);
-  // // console.log(host);
-  // // console.log(host?.shadowRoot);
-  // const elemStyleSheets = host?.shadowRoot?.adoptedStyleSheets;
-  // elemStyleSheets?.push(sheet);
+  const onSeekMouseDown = (e) => {
+    setSeeking(true);
+  };
+
+  const onSeekMouseUp = (e, newVal) => {
+    setSeeking(false);
+    playerRef.current.seekTo(parseFloat(newVal / 100));
+  };
+
+  let containerEl = document.getElementById("container");
+  let playerEl = document.getElementById("player-wrapper");
+
+  useEffect(() => {
+    handleExpand(expanded);
+  }, [expanded]);
+
+  const handleExpand = (expanded) => {
+    if (expanded) {
+      containerEl?.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setExpanded(Boolean(document.fullscreenElement));
+    };
+
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+
+    return () =>
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+  }, []);
 
   return (
     <div
@@ -302,22 +281,22 @@ export const ProjectPageNew = (props) => {
       <div
         className={classes.window}
         id="container"
-        // onMouseEnter={() => expanded && setShowControls(true)}
-        // onMouseLeave={() => expanded && setShowControls(false)}
-        onMouseEnter={() => playing && setShowOverlay(true)}
-        onMouseLeave={() => playing && setShowOverlay(false)}
+        // onMouseEnter={() => !expanded && setShowControls(true)}
+        onMouseLeave={() => /*!expanded &&*/ setShowControls(false)}
+        // onMouseEnter={() => playing && setShowOverlay(true)}
+        // onMouseLeave={() => playing && setShowOverlay(false)}
       >
         <div
           className={classes.videoWrapper}
-          onClick={() => setPlaying(!playing)}
-          // onMouseEnter={() => !expanded && setShowControls(true)}
+          // onClick={() => setPlaying(!playing)}
+          onMouseEnter={() => /*!expanded &&*/ setShowControls(true)}
           // onMouseLeave={() => !expanded && setShowControls(false)}
-          onMouseEnter={() => playing && setShowOverlay(true)}
-          onMouseLeave={() => playing && setShowOverlay(false)}
+          // onMouseEnter={() => playing && setShowOverlay(true)}
+          // onMouseLeave={() => playing && setShowOverlay(false)}
           id="player-wrapper"
         >
           <ReactPlayer
-            onClick={() => setPlaying(!playing)}
+            // onClick={() => setPlaying(!playing)}
             ref={playerRef}
             id="videoFrame"
             style={{
@@ -336,7 +315,15 @@ export const ProjectPageNew = (props) => {
             playing={playing}
             volume={volume}
             playsinline
-            controls={false}
+            // controls={showControls && played}
+            config={{
+              file: {
+                attributes: {
+                  controlsList: "nodownload noplaybackrate",
+                  disablePictureInPicture: true,
+                },
+              },
+            }}
             progressInterval={100}
             onProgress={handleProgress}
             onReady={() => setIsLoaded(true)}
@@ -349,8 +336,10 @@ export const ProjectPageNew = (props) => {
                   size="large"
                   style={{ color: "#FFFFFF" }}
                   onClick={() => {
-                    setShowOverlay(!showOverlay);
-                    setPlaying(!playing);
+                    // setShowOverlay(!showOverlay);
+                    // setPlaying(!playing);
+                    setShowOverlay(false);
+                    setPlaying(true);
                   }}
                 >
                   <Typography
@@ -359,7 +348,8 @@ export const ProjectPageNew = (props) => {
                       fontSize: "1rem",
                     }}
                   >
-                    {playing ? "PAUSE" : "PLAY"}
+                    {/* {playing ? "PAUSE" : "PLAY"} */}
+                    PLAY
                   </Typography>
                 </IconButton>
               </div>
@@ -372,6 +362,62 @@ export const ProjectPageNew = (props) => {
             </>
           )}
         </div>
+        {showControls && !showOverlay /*&& !expanded*/ && (
+          <div
+            className={classes.controls}
+            style={{
+              width:
+                containerEl?.offsetWidth < playerEl?.offsetWidth
+                  ? containerEl?.offsetWidth
+                  : playerEl?.offsetWidth,
+            }}
+          >
+            <div className={classes.buttonContainer}>
+              <Button
+                onClick={() => setPlaying(!playing)}
+                className={classes.playPauseButton}
+              >
+                {playing ? (
+                  <PauseIcon fontSize="medium" style={{ color: "white" }} />
+                ) : videoDuration === 1 ? (
+                  <ReplayIcon fontSize="medium" style={{ color: "white" }} />
+                ) : (
+                  <PlayArrowIcon fontSize="medium" style={{ color: "white" }} />
+                )}
+              </Button>
+            </div>
+            <div className={classes.scrub}>
+              <Slider
+                step={1}
+                value={videoDuration * 100}
+                className={classes.durationSlider}
+                onChange={onSeek}
+                onMouseDown={onSeekMouseDown}
+                onChangeCommitted={onSeekMouseUp}
+              />
+            </div>
+            <div className={classes.buttonContainer}>
+              <Button
+                className={classes.volume}
+                onClick={() => setVolume(volume === 1 ? 0 : 1)}
+              >
+                {volume === 1 ? (
+                  <VolumeUpIcon fontSize="small" style={{ color: "white" }} />
+                ) : (
+                  <VolumeOffIcon fontSize="small" style={{ color: "white" }} />
+                )}
+              </Button>
+            </div>
+            <div className={classes.buttonContainer}>
+              <Button
+                className={classes.fullScreen}
+                onClick={() => setExpanded(!expanded)}
+              >
+                <FullscreenIcon fontSize="small" style={{ color: "white" }} />
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       <Grid
@@ -498,8 +544,8 @@ export const ProjectPageNew = (props) => {
               textAlign: "center",
               fontSize: largeScreen ? ".7rem" : ".7rem",
               padding: largeScreen ? "0 10rem 0 10rem" : "0",
-              maxWidth:largeScreen ? "50%" : "90%",
-              margin:"0 auto",
+              maxWidth: largeScreen ? "50%" : "90%",
+              margin: "0 auto",
               whiteSpace: "pre-line",
             }}
           >
@@ -514,7 +560,7 @@ export const ProjectPageNew = (props) => {
           // marginTop: "auto",
           // marginLeft: '-64px',
           // marginRight: '-64px',
-          margin: largeScreen ? 'auto -64px 0 -64px' : 'auto -32px 0 -32px',
+          margin: largeScreen ? "auto -64px 0 -64px" : "auto -32px 0 -32px",
         }}
       >
         <Footer />

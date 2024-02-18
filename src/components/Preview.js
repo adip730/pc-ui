@@ -134,7 +134,7 @@ export const Preview = (props) => {
     let prevUrl =
       preview && preview.data && preview.data.attributes
         ? preview.data.attributes.url
-        : featured.data.attributes.url;
+        : featured.data[0].attributes.url;
     setPreviewUrl(prevUrl);
   }, []);
 
