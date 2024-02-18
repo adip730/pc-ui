@@ -7,7 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Box, IconButton, Typography } from "@mui/material";
 
 const Carousel = (props) => {
-  const { featured, thumbnail, setShowNav, useStyles, endpoint, largeScreen } =
+  const { featured, thumbnail, setShowNav, classes, endpoint, largeScreen } =
     props;
   //console.log(featured);
   //const [currentSlide, setCurrentSlide] = useState(0);
@@ -30,8 +30,6 @@ const Carousel = (props) => {
 
   const playerRef = useRef(null);
 
-  const classes = useStyles();
-
   const sliderRef = useRef(null);
 
   const [activeSlide, setActiveSlide] = useState("");
@@ -47,36 +45,36 @@ const Carousel = (props) => {
     focusOnSelect: true,
     //swipeToSlide: true,
     beforeChange: (current, next) => {
-        if (carouselData && carouselData[next]) {
-          const nextSlideName = carouselData[next].attributes.name || "";
-          setActiveSlide(nextSlideName);
-        }
-      },
-      afterChange: (current) => {
-        if (carouselData && carouselData[current]) {
-          const currentSlideName = carouselData[current].attributes.name || "";
-          setActiveSlide(currentSlideName);
-        }
-        },
+      if (carouselData && carouselData[next]) {
+        const nextSlideName = carouselData[next].attributes.name || "";
+        setActiveSlide(nextSlideName);
+      }
+    },
+    afterChange: (current) => {
+      if (carouselData && carouselData[current]) {
+        const currentSlideName = carouselData[current].attributes.name || "";
+        setActiveSlide(currentSlideName);
+      }
+    },
     //variableWidth: true, // Enable variable width slides
     responsive: [
-        {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            infinite: true,
-          }
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
         },
-        {
-          breakpoint: 600,
-          settings: {
-            focusOnSelect: false,
-            swipeToSlide: true,
-            centerPadding: "1%",
-          }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          focusOnSelect: false,
+          swipeToSlide: true,
+          centerPadding: "1%",
         },
-        ]
+      },
+    ],
   };
 
   const handleProgress = (changeState) => {
@@ -111,55 +109,73 @@ const Carousel = (props) => {
     let tempslide = slide.attributes.mime.includes("video") ? (
       <div
         key={slide.attributes.name}
-        style={{...slideStyle}}
+        style={{ ...slideStyle }}
         className={
           classes.slide
         } /*id={"player-wrapper"} onClick={() => setPlaying(!playing)} onMouseEnter={() => playing && setShowOverlay(true)} onMouseLeave={() => playing && setShowOverlay(false)*/
       >
-        <ReactPlayer
-          onClick={() => setPlaying(!playing)}
-          ref={playerRef}
-          id="videoFrame"
-          style={{
-            ...slideStyle,
-            //borderRadius: expanded ? "0px" : "20px",
-            borderRadius: "20px",
-            overflow: "hidden",
-            //boxSizing: "border-box",
-            //overflow: "visible",
-            //position: "absolute",
-            //top: 0,
-            //left: 0,
-            //alignContent: "center",
-            //objectFit: "contain",
-            maxHeight: "100%",
-            maxWidth: "100%",
-            //flexGrow: 1,
-            //justifySelf: "center",
-            //alignSelf: "center",
-            margin:"0 auto",
-          }}
-          url={`http://${endpoint}${slide.attributes.url}`}
-          //width={expanded ? "auto" : "100%"}
-          //height={expanded ? "100%" : "auto"}
-          playing={isActiveSlide && playing}
-          volume={volume}
-          playsinline
-          controls={false}
-          progressInterval={100}
-          onProgress={handleProgress}
-          onReady={() => setIsLoaded(true)}
-        />
+        <div
+          className={classes.videoWrapper}
+          // onClick={() => setPlaying(!playing)}
+          // onMouseEnter={() => !expanded && setShowControls(true)}
+          // onMouseLeave={() => !expanded && setShowControls(false)}
+          // onMouseEnter={() => playing && setShowOverlay(true)}
+          // onMouseLeave={() => playing && setShowOverlay(false)}
+          id="player-wrapper"
+        >
+          <ReactPlayer
+            onClick={() => setPlaying(!playing)}
+            ref={playerRef}
+            id="videoFrame"
+            style={{
+              ...slideStyle,
+              //borderRadius: expanded ? "0px" : "20px",
+              borderRadius: "20px",
+              overflow: "hidden",
+              //boxSizing: "border-box",
+              //overflow: "visible",
+              //position: "absolute",
+              //top: 0,
+              //left: 0,
+              //alignContent: "center",
+              //objectFit: "contain",
+              maxHeight: "100%",
+              maxWidth: "100%",
+              //flexGrow: 1,
+              //justifySelf: "center",
+              //alignSelf: "center",
+              margin: "0 auto",
+            }}
+            url={`http://${endpoint}${slide.attributes.url}`}
+            //width={expanded ? "auto" : "100%"}
+            //height={expanded ? "100%" : "auto"}
+            playing={isActiveSlide && playing}
+            volume={volume}
+            playsinline
+            controls={false}
+            progressInterval={100}
+            onProgress={handleProgress}
+            onReady={() => setIsLoaded(true)}
+          />
+        </div>
       </div>
     ) : (
-      <div style={{display: "flex", justifyContent: "center", alignItems: "center"}} key={slide.attributes.name} className={classes.slide}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        key={slide.attributes.name}
+        className={classes.slide}
+      >
         <img
           style={{
             ...slideStyle,
             borderRadius: "20px",
             maxHeight: "100%",
             maxWidth: "100%",
-            margin:"0 auto",
+            margin: "0 auto",
             //objectFit: "contain",
             //justifySelf: "center",
             //alignSelf: "center",

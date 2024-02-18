@@ -207,7 +207,6 @@ export const Preview = (props) => {
     }
   }, [showSubtitle, largeScreen]);
 
-    //console.log(featured.data);
   return (
     <div className={classes.root}>
       <div className={classes.window} id={`window-${name}`}>

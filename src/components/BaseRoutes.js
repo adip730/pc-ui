@@ -4,7 +4,7 @@ import AppContext from "../context/AppContext";
 import HomePage from "./HomePage";
 import IndexPage from "./IndexPage";
 import AboutPage from "./AboutPage";
-import ProjectPageNew from "./ProjectPageNew";
+import ProjectPageTemp from "./ProjectPageTemp";
 
 export const BaseRoutes = () => {
   const { state } = useContext(AppContext);
@@ -20,7 +20,7 @@ export const BaseRoutes = () => {
           <Route
             key={route.routeName}
             path={`/project/${route.routeName}`}
-            element={<ProjectPageNew viewMode={"slide"} data={route.data} />}
+            element={<ProjectPageTemp viewMode={"slide"} data={route.data} />}
           />
         ))}
     </Routes>

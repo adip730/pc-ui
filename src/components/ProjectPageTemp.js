@@ -81,10 +81,10 @@ const useStyles = makeStyles(() => ({
     },
     height: "60%",
     minHeight: "60%",
-    width: "100vw",
+    width: "100%",
     //overflow: "visible",
     overflow: "hidden",
-    //borderRadius: "20px",
+    borderRadius: "20px",
     position: "relative",
     //flexGrow: 1,
     //display: "flex",
@@ -265,7 +265,7 @@ const useStyles = makeStyles(() => ({
 
 const endpoint = process.env.REACT_APP_STRAPIURL;
 
-export const ProjectPageNew = (props) => {
+export const ProjectPageTemp = (props) => {
   const { viewMode, data, media } = props;
   const classes = useStyles();
   const navigate = useNavigate();
@@ -425,7 +425,7 @@ export const ProjectPageNew = (props) => {
             featured={featured}
             thumbnail = {thumbnail}
             setShowNav = {setShowNav}
-            useStyles={useStyles}
+            classes={classes}
             endpoint={endpoint}
             largeScreen={largeScreen}
           />
@@ -636,4 +636,4 @@ export const ProjectPageNew = (props) => {
   );
 }
 
-export default ProjectPageNew;
+export default ProjectPageTemp;
