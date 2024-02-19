@@ -105,21 +105,21 @@ export const IndexPage = (props) => {
     }
   }, [hover]);
 
-  useEffect(() => {
-    if (hover !== "") {
-      if (projects.some((proj) => proj.client === hover)) {
-        let proj =
-          projects[projects.findIndex((proj) => proj.client === hover)];
-        if (proj.featured) {
-          let url = proj.featured.data[0].attributes.url;
-          setFeaturedUrl(`http://${endpoint}${url}`);
-        }
-      }
-    } else {
-      setFeaturedUrl("");
-      setIsLoaded(false);
-    }
-  }, [hover]);
+  // useEffect(() => {
+  //   if (hover !== "") {
+  //     if (projects.some((proj) => proj.client === hover)) {
+  //       let proj =
+  //         projects[projects.findIndex((proj) => proj.client === hover)];
+  //       if (proj.featured) {
+  //         let url = proj.preview.data[0].attributes.url;
+  //         setFeaturedUrl(`http://${endpoint}${url}`);
+  //       }
+  //     }
+  //   } else {
+  //     setFeaturedUrl("");
+  //     setIsLoaded(false);
+  //   }
+  // }, [hover]);
 
   const goTo = (route) => {
     navigate(`../project/${route}`, { replace: true });
