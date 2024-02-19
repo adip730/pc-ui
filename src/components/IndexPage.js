@@ -111,7 +111,7 @@ export const IndexPage = (props) => {
         let proj =
           projects[projects.findIndex((proj) => proj.client === hover)];
         if (proj.featured) {
-          let url = proj.featured.data.attributes.url;
+          let url = proj.featured.data[0].attributes.url;
           setFeaturedUrl(`http://${endpoint}${url}`);
         }
       }
