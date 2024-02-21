@@ -180,7 +180,7 @@ export const IndexPage = (props) => {
                     lineHeight: ".6rem",
                   }}
                 >
-                  {proj.client.toUpperCase()}
+                  {proj.client?.toUpperCase()}
                 </Typography>
               </Grid>
 
@@ -204,7 +204,7 @@ export const IndexPage = (props) => {
                       lineHeight: ".6rem",
                     }}
                   >
-                    {proj.projectName.toUpperCase()}
+                    {proj.projectName?.toUpperCase()}
                   </Typography>
                 ) : (
                   <>
@@ -226,7 +226,7 @@ export const IndexPage = (props) => {
                         lineHeight: ".6rem",
                       }}
                     >
-                      {proj.client.toUpperCase()}
+                      {proj.client?.toUpperCase()}
                     </Typography>
                   </>
                 )}
@@ -249,7 +249,7 @@ export const IndexPage = (props) => {
                     lineHeight: ".6rem",
                   }}
                 >
-                  {proj.role.toUpperCase()}
+                  {proj.role?.toUpperCase()}
                 </Typography>
               </Grid>
 
@@ -289,7 +289,7 @@ export const IndexPage = (props) => {
                     textAlign: "right",
                   }}
                 >
-                  {proj.code.toUpperCase()}
+                  {proj.code?.toUpperCase()}
                 </Typography>
               </Grid>
             </Grid>

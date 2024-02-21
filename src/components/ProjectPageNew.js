@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AppContext from "../context/AppContext";
 import Footer from "./Footer";
+import ProjectItem from "./ProjectItem";
 
 import PlayCircleOutlinedIcon from "@mui/icons-material/PlayCircleOutlined";
 import Slider from "@mui/material/Slider";
@@ -29,6 +30,34 @@ const useStyles = makeStyles(() => ({
       opacity: 1,
     },
   },
+  "@keyframes fadeInLeft": {
+    "0%": { transform: "translateX(-150%) scale(0.8)" },
+    "100%": { transform: "translateX(0%) scale(1)" },
+  },
+  "@keyframes fadeInRight": {
+    "0%": { transform: "translateX(150%) scale(0.8)" },
+    "100%": { transform: "translateX(0%) scale(1)" },
+  },
+  "@keyframes fadeOutLeft": {
+    "0%": { transform: "translateX(0%) scale(1)" },
+    "100%": { transform: "translateX(-150%) scale(0.8)" },
+  },
+  "@keyframes fadeOutRight": {
+    "0%": { transform: "translateX(0%) scale(1)" },
+    "100%": { transform: "translateX(150%) scale(0.8)" },
+  },
+  showPrev: {
+    animation: "$fadeInLeft ease-in-out 300ms",
+  },
+  hidePrev: {
+    animation: "$fadeOutRight ease-in-out 300ms",
+  },
+  showNext: {
+    animation: "$fadeInRight ease-in-out 300ms",
+  },
+  hideNext: {
+    animation: "$fadeOutLeft ease-in-out 300ms",
+  },
   root: {
     animation: "$fadein 1000ms",
     position: "absolute",
@@ -45,7 +74,21 @@ const useStyles = makeStyles(() => ({
     justifyContent: "flex-start",
     backgroundColor: "#dde1e1",
   },
+  buttonRow: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    maxWidth: "575px",
+    maxHeight: "24px",
+    padding: "16px 8px 0",
+    boxSizing: 'border-box',
+    marginBottom: "24px",
+  },
   window: {
+    // animation: "$rollout 0.4s",
+    // transition: 'all 0.5s ease',
     height: "60%",
     minHeight: "60%",
     width: "100%",
@@ -56,7 +99,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: "24px",
+    // marginBottom: "24px",
     background: "#dde1e1 !important",
   },
   videoWrapper: {
@@ -179,30 +222,35 @@ export const ProjectPageNew = (props) => {
   const largeScreen = useMediaQuery("(min-width:800px)");
   const xlargeScreen = useMediaQuery("(min-width:1200px)");
 
-  const playerRef = useRef(null);
+  // const playerRef = useRef(null);
 
-  const [featuredUrl, setFeaturedUrl] = useState("");
-  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const singleAsset = featured?.data?.length < 2;
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // const [featuredUrl, setFeaturedUrl] = useState("");
+  // const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [creditsArr, setCreditsArr] = useState([]);
+  const [isVisible, setIsVisible] = useState(true);
+  const [animateDirection, setAnimateDirection] = useState('');
 
-  const [expanded, setExpanded] = useState(false);
-  const [playing, setPlaying] = useState(false);
-  const [volume, setVolume] = useState(1);
-  const [showControls, setShowControls] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [videoDuration, setVideoDuration] = useState(0);
-  const [seeking, setSeeking] = useState(false);
-  const [played, setPlayed] = useState(false);
+  // const [expanded, setExpanded] = useState(false);
+  // const [playing, setPlaying] = useState(false);
+  // const [volume, setVolume] = useState(1);
+  // const [showControls, setShowControls] = useState(false);
+  // const [showOverlay, setShowOverlay] = useState(true);
+  // const [isLoaded, setIsLoaded] = useState(false);
+  // const [videoDuration, setVideoDuration] = useState(0);
+  // const [seeking, setSeeking] = useState(false);
+  // const [played, setPlayed] = useState(false);
 
   useEffect(() => {
-    let featUrl = featured.data[0].attributes.url;
-    let thumbUrl =
-      thumbnail && thumbnail.data && thumbnail.data.attributes
-        ? thumbnail.data.attributes.url
-        : "";
-    setFeaturedUrl(featUrl);
-    setThumbnailUrl(thumbUrl);
+    // let featUrl = featured.data[0].attributes.url;
+    // let thumbUrl =
+    //   thumbnail && thumbnail.data && thumbnail.data.attributes
+    //     ? thumbnail.data.attributes.url
+    //     : "";
+    // setFeaturedUrl(featUrl);
+    // setThumbnailUrl(thumbUrl);
 
     if (roles) {
       let tempCreds = roles.split(",");
@@ -216,59 +264,91 @@ export const ProjectPageNew = (props) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (playing) {
-      setPlayed(true);
-    }
-  }, [playing]);
-
-  const handleProgress = (changeState) => {
-    if (changeState.played === 1) {
-      setPlaying(false);
-    }
-    if (!seeking) {
-      setVideoDuration(changeState.played);
-    }
-  };
-
-  const onSeek = (e, newVal) => {
-    setVideoDuration(parseFloat(newVal / 100));
-  };
-
-  const onSeekMouseDown = (e) => {
-    setSeeking(true);
-  };
-
-  const onSeekMouseUp = (e, newVal) => {
-    setSeeking(false);
-    playerRef.current.seekTo(parseFloat(newVal / 100));
-  };
-
-  let containerEl = document.getElementById("container");
-  let playerEl = document.getElementById("player-wrapper");
-
-  useEffect(() => {
-    handleExpand(expanded);
-  }, [expanded]);
-
-  const handleExpand = (expanded) => {
-    if (expanded) {
-      containerEl?.requestFullscreen();
+  const stepUp = () => {
+    let newIndex = activeIndex;
+    setAnimateDirection("Next");
+    setIsVisible(false);
+    if (activeIndex + 1 < featured.data.length) {
+      setTimeout(() => {
+        setActiveIndex(newIndex + 1);
+        setIsVisible(true);
+      }, 300);
     } else {
-      document.exitFullscreen();
+      setTimeout(() => {
+        setActiveIndex(0);
+        setIsVisible(true);
+      }, 300);
     }
   };
+  const stepDown = () => {
+    let newIndex = activeIndex;
+    setAnimateDirection("Prev");
+    setIsVisible(false);
+    if (activeIndex - 1 < 0) {
+      setTimeout(() => {
+        setActiveIndex(featured.data.length - 1);
+        setIsVisible(true);
+      }, 300);
+    } else {
+      setTimeout(() => {
+        setActiveIndex(newIndex - 1);
+        setIsVisible(true);
+      }, 300);
+    }
+  };
+  // useEffect(() => {
+  //   if (playing) {
+  //     setPlayed(true);
+  //   }
+  // }, [playing]);
 
-  useEffect(() => {
-    const onFullscreenChange = () => {
-      setExpanded(Boolean(document.fullscreenElement));
-    };
+  // const handleProgress = (changeState) => {
+  //   if (changeState.played === 1) {
+  //     setPlaying(false);
+  //   }
+  //   if (!seeking) {
+  //     setVideoDuration(changeState.played);
+  //   }
+  // };
 
-    document.addEventListener("fullscreenchange", onFullscreenChange);
+  // const onSeek = (e, newVal) => {
+  //   setVideoDuration(parseFloat(newVal / 100));
+  // };
 
-    return () =>
-      document.removeEventListener("fullscreenchange", onFullscreenChange);
-  }, []);
+  // const onSeekMouseDown = (e) => {
+  //   setSeeking(true);
+  // };
+
+  // const onSeekMouseUp = (e, newVal) => {
+  //   setSeeking(false);
+  //   playerRef.current.seekTo(parseFloat(newVal / 100));
+  // };
+
+  // let containerEl = document.getElementById("container");
+  // let playerEl = document.getElementById("player-wrapper");
+
+  // useEffect(() => {
+  //   handleExpand(expanded);
+  // }, [expanded]);
+
+  // const handleExpand = (expanded) => {
+  //   if (expanded) {
+  //     containerEl?.requestFullscreen();
+  //   } else {
+  //     document.exitFullscreen();
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const onFullscreenChange = () => {
+  //     setExpanded(Boolean(document.fullscreenElement));
+  //   };
+
+  //   document.addEventListener("fullscreenchange", onFullscreenChange);
+
+  //   return () =>
+  //     document.removeEventListener("fullscreenchange", onFullscreenChange);
+  // }, []);
 
   return (
     <div
@@ -278,147 +358,39 @@ export const ProjectPageNew = (props) => {
       }}
       id="pageRoot"
     >
-      <div
-        className={classes.window}
-        id="container"
-        // onMouseEnter={() => !expanded && setShowControls(true)}
-        onMouseLeave={() => /*!expanded &&*/ setShowControls(false)}
-        // onMouseEnter={() => playing && setShowOverlay(true)}
-        // onMouseLeave={() => playing && setShowOverlay(false)}
-      >
-        <div
-          className={classes.videoWrapper}
-          // onClick={() => setPlaying(!playing)}
-          onMouseEnter={() => /*!expanded &&*/ setShowControls(true)}
-          // onMouseLeave={() => !expanded && setShowControls(false)}
-          // onMouseEnter={() => playing && setShowOverlay(true)}
-          // onMouseLeave={() => playing && setShowOverlay(false)}
-          id="player-wrapper"
-        >
-          <ReactPlayer
-            // onClick={() => setPlaying(!playing)}
-            ref={playerRef}
-            id="videoFrame"
-            style={{
-              maxHeight: "100%",
-              maxWidth: "100%",
-              borderRadius: expanded ? "0px" : "20px",
-              overflow: "hidden",
-              position: "absolute",
-              top: 0,
-              left: 0,
-              alignContent: "center",
+      <ProjectItem
+        classes={classes}
+        isVisible={isVisible}
+        animateDirection={animateDirection}
+        featuredData={featured?.data?.[activeIndex]}
+        thumbnail={thumbnail}
+        index={activeIndex}
+        endpoint={endpoint}
+        singleAsset={singleAsset}
+      />
+      {!singleAsset && (
+        <div className={classes.buttonRow}>
+          <Button
+            sx={{
+              fontSize: ".65rem",
+              fontFamily: "Square721",
             }}
-            url={`http://${endpoint}${featuredUrl}`}
-            width={expanded ? "auto" : "100%"}
-            height={expanded ? "100%" : "auto"}
-            playing={playing}
-            volume={volume}
-            playsinline
-            // controls={showControls && played}
-            config={{
-              file: {
-                attributes: {
-                  controlsList: "nodownload noplaybackrate",
-                  disablePictureInPicture: true,
-                },
-              },
-            }}
-            progressInterval={100}
-            onProgress={handleProgress}
-            onReady={() => setIsLoaded(true)}
-          />
-
-          {showOverlay && (
-            <>
-              <div className={classes.overlay}>
-                <IconButton
-                  size="large"
-                  style={{ color: "#FFFFFF" }}
-                  onClick={() => {
-                    // setShowOverlay(!showOverlay);
-                    // setPlaying(!playing);
-                    setShowOverlay(false);
-                    setPlaying(true);
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontFamily: "Square721",
-                      fontSize: "1rem",
-                    }}
-                  >
-                    {/* {playing ? "PAUSE" : "PLAY"} */}
-                    PLAY
-                  </Typography>
-                </IconButton>
-              </div>
-              {!played && thumbnailUrl !== "" && (
-                <img
-                  className={classes.thumbnail}
-                  src={`http://${endpoint}${thumbnailUrl}`}
-                />
-              )}
-            </>
-          )}
-        </div>
-        {showControls && !showOverlay /*&& !expanded*/ && (
-          <div
-            className={classes.controls}
-            style={{
-              width:
-                containerEl?.offsetWidth < playerEl?.offsetWidth
-                  ? containerEl?.offsetWidth
-                  : playerEl?.offsetWidth,
-            }}
+            onClick={stepDown}
           >
-            <div className={classes.buttonContainer}>
-              <Button
-                onClick={() => setPlaying(!playing)}
-                className={classes.playPauseButton}
-              >
-                {playing ? (
-                  <PauseIcon fontSize="medium" style={{ color: "white" }} />
-                ) : videoDuration === 1 ? (
-                  <ReplayIcon fontSize="medium" style={{ color: "white" }} />
-                ) : (
-                  <PlayArrowIcon fontSize="medium" style={{ color: "white" }} />
-                )}
-              </Button>
-            </div>
-            <div className={classes.scrub}>
-              <Slider
-                step={1}
-                value={videoDuration * 100}
-                className={classes.durationSlider}
-                onChange={onSeek}
-                onMouseDown={onSeekMouseDown}
-                onChangeCommitted={onSeekMouseUp}
-              />
-            </div>
-            <div className={classes.buttonContainer}>
-              <Button
-                className={classes.volume}
-                onClick={() => setVolume(volume === 1 ? 0 : 1)}
-              >
-                {volume === 1 ? (
-                  <VolumeUpIcon fontSize="small" style={{ color: "white" }} />
-                ) : (
-                  <VolumeOffIcon fontSize="small" style={{ color: "white" }} />
-                )}
-              </Button>
-            </div>
-            <div className={classes.buttonContainer}>
-              <Button
-                className={classes.fullScreen}
-                onClick={() => setExpanded(!expanded)}
-              >
-                <FullscreenIcon fontSize="small" style={{ color: "white" }} />
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
+            PREVIOUS
+          </Button>
+          {/* <p>{activeIndex}</p> */}
+          <Button
+            sx={{
+              fontSize: ".65rem",
+              fontFamily: "Square721",
+            }}
+            onClick={stepUp}
+          >
+            NEXT
+          </Button>
+        </div>
+      )}
 
       <Grid
         container
@@ -427,7 +399,7 @@ export const ProjectPageNew = (props) => {
         rowSpacing={0.5}
         columnSpacing={4}
         sx={{
-          display: expanded ? "none" : "flex",
+          display: "flex",
           marginBottom: largeScreen ? "48px" : "32px",
           // padding: largeScreen ? '16px 64px' : '16px 32px',
         }}
