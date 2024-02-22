@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
+import { isMobile } from "react-device-detect";
 import ReactPlayer from "react-player/file";
 import makeStyles from "@mui/styles/makeStyles";
 import Typography from "@mui/material/Typography";
@@ -83,7 +84,7 @@ const useStyles = makeStyles(() => ({
     maxWidth: "575px",
     maxHeight: "24px",
     padding: "16px 8px 0",
-    boxSizing: 'border-box',
+    boxSizing: "border-box",
     marginBottom: "24px",
   },
   window: {
@@ -219,10 +220,8 @@ export const ProjectPageNew = (props) => {
     description,
   } = data;
 
+  const smallScreen = useMediaQuery("(max-width:600px)");
   const largeScreen = useMediaQuery("(min-width:800px)");
-  const xlargeScreen = useMediaQuery("(min-width:1200px)");
-
-  // const playerRef = useRef(null);
 
   const singleAsset = featured?.data?.length < 2;
   const [activeIndex, setActiveIndex] = useState(0);
@@ -231,7 +230,7 @@ export const ProjectPageNew = (props) => {
   // const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [creditsArr, setCreditsArr] = useState([]);
   const [isVisible, setIsVisible] = useState(true);
-  const [animateDirection, setAnimateDirection] = useState('');
+  const [animateDirection, setAnimateDirection] = useState("");
 
   // const [expanded, setExpanded] = useState(false);
   // const [playing, setPlaying] = useState(false);
@@ -367,6 +366,7 @@ export const ProjectPageNew = (props) => {
         index={activeIndex}
         endpoint={endpoint}
         singleAsset={singleAsset}
+        isMobileTablet={smallScreen || isMobile}
       />
       {!singleAsset && (
         <div className={classes.buttonRow}>

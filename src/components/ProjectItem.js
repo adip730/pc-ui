@@ -24,6 +24,7 @@ export const ProjectItem = (props) => {
     isVisible,
     animateDirection,
     singleAsset,
+    isMobileTablet,
   } = props;
 
   const playerRef = useRef(null);
@@ -99,7 +100,7 @@ export const ProjectItem = (props) => {
     if (expanded) {
       containerEl?.requestFullscreen();
     } else {
-      document.exitFullscreen();
+      document?.exitFullscreen();
     }
   };
 
@@ -121,25 +122,39 @@ export const ProjectItem = (props) => {
   const isVideo = featuredData.attributes.mime.includes("video");
   return (
     <div
-      //   className={`${classes.window} ${isVisible ? showClass : hideClass}`}
       className={classes.window}
       style={{ marginBottom: singleAsset ? "24px" : 0 }}
       key={`container-${index}`}
       id={`container-${index}`}
+      onMouseLeave={() => {
+        isMobileTablet ? false : setShowControls(false);
+      }}
+      onClick={() => {
+        isMobileTablet ? setShowControls(!showControls) : false;
+      }}
       // onMouseEnter={() => !expanded && setShowControls(true)}
-      onMouseLeave={() => /*!expanded &&*/ setShowControls(false)}
+      // onMouseLeave={() => !expanded && setShowControls(false)}
       // onMouseEnter={() => playing && setShowOverlay(true)}
       // onMouseLeave={() => playing && setShowOverlay(false)}
     >
       {isVideo ? (
         <>
           <div
-            // className={classes.videoWrapper}
             className={`${classes.videoWrapper} ${
-              singleAsset || (animateDirection !== 'Next' && animateDirection !== 'Prev') ? "" : isVisible ? showClass : hideClass
+              singleAsset ||
+              (animateDirection !== "Next" && animateDirection !== "Prev")
+                ? ""
+                : isVisible
+                ? showClass
+                : hideClass
             }`}
-            // onClick={() => setPlaying(!playing)}
-            onMouseEnter={() => /*!expanded &&*/ setShowControls(true)}
+            onMouseEnter={() => {
+              isMobileTablet ? false : setShowControls(true);
+            }}
+            onClick={() => {
+              isMobileTablet ? setShowControls(!showControls) : false;
+            }}
+            // onMouseEnter={() => !expanded && setShowControls(true)}
             // onMouseLeave={() => !expanded && setShowControls(false)}
             // onMouseEnter={() => playing && setShowOverlay(true)}
             // onMouseLeave={() => playing && setShowOverlay(false)}
@@ -147,7 +162,6 @@ export const ProjectItem = (props) => {
             id={`player-wrapper-${index}`}
           >
             <ReactPlayer
-              // onClick={() => setPlaying(!playing)}
               ref={playerRef}
               id="videoFrame"
               style={{
