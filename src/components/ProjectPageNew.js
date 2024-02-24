@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import { isMobile } from "react-device-detect";
 import ReactPlayer from "react-player/file";
 import makeStyles from "@mui/styles/makeStyles";
@@ -81,10 +87,11 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-    maxWidth: "575px",
+    // maxWidth: "575px",
     maxHeight: "24px",
-    padding: "16px 8px 0",
+    padding: 0,
     boxSizing: "border-box",
+    marginTop: "-4px",
     marginBottom: "24px",
   },
   window: {
@@ -349,6 +356,60 @@ export const ProjectPageNew = (props) => {
   //     document.removeEventListener("fullscreenchange", onFullscreenChange);
   // }, []);
 
+  // const useWindowSize = () => {
+  //   // let containerWidth = document.getElementById(
+  //   //   `container-${activeIndex}`
+  //   // )?.offsetWidth;
+  //   // let playerWidth = document.getElementById(
+  //   //   `player-wrapper-${activeIndex}`
+  //   // )?.offsetWidth;
+  //   // console.log(containerWidth, playerWidth);
+  //   const [size, setSize] = useState([0, 0]);
+  //   useLayoutEffect(() => {
+  // let containerWidth = document.getElementById(
+  //   `container-${activeIndex}`
+  // )?.offsetWidth;
+  // let playerWidth = document.getElementById(
+  //   `player-wrapper-${activeIndex}`
+  // )?.offsetWidth;
+  //     const updateSize = () => {
+  //       setSize([containerWidth, playerWidth]);
+  //     };
+  //     window.addEventListener("resize", updateSize);
+  //     updateSize();
+  //     return () => window.removeEventListener("resize", updateSize);
+  //   }, []);
+  //   return size;
+  // };
+
+  // const [contWidth, playWidth] = useWindowSize();
+
+  // let containerWidth = document.getElementById(
+  //   `container-${activeIndex}`
+  // )?.offsetWidth;
+  // let playerWidth = document.getElementById(
+  //   `player-wrapper-${activeIndex}`
+  // )?.offsetWidth;
+
+  const [contWidth, setContWidth] = useState(0);
+  const [playWidth, setPlayWidth] = useState(0);
+
+  useEffect(() => {
+    const updateSize = () => {
+      let containerWidth = document.getElementById(
+        `container-${activeIndex}`
+      )?.offsetWidth;
+      let playerWidth = document.getElementById(
+        `player-wrapper-${activeIndex}`
+      )?.offsetWidth;
+      setContWidth(containerWidth);
+      setPlayWidth(playerWidth);
+    };
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
   return (
     <div
       className={classes.root}
@@ -369,20 +430,24 @@ export const ProjectPageNew = (props) => {
         isMobileTablet={smallScreen || isMobile}
       />
       {!singleAsset && (
-        <div className={classes.buttonRow}>
+        <div
+          className={classes.buttonRow}
+          style={{
+            maxWidth: contWidth < playWidth ? contWidth : playWidth,
+          }}
+        >
           <Button
             sx={{
-              fontSize: ".65rem",
+              fontSize: largeScreen ? ".4rem" : ".5rem",
               fontFamily: "Square721",
             }}
             onClick={stepDown}
           >
             PREVIOUS
           </Button>
-          {/* <p>{activeIndex}</p> */}
           <Button
             sx={{
-              fontSize: ".65rem",
+              fontSize: largeScreen ? ".4em" : ".5rem",
               fontFamily: "Square721",
             }}
             onClick={stepUp}
@@ -401,7 +466,6 @@ export const ProjectPageNew = (props) => {
         sx={{
           display: "flex",
           marginBottom: largeScreen ? "48px" : "32px",
-          // padding: largeScreen ? '16px 64px' : '16px 32px',
         }}
       >
         <Grid item xs={6}>
