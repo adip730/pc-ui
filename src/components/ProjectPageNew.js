@@ -438,7 +438,7 @@ export const ProjectPageNew = (props) => {
         >
           <Button
             sx={{
-              fontSize: largeScreen ? ".4rem" : ".5rem",
+              fontSize: ".5rem",
               fontFamily: "Square721",
             }}
             onClick={stepDown}
@@ -447,7 +447,7 @@ export const ProjectPageNew = (props) => {
           </Button>
           <Button
             sx={{
-              fontSize: largeScreen ? ".4em" : ".5rem",
+              fontSize: ".5rem",
               fontFamily: "Square721",
             }}
             onClick={stepUp}
