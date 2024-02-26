@@ -5,6 +5,7 @@ import InfoRender from "../threejs/InfoRender";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Footer from "./Footer";
 import Grid from "@mui/material/Grid";
+import { link } from "fs";
 
 
 const useStyles = makeStyles(() => ({
@@ -16,7 +17,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     overflow:"hidden",
   },
-  
+
   assetContainer: {
     height: "100vh",
     // border: "1px solid black",
@@ -54,11 +55,11 @@ export const AboutPage = (props) => {
           className={classes.textContainer} 
           style={{
             width: largeScreen ? '100%' : '100%', 
-            // padding: largeScreen ? 0 : '64px 20px 20px 20px', 
+            padding: largeScreen ? '0px 10px 0px 10px' : '0px 4px 0px 4px', 
             // boxSizing: 'border-box', bottom: largeScreen ? '0rem' : "16px", 
             flexWrap:"nowrap",
             alignItems:"flex-end",
-            position: "absolute",
+            position: "fixed",
             bottom: "0",
             paddingBottom:"10px",
             justifyContent: "flex-end",
@@ -88,6 +89,7 @@ export const AboutPage = (props) => {
             sm={12}
             sx={{ display: "flex", justifyContent: "flex-end" , flexwrap:"nowrap",}}
             style={{
+              textDecoration: "none",
             }}
           >
             <Typography
@@ -97,8 +99,9 @@ export const AboutPage = (props) => {
               // right: "0",
               // paddingBottom:"10px",
               textTransform:"Uppercase",
+              textDecoration: "none",
              }}>
-            Info@pleasurecraft.fun
+            info@pleasurecraft.fun
             </Typography>
           </Grid>
 

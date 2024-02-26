@@ -129,7 +129,7 @@ export const IndexPage = (props) => {
     <div
       className={classes.viewContainer}
       style={{
-        padding: largeScreen ? "0px 24px 0px 24px" : "0px 24px 0px 24px",
+        padding: largeScreen ? "0px 24px 0px 24px" : "0px 10px 0px 10px",
       }}
     >
       <div
@@ -155,6 +155,7 @@ export const IndexPage = (props) => {
               <Grid
                 sx={{
                   textAlign: "left",
+                  whiteSpace: "nowrap",
                 }}
                 item
                 xs={1}
@@ -239,6 +240,7 @@ export const IndexPage = (props) => {
                 sx={{
                   textAlign: { xs: "left", md: "left" },
                   paddingLeft: { xs: "4rem" },
+                  whiteSpace: "nowrap",
                 }}
               >
                 <Typography
