@@ -200,6 +200,7 @@ export const ProjectItem = (props) => {
               height={expanded ? "100%" : "auto"}
               playing={playing}
               volume={volume}
+              muted={volume === 0}
               playsinline
               // controls={showControls && played}
               config={{
