@@ -313,16 +313,19 @@ export const ProjectItem = (props) => {
                   )}
                 </Button>
               </div>
-              <div className={classes.buttonContainer}>
-                <Button
-                  className={classes.fullScreen}
-                  onClick={() => {
-                    isIos ? false : setExpanded(!expanded);
-                  }}
-                >
-                  <FullscreenIcon fontSize="small" style={{ color: "white" }} />
-                </Button>
-              </div>
+              {!isIos && (
+                <div className={classes.buttonContainer}>
+                  <Button
+                    className={classes.fullScreen}
+                    onClick={() => setExpanded(!expanded)}
+                  >
+                    <FullscreenIcon
+                      fontSize="small"
+                      style={{ color: "white" }}
+                    />
+                  </Button>
+                </div>
+              )}
             </div>
           )}
         </>

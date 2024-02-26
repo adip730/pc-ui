@@ -58,7 +58,7 @@ const useStyles = makeStyles(() => ({
   bottomBox: {
     zIndex: 1,
     width: "100%",
-    height: "100vh",
+    height: "100dvh",
     maxHeight: "80%",
     overflowY: "auto",
     display: "flex",
@@ -300,9 +300,9 @@ export const IndexPage = (props) => {
       </div>
       <div
         style={{
-          width: "100%",
+          // width: "100%",
           position: "relative",
-          width: "calc(100% + 48px)",
+          width: "calc(100% + 24px)",
           margin: "-44px -48px 0 -48px",
           // bottom: 0,
         }}
