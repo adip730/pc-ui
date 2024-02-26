@@ -10,7 +10,6 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import Fade from '@mui/material/Fade';
 import logo_gltf from "../../public/glTF/LOGO CHROME_Less Soft.gltf";
 import logo_tex from "../../public/Textures/HDRI_Chrome_Soft.png";
-//import backup_graphic from "../../public/backup/logo.gif"
 import backup_graphic from "../../public/backup/logo.gif"
 
 // Homepage logo demo
