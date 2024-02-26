@@ -274,7 +274,7 @@ export const Preview = (props) => {
                     fontSize: largeScreen ? ".7rem" : ".55rem",
                   }}
                 >
-                  {projectName.toUpperCase()}
+                  {projectName?.toUpperCase()}
                 </Typography>
               </div>
             )}
@@ -289,7 +289,7 @@ export const Preview = (props) => {
                 fontSize: largeScreen ? ".7rem" : ".55rem",
               }}
             >
-              {projectName.toUpperCase()}
+              {projectName?.toUpperCase()}
             </Typography>
             {largeScreen && (
               <Typography
@@ -299,7 +299,7 @@ export const Preview = (props) => {
                   fontSize: largeScreen ? ".7rem" : ".55rem",
                 }}
               >
-                {role.toUpperCase()}
+                {role?.toUpperCase()}
               </Typography>
             )}
             {largeScreen && !!roles && (
@@ -321,7 +321,7 @@ export const Preview = (props) => {
                   fontSize: largeScreen ? ".7rem" : ".55rem",
                 }}
               >
-                {code.toUpperCase()}
+                {code?.toUpperCase()}
               </Typography>
             )}
           </div>

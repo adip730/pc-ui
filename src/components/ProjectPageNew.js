@@ -109,6 +109,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     // marginBottom: "24px",
     background: "#dde1e1 !important",
+    WebkitBackgroundClip: 'padding-box',
   },
   videoWrapper: {
     height: "100%",
@@ -120,6 +121,7 @@ const useStyles = makeStyles(() => ({
     boxSizing: "border-box",
     aspectRatio: 16 / 9,
     backgroundColor: "#dde1e1",
+    WebkitBackgroundClip: 'padding-box',
   },
   overlay: {
     height: "100%",
