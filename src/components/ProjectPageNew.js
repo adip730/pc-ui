@@ -81,6 +81,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "flex-start",
     WebkitBackgroundClip: 'padding-box',
     backgroundColor: "#dde1e1",
+    overflowX:"hidden",
   },
   buttonRow: {
     display: "flex",
@@ -103,6 +104,7 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     overflow: "hidden",
     borderRadius: "20px",
+    WebkitBorderRadius:"20px",
     position: "relative",
     display: "flex",
     flexDirection: "column",
@@ -111,6 +113,7 @@ const useStyles = makeStyles(() => ({
     // marginBottom: "24px",
     background: "#dde1e1 !important",
     WebkitBackgroundClip: 'padding-box',
+    zIndex:0,
   },
   videoWrapper: {
     height: "100%",
@@ -123,6 +126,8 @@ const useStyles = makeStyles(() => ({
     aspectRatio: 16 / 9,
     backgroundColor: "#dde1e1",
     WebkitBackgroundClip: 'padding-box',
+    WebkitBorderRadius:"20px",
+    zIndex:0,
   },
   overlay: {
     height: "100%",
