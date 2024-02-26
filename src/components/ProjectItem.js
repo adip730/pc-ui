@@ -100,7 +100,9 @@ export const ProjectItem = (props) => {
     if (expanded) {
       containerEl?.requestFullscreen();
     } else {
-      document?.exitFullscreen();
+      if (Boolean(document.fullscreenElement)) {
+        document?.exitFullscreen();
+      }
     }
   };
 

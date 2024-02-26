@@ -233,31 +233,11 @@ export const ProjectPageNew = (props) => {
   const singleAsset = featured?.data?.length < 2;
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // const [featuredUrl, setFeaturedUrl] = useState("");
-  // const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [creditsArr, setCreditsArr] = useState([]);
   const [isVisible, setIsVisible] = useState(true);
   const [animateDirection, setAnimateDirection] = useState("");
 
-  // const [expanded, setExpanded] = useState(false);
-  // const [playing, setPlaying] = useState(false);
-  // const [volume, setVolume] = useState(1);
-  // const [showControls, setShowControls] = useState(false);
-  // const [showOverlay, setShowOverlay] = useState(true);
-  // const [isLoaded, setIsLoaded] = useState(false);
-  // const [videoDuration, setVideoDuration] = useState(0);
-  // const [seeking, setSeeking] = useState(false);
-  // const [played, setPlayed] = useState(false);
-
   useEffect(() => {
-    // let featUrl = featured.data[0].attributes.url;
-    // let thumbUrl =
-    //   thumbnail && thumbnail.data && thumbnail.data.attributes
-    //     ? thumbnail.data.attributes.url
-    //     : "";
-    // setFeaturedUrl(featUrl);
-    // setThumbnailUrl(thumbUrl);
-
     if (roles) {
       let tempCreds = roles.split(",");
       let creds = [];
@@ -302,113 +282,30 @@ export const ProjectPageNew = (props) => {
       }, 300);
     }
   };
-  // useEffect(() => {
-  //   if (playing) {
-  //     setPlayed(true);
-  //   }
-  // }, [playing]);
-
-  // const handleProgress = (changeState) => {
-  //   if (changeState.played === 1) {
-  //     setPlaying(false);
-  //   }
-  //   if (!seeking) {
-  //     setVideoDuration(changeState.played);
-  //   }
-  // };
-
-  // const onSeek = (e, newVal) => {
-  //   setVideoDuration(parseFloat(newVal / 100));
-  // };
-
-  // const onSeekMouseDown = (e) => {
-  //   setSeeking(true);
-  // };
-
-  // const onSeekMouseUp = (e, newVal) => {
-  //   setSeeking(false);
-  //   playerRef.current.seekTo(parseFloat(newVal / 100));
-  // };
-
-  // let containerEl = document.getElementById("container");
-  // let playerEl = document.getElementById("player-wrapper");
-
-  // useEffect(() => {
-  //   handleExpand(expanded);
-  // }, [expanded]);
-
-  // const handleExpand = (expanded) => {
-  //   if (expanded) {
-  //     containerEl?.requestFullscreen();
-  //   } else {
-  //     document.exitFullscreen();
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const onFullscreenChange = () => {
-  //     setExpanded(Boolean(document.fullscreenElement));
-  //   };
-
-  //   document.addEventListener("fullscreenchange", onFullscreenChange);
-
-  //   return () =>
-  //     document.removeEventListener("fullscreenchange", onFullscreenChange);
-  // }, []);
-
-  // const useWindowSize = () => {
-  //   // let containerWidth = document.getElementById(
-  //   //   `container-${activeIndex}`
-  //   // )?.offsetWidth;
-  //   // let playerWidth = document.getElementById(
-  //   //   `player-wrapper-${activeIndex}`
-  //   // )?.offsetWidth;
-  //   // console.log(containerWidth, playerWidth);
-  //   const [size, setSize] = useState([0, 0]);
-  //   useLayoutEffect(() => {
-  // let containerWidth = document.getElementById(
-  //   `container-${activeIndex}`
-  // )?.offsetWidth;
-  // let playerWidth = document.getElementById(
-  //   `player-wrapper-${activeIndex}`
-  // )?.offsetWidth;
-  //     const updateSize = () => {
-  //       setSize([containerWidth, playerWidth]);
-  //     };
-  //     window.addEventListener("resize", updateSize);
-  //     updateSize();
-  //     return () => window.removeEventListener("resize", updateSize);
-  //   }, []);
-  //   return size;
-  // };
-
-  // const [contWidth, playWidth] = useWindowSize();
-
-  // let containerWidth = document.getElementById(
-  //   `container-${activeIndex}`
-  // )?.offsetWidth;
-  // let playerWidth = document.getElementById(
-  //   `player-wrapper-${activeIndex}`
-  // )?.offsetWidth;
 
   const [contWidth, setContWidth] = useState(0);
   const [playWidth, setPlayWidth] = useState(0);
 
+  const updateSize = () => {
+    let containerWidth = document.getElementById(
+      `container-${activeIndex}`
+    )?.offsetWidth;
+    let playerWidth = document.getElementById(
+      `player-wrapper-${activeIndex}`
+    )?.offsetWidth;
+    setContWidth(containerWidth);
+    setPlayWidth(playerWidth);
+  };
+
   useEffect(() => {
-    const updateSize = () => {
-      let containerWidth = document.getElementById(
-        `container-${activeIndex}`
-      )?.offsetWidth;
-      let playerWidth = document.getElementById(
-        `player-wrapper-${activeIndex}`
-      )?.offsetWidth;
-      setContWidth(containerWidth);
-      setPlayWidth(playerWidth);
-    };
     window.addEventListener("resize", updateSize);
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
   }, []);
+
+  useEffect(() => {
+    updateSize();
+  }, [contWidth, playWidth]);
 
   return (
     <div
