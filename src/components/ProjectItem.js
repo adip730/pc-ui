@@ -112,6 +112,8 @@ export const ProjectItem = (props) => {
           containerEl.mozRequestFullScreen();
         } else if (containerEl?.webkitRequestFullscreen) {
           containerEl.webkitRequestFullscreen();
+        } else if (containerEl?.webkitEnterFullscreen) {
+          containerEl.webkitEnterFullscreen();
         }
       }
     } else {
