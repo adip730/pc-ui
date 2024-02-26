@@ -206,10 +206,12 @@ export const ProjectItem = (props) => {
                 top: 0,
                 left: 0,
                 alignContent: "center",
+                height: "auto !important",
+                width: "100% !important",
               }}
               url={`http://${endpoint}${featuredUrl}`}
-              width={expanded ? "auto" : "100%"}
-              height={expanded ? "100%" : "auto"}
+              width={expanded ? "100%" : "100%"}
+              height={expanded ? "auto" : "auto"}
               playing={playing}
               volume={volume}
               muted={volume === 0}
