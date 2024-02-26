@@ -131,7 +131,7 @@ export const ProjectItem = (props) => {
 
   useEffect(() => {
     const onFullscreenChange = () => {
-      setExpanded(Boolean(document.webkitFullscreenElement));
+      setExpanded(Boolean(isFullScreen));
     };
 
     document.addEventListener(
