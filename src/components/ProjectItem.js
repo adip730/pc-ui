@@ -96,19 +96,38 @@ export const ProjectItem = (props) => {
     handleExpand(expanded);
   }, [expanded]);
 
-  const handleExpand = (expanded) => {
-    if (expanded) {
-      containerEl?.requestFullscreen();
+  const isFullScreen =
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement;
+
+  const handleExpand = (doExpand) => {
+    if (doExpand) {
+      if (!isFullScreen) {
+        if (containerEl?.requestFullscreen) {
+          containerEl.requestFullscreen();
+        } else if (containerEl?.mozRequestFullScreen) {
+          containerEl.mozRequestFullScreen();
+        } else if (containerEl?.webkitRequestFullscreen) {
+          containerEl.webkitRequestFullscreen();
+        }
+      }
     } else {
-      if (Boolean(document.fullscreenElement)) {
-        document?.exitFullscreen();
+      if (isFullScreen) {
+        if (document?.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document?.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document?.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        }
       }
     }
   };
 
   useEffect(() => {
     const onFullscreenChange = () => {
-      setExpanded(Boolean(document.fullscreenElement));
+      setExpanded(Boolean(document.webkitFullscreenElement));
     };
 
     document.addEventListener("fullscreenchange", onFullscreenChange);

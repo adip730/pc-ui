@@ -79,6 +79,7 @@ const useStyles = makeStyles(() => ({
     overflowY: "scroll",
     boxSizing: "border-box",
     justifyContent: "flex-start",
+    WebkitBackgroundClip: 'padding-box',
     backgroundColor: "#dde1e1",
   },
   buttonRow: {
@@ -131,7 +132,7 @@ const useStyles = makeStyles(() => ({
     left: 0,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center", 
     zIndex: 3,
   },
   thumbnail: {
