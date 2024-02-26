@@ -5,7 +5,7 @@ import React, {
   useLayoutEffect,
   useRef,
 } from "react";
-import { isMobile } from "react-device-detect";
+import { isMobile, isIOS } from "react-device-detect";
 import ReactPlayer from "react-player/file";
 import makeStyles from "@mui/styles/makeStyles";
 import Typography from "@mui/material/Typography";
@@ -327,6 +327,7 @@ export const ProjectPageNew = (props) => {
         index={activeIndex}
         endpoint={endpoint}
         singleAsset={singleAsset}
+        isIos={isIOS}
         isMobileTablet={smallScreen || isMobile}
       />
       {!singleAsset && (

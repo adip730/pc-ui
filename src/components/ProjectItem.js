@@ -25,6 +25,7 @@ export const ProjectItem = (props) => {
     animateDirection,
     singleAsset,
     isMobileTablet,
+    isIos,
   } = props;
 
   const playerRef = useRef(null);
@@ -315,7 +316,9 @@ export const ProjectItem = (props) => {
               <div className={classes.buttonContainer}>
                 <Button
                   className={classes.fullScreen}
-                  onClick={() => setExpanded(!expanded)}
+                  onClick={() => {
+                    isIos ? false : setExpanded(!expanded);
+                  }}
                 >
                   <FullscreenIcon fontSize="small" style={{ color: "white" }} />
                 </Button>
