@@ -97,9 +97,11 @@ export const ProjectItem = (props) => {
   }, [expanded]);
 
   const isFullScreen =
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement;
+    !!document.fullscreenElement ||
+    !!document.webkitFullscreenElement ||
+    !!document.mozFullScreenElement ||
+    document.fullScreen ||
+    document.webkitIsFullScreen;
 
   const handleExpand = (doExpand) => {
     if (doExpand) {
@@ -130,9 +132,15 @@ export const ProjectItem = (props) => {
       setExpanded(Boolean(document.webkitFullscreenElement));
     };
 
-    document.addEventListener("fullscreenchange", onFullscreenChange);
+    document.addEventListener(
+      "webkitfullscreenchange mozfullscreenchange fullscreenchange",
+      onFullscreenChange
+    );
     return () =>
-      document.removeEventListener("fullscreenchange", onFullscreenChange);
+      document.removeEventListener(
+        "webkitfullscreenchange mozfullscreenchange fullscreenchange",
+        onFullscreenChange
+      );
   }, []);
 
   const showClass =
@@ -141,6 +149,7 @@ export const ProjectItem = (props) => {
     animateDirection == "Next" ? classes.hideNext : classes.hidePrev;
 
   const isVideo = featuredData.attributes.mime.includes("video");
+
   return (
     <div
       className={classes.window}
