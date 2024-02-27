@@ -106,6 +106,7 @@ export const HomePage = (props) => {
   useEffect(() => {
     setShowLoading(true);
   }, [])
+
   return (
     <div className={classes.root}>
       <Fade in={showLoading} unmountOnExit timeout={500}>
@@ -118,7 +119,7 @@ export const HomePage = (props) => {
         {projects.map(
           (proj, ind) =>
             ((config && config === []) ||
-              (config && config.length > 0 && config.includes(proj.name))) && (
+              (!!config && config?.length && config?.length > 0 && config.includes(proj.name))) && (
               <div
                 key={`${proj.name}-preview`}
                 className={classes.viewContainer}
