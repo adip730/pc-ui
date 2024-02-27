@@ -194,17 +194,17 @@ const useStyles = makeStyles(() => ({
     width: "85%",
   },
   durationSlider: {
-    color: "#FFFFFF",
+    color: "#dde1e1",
     "& .MuiSlider-track": {
       border: "none",
-      backgroundColor: "#FFFFFF",
+      backgroundColor: "#dde1e1",
       height: "4px",
     },
     "& .MuiSlider-thumb": {
       display: "none",
     },
     "& .MuiSlider-rail": {
-      backgroundColor: "#FFFFFF",
+      backgroundColor: "#dde1e1",
       height: "4px",
     },
   },

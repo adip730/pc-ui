@@ -233,9 +233,9 @@ export const ProjectItem = (props) => {
             {showOverlay && isLoaded && (
               <>
                 <div className={classes.overlay}>
-                  <IconButton
+                  <Button
                     size="large"
-                    style={{ color: "#FFFFFF" }}
+                    style={{ color: "#dde1e1" }}
                     onClick={() => {
                       // setShowOverlay(!showOverlay);
                       // setPlaying(!playing);
@@ -252,7 +252,7 @@ export const ProjectItem = (props) => {
                       {/* {playing ? "PAUSE" : "PLAY"} */}
                       PLAY
                     </Typography>
-                  </IconButton>
+                  </Button>
                 </div>
                 {!played && thumbnailUrl !== "" && (
                   <img
@@ -279,13 +279,13 @@ export const ProjectItem = (props) => {
                   className={classes.playPauseButton}
                 >
                   {playing ? (
-                    <PauseIcon fontSize="medium" style={{ color: "white" }} />
+                    <PauseIcon fontSize="medium" style={{ color: "#dde1e1" }} />
                   ) : videoDuration === 1 ? (
-                    <ReplayIcon fontSize="medium" style={{ color: "white" }} />
+                    <ReplayIcon fontSize="medium" style={{ color: "#dde1e1" }} />
                   ) : (
                     <PlayArrowIcon
                       fontSize="medium"
-                      style={{ color: "white" }}
+                      style={{ color: "#dde1e1" }}
                     />
                   )}
                 </Button>
@@ -306,11 +306,11 @@ export const ProjectItem = (props) => {
                   onClick={() => setVolume(volume === 1 ? 0 : 1)}
                 >
                   {volume === 1 ? (
-                    <VolumeUpIcon fontSize="small" style={{ color: "white" }} />
+                    <VolumeUpIcon fontSize="small" style={{ color: "#dde1e1" }} />
                   ) : (
                     <VolumeOffIcon
                       fontSize="small"
-                      style={{ color: "white" }}
+                      style={{ color: "#dde1e1" }}
                     />
                   )}
                 </Button>
@@ -323,7 +323,7 @@ export const ProjectItem = (props) => {
                   >
                     <FullscreenIcon
                       fontSize="small"
-                      style={{ color: "white" }}
+                      style={{ color: "#dde1e1" }}
                     />
                   </Button>
                 </div>
