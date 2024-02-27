@@ -118,7 +118,7 @@ export const HomeLogo = () => {
     let rotating = false;
     let loadTime;
     renderer.render(scene, camera);
-    const frame = Math.PI / 360;
+    const frame = (Math.PI / 360) * .5; //slow down by 20%
     function animate() {
 
       // Translating camera on a fixed orbit
