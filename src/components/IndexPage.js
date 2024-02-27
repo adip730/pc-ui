@@ -96,7 +96,7 @@ export const IndexPage = (props) => {
         let proj = projects[projects.findIndex((proj) => proj.name === hover)];
         if (proj.preview && proj.preview.data && proj.preview.data.attributes) {
           let url = proj.preview.data.attributes.url;
-          setFeaturedUrl(`http://${endpoint}${url}`);
+          setFeaturedUrl(`https://${endpoint}${url}`);
         }
       }
     } else {
@@ -112,7 +112,7 @@ export const IndexPage = (props) => {
   //         projects[projects.findIndex((proj) => proj.client === hover)];
   //       if (proj.featured) {
   //         let url = proj.preview.data[0].attributes.url;
-  //         setFeaturedUrl(`http://${endpoint}${url}`);
+  //         setFeaturedUrl(`https://${endpoint}${url}`);
   //       }
   //     }
   //   } else {

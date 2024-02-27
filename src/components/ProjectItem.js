@@ -209,7 +209,7 @@ export const ProjectItem = (props) => {
                 height: "auto !important",
                 width: "100% !important",
               }}
-              url={`http://${endpoint}${featuredUrl}`}
+              url={`https://${endpoint}${featuredUrl}`}
               width={expanded ? "100%" : "100%"}
               height={expanded ? "auto" : "auto"}
               playing={playing}
@@ -257,7 +257,7 @@ export const ProjectItem = (props) => {
                 {!played && thumbnailUrl !== "" && (
                   <img
                     className={classes.thumbnail}
-                    src={`http://${endpoint}${thumbnailUrl}`}
+                    src={`https://${endpoint}${thumbnailUrl}`}
                   />
                 )}
               </>
@@ -344,7 +344,7 @@ export const ProjectItem = (props) => {
             maxWidth: "100%",
           }}
           className={`${isVisible ? showClass : hideClass}`}
-          src={`http://${endpoint}${featuredData.attributes.url}`}
+          src={`https://${endpoint}${featuredData.attributes.url}`}
           alt={featuredData.attributes.name}
         />
       )}
