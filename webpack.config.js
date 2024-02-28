@@ -14,6 +14,7 @@ module.exports = {
     publicPath: '/',
     filename: "index_bundle.js",
   },
+  devtool: "source-map",
   target: "web",
   devServer: {
     port: "3000",

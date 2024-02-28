@@ -6,7 +6,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import AppContext from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     flexDirection: "column",
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     boxSizing: "border-box",
-    padding: useMediaQuery("(min-width: 600px)") ? "120px 64px" : "0px",
+    // padding: useMediaQuery("(min-width: 600px)") ? "120px 64px" : "0px",
   },
   wrapper: {
     height: "100%",
@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     transition: "all .5s",
-    justifyContent: useMediaQuery("(min-width: 600px)") ? "" : "flex-start",
-    paddingTop: useMediaQuery("(min-width: 600px)") ? "0" : "80px",
+    // justifyContent: useMediaQuery("(min-width: 600px)") ? "" : "flex-start",
+    // paddingTop: useMediaQuery("(min-width: 600px)") ? "0" : "80px",
     position: "relative",
     height: "100%",
     width: "100%",
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "translate3d(0, 0, 0)",
   },
   cont: {
-    height: useMediaQuery("(min-width:600px)") ? "100%" : "75%",
+    // height: useMediaQuery("(min-width:600px)") ? "100%" : "75%",
     width: "85%",
     display: "flex",
     flexDirection: "column",
@@ -64,13 +64,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: useMediaQuery("(min-width: 600px)")
-      ? "space-between"
-      : "center",
+    // justifyContent: useMediaQuery("(min-width: 600px)")
+    //   ? "space-between"
+    //   : "center",
     transition: "display 12s",
   },
-
-
   smallSubtitle: {
     position: "absolute",
     bottom: 50,
@@ -91,6 +89,8 @@ export const Preview = (props) => {
   const { setLoadedVids } = api;
 
   const [previewUrl, setPreviewUrl] = useState("");
+
+  const largeScreen = useMediaQuery("(min-width:600px)");
 
   const {
     projectName,
@@ -142,8 +142,6 @@ export const Preview = (props) => {
     navigate(`project/${data.name}`);
   };
 
-  const largeScreen = useMediaQuery("(min-width:600px)");
-
   function growTimer(container, wind) {
     // container.style.transition = "width .75s, height .5s";
     const animate = () => {
@@ -183,7 +181,6 @@ export const Preview = (props) => {
       let container = document.getElementById(`container-${name}`);
       let element = document.getElementById(`featured-${name}`);
       if (element) {
-
         if (showSubtitle) {
           const grow = () => {
             container.style.transitionDuration = ".5s, 1s";
@@ -217,9 +214,27 @@ export const Preview = (props) => {
   }, [showSubtitle, largeScreen]);
 
   return (
-    <div className={classes.root}>
-      <div className={classes.window} id={`window-${name}`}>
-        <div className={classes.cont} id={`container-${name}`}>
+    <div
+      className={classes.root}
+      style={{
+        padding: largeScreen ? "120px 64px" : "0px",
+      }}
+    >
+      <div
+        className={classes.window}
+        style={{
+          justifyContent: largeScreen ? "" : "flex-start",
+          paddingTop: largeScreen ? "0" : "80px",
+        }}
+        id={`window-${name}`}
+      >
+        <div
+          className={classes.cont}
+          style={{
+            height: largeScreen ? "100%" : "75%",
+          }}
+          id={`container-${name}`}
+        >
           <div
             id={`featured-${name}`}
             className={classes.wrapper}
@@ -281,7 +296,12 @@ export const Preview = (props) => {
           </div>
         </div>
         {showSubtitle && largeScreen && growFinished && (
-          <div className={classes.subtitle}>
+          <div
+            className={classes.subtitle}
+            style={{
+              justifyContent: largeScreen ? "space-between" : "center",
+            }}
+          >
             <Typography
               color="primary"
               style={{
