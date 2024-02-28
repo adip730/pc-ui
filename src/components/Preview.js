@@ -261,7 +261,7 @@ export const Preview = (props) => {
               url={
                 videoMap[name]
                   ? videoMap[name]
-                  : `http://${endpoint}${previewUrl}`
+                  : `https://${endpoint}${previewUrl}`
               }
               width="100%"
               height="auto"

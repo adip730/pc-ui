@@ -293,7 +293,7 @@ export const Preview = (props) => {
                 //   bottom: 0,
                 //   margin: "auto",
                 }}
-                url={`http://localhost:1337${featuredUrl}`}
+                url={`https://localhost:1337${featuredUrl}`}
                 width="100%"
                 height="auto"
                 playing
@@ -357,7 +357,7 @@ export const Preview = (props) => {
                 alignContent: "center",
                 transition: "width .5s, height 1s",
               }}
-              url={`http://localhost:1337${featuredUrl}`}
+              url={`https://localhost:1337${featuredUrl}`}
               width="auto"
               height="100%"
               playing

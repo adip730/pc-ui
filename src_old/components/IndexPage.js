@@ -85,7 +85,7 @@ export const IndexPage = (props) => {
         let proj = projects[projects.findIndex((proj) => proj.name === hover)];
         if (proj.featured) {
           let url = proj.featured.data.attributes.url;
-          setFeaturedUrl(`http://${endpoint}${url}`);
+          setFeaturedUrl(`https://${endpoint}${url}`);
         }
       }
     } else {
@@ -368,7 +368,7 @@ export const IndexPage = (props) => {
                   borderRadius: "40px",
                   overflow: "hidden",
                 }}
-                url={`http://${endpoint}${featuredUrl}`}
+                url={`https://${endpoint}${featuredUrl}`}
                 playing
                 loop
                 muted

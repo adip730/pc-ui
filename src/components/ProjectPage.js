@@ -331,7 +331,7 @@ export const ProjectPage = (props) => {
               left: 0,
               alignContent: "center",
             }}
-            url={`http://${endpoint}${featuredUrl}`}
+            url={`https://${endpoint}${featuredUrl}`}
             // width="100%"
             // height='auto'
             width={expanded ? "auto" : "100%"}
@@ -407,7 +407,7 @@ export const ProjectPage = (props) => {
               {thumbnailUrl !== "" && (
                 <img
                   className={classes.thumbnail}
-                  src={`http://${endpoint}${thumbnailUrl}`}
+                  src={`https://${endpoint}${thumbnailUrl}`}
                 />
               )}
             </>

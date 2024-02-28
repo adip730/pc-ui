@@ -67,8 +67,8 @@ export const HomeLogo = () => {
       coinDisc.scale.set(0.1, 0.1, 0.1);
       // HDRI setup
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
-      // const strapiBaseURL = "http://localhost:1337";
-      const strapiBaseURL = "http://" + process.env.REACT_APP_STRAPIURL;
+      // const strapiBaseURL = "https://localhost:1337";
+      const strapiBaseURL = "https://" + process.env.REACT_APP_STRAPIURL;
       const imageUrl = `${strapiBaseURL}${test_hdri}`;
       hdrLoader.load(
         test_hdri != "default" ? imageUrl:logo_tex,
@@ -118,7 +118,7 @@ export const HomeLogo = () => {
     let rotating = false;
     let loadTime;
     renderer.render(scene, camera);
-    const frame = Math.PI / 360;
+    const frame = (Math.PI / 360) * .5; //slow down by 20%
     function animate() {
 
       // Translating camera on a fixed orbit

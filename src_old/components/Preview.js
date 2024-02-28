@@ -121,7 +121,7 @@ export const Preview = (props) => {
     setPreviewUrl(prevUrl);
 
     // if (!videoMap[`${name}-preview`]) {
-    //   setUrl(`http://${endpoint}${prevUrl}`);
+    //   setUrl(`https://${endpoint}${prevUrl}`);
     // } else {
     //   setUrl(videoMap[`${name}-preview`]);
     // }
@@ -253,7 +253,7 @@ export const Preview = (props) => {
               url={
                 videoMap[name]
                   ? videoMap[name]
-                  : `http://${endpoint}${previewUrl}`
+                  : `https://${endpoint}${previewUrl}`
               }
               width="100%"
               height="auto"
