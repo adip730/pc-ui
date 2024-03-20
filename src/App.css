@@ -15,10 +15,15 @@
   display: none;
 } */
 
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+.react-player video {
+  transform: translateY(var(--tranYval, 0));
 }
 
 .App-header {

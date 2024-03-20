@@ -19,6 +19,7 @@ const useStyles = makeStyles(() => ({
   },
   wrapper: {
     height: "100%",
+    minHeight: "100%",
     minWidth: "100%",
     aspectRatio: 16 / 9,
     position: "relative",
@@ -70,8 +71,8 @@ const useStyles = makeStyles(() => ({
     transition: "display 12s",
   },
   smallSubtitle: {
-    position: "absolute",
-    bottom: 50,
+    position: "relative",
+    marginTop: 12,
     width: "100%",
     maxWidth: "100%",
     textAlign: "center",
@@ -145,7 +146,7 @@ export const Preview = (props) => {
   function growTimer(container, wind) {
     // container.style.transition = "width .75s, height .5s";
     const animate = () => {
-      wind.style.paddingTop = "80px";
+      wind.style.paddingTop = index === 0 ? "0px" : "80px";
       container.style.transition = "all .5s ease-in-out";
       container.style.width = "95%";
       container.style.height = "95%";
@@ -165,7 +166,7 @@ export const Preview = (props) => {
     } else {
       clearTimeout(this.grow);
       const animateReset = () => {
-        wind.style.paddingTop = "80px";
+        wind.style.paddingTop = index === 0 ? "0px" : "80px";
         container.style.width = "85%";
         container.style.height = "75%";
         container.style.borderRadius = "40px";
@@ -213,18 +214,71 @@ export const Preview = (props) => {
     }
   }, [showSubtitle, largeScreen]);
 
+  const parentRef = useRef(null);
+
+  // const [parentHeight, setParentHeight] = useState(0);
+  // const [videoHeight, setVideoHeight] = useState(0);
+
+  // useEffect(() => {
+  //   // Get the height of the parent element
+  //   if (parentRef.current) {
+  //     console.log(parentRef.current.offsetHeight);
+  //     console.log("calculated parentHeight: ");
+  //     setParentHeight(parentRef.current.clientHeight);
+  //   }
+  // }, []);
+
+  const [transVal, setTransVal] = useState(0);
+
+  const handleReady = (player) => {
+    // Get the video element from the player instance
+    if (largeScreen) {
+      const videoElement = player.getInternalPlayer();
+      if (videoElement) {
+        // Access the height of the video element
+        const height = videoElement.videoHeight;
+        const width = videoElement.videoWidth;
+        // console.log(
+        //   "parent ref height: ",
+        //   parentRef.current.wrapper.offsetHeight
+        // );
+        // console.log(
+        //   "parent ref width: ",
+        //   parentRef.current.wrapper.offsetWidth
+        // );
+        // console.log("video width: ", width);
+        // console.log("video height: ", height);
+        const actualVidHeight =
+          (width * parentRef.current.wrapper.offsetHeight) /
+          parentRef.current.wrapper.offsetWidth;
+        // console.log("video ", name, "actual height: ", actualVidHeight);
+        const translateVal =
+          -100 *
+          ((actualVidHeight - parentRef.current.wrapper.offsetHeight) /
+            4 /
+            actualVidHeight);
+        // const translateVal = -(actualVidHeight - parentRef.current.wrapper.offsetHeight)/2;
+        // console.log("translate Percent: ", translateVal);
+        // setVideoHeight(height);
+        setTransVal(translateVal);
+      }
+    }
+  };
+
   return (
     <div
       className={classes.root}
       style={{
         padding: largeScreen ? "120px 64px" : "0px",
+        height: !largeScreen && index === 0 ? "calc(85vh - 80px)" : "85vh",
       }}
+      id={`root-${name}`}
     >
       <div
         className={classes.window}
         style={{
           justifyContent: largeScreen ? "" : "flex-start",
-          paddingTop: largeScreen ? "0" : "80px",
+          paddingTop: largeScreen ? "0" : index === 0 ? 0 : "80px",
         }}
         id={`window-${name}`}
       >
@@ -245,18 +299,18 @@ export const Preview = (props) => {
           >
             <ReactPlayer
               id={`videoFrame-${name}`}
+              className={"react-player"}
+              ref={parentRef}
               style={{
                 maxHeight: "100%",
                 maxWidth: "100%",
-                // width: '100%',
-                // borderRadius: "40px",
-                // overflow: "hidden",
+                borderRadius: "20px",
+                overflow: "hidden",
                 position: "absolute",
                 top: 0,
-                left: -1,
-                // right: ,
+                left: 0,
+                "--tranYval": `${transVal}%`,
                 alignContent: "center",
-                // background: "transparent",
               }}
               url={
                 videoMap[name]
@@ -269,32 +323,33 @@ export const Preview = (props) => {
               loop
               muted
               playsinline
-              onReady={() => {
-                let vids = [...loadedVids];
-                if (!vids.includes(name)) {
-                  vids.push(name);
-                  setLoadedVids([...vids]);
-                }
-              }}
+              // onReady={() => {
+              //   let vids = [...loadedVids];
+              //   if (!vids.includes(name)) {
+              //     vids.push(name);
+              //     setLoadedVids([...vids]);
+              //   }
+              // }}
+              onReady={handleReady}
             />
-            {!largeScreen && (
-              <div
-                className={classes.smallSubtitle}
-                style={{ textAlign: "center" }}
-              >
-                <Typography
-                  color="primary"
-                  style={{
-                    fontFamily: "Square721",
-                    fontSize: largeScreen ? ".7rem" : ".55rem",
-                  }}
-                >
-                  {projectName?.toUpperCase()}
-                </Typography>
-              </div>
-            )}
           </div>
         </div>
+        {!largeScreen && (
+          <div
+            className={classes.smallSubtitle}
+            style={{ textAlign: "center" }}
+          >
+            <Typography
+              color="primary"
+              style={{
+                fontFamily: "Square721",
+                fontSize: largeScreen ? ".7rem" : ".55rem",
+              }}
+            >
+              {projectName?.toUpperCase()}
+            </Typography>
+          </div>
+        )}
         {showSubtitle && largeScreen && growFinished && (
           <div
             className={classes.subtitle}

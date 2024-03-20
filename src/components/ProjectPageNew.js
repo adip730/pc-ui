@@ -79,9 +79,9 @@ const useStyles = makeStyles(() => ({
     overflowY: "scroll",
     boxSizing: "border-box",
     justifyContent: "flex-start",
-    WebkitBackgroundClip: 'padding-box',
-    backgroundColor: "#dde1e1",
-    overflowX:"hidden",
+    WebkitBackgroundClip: "padding-box",
+    background: "#dde1e1",
+    overflowX: "hidden",
   },
   buttonRow: {
     display: "flex",
@@ -93,7 +93,7 @@ const useStyles = makeStyles(() => ({
     maxHeight: "24px",
     padding: 0,
     boxSizing: "border-box",
-    marginTop: "-4px",
+    marginTop: "2px",
     marginBottom: "24px",
   },
   window: {
@@ -104,30 +104,31 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     overflow: "hidden",
     borderRadius: "20px",
-    WebkitBorderRadius:"20px",
+    WebkitBorderRadius: "20px",
     position: "relative",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     // marginBottom: "24px",
-    background: "#dde1e1 !important",
-    WebkitBackgroundClip: 'padding-box',
-    zIndex:0,
+    background: "#dde1e1",
+    WebkitBackgroundClip: "padding-box",
+    zIndex: 0,
   },
   videoWrapper: {
     height: "100%",
     borderRadius: "20px",
     overflow: "hidden",
     position: "relative",
+    display: 'flex',
     alignItems: "center",
     justifyContent: "center",
     boxSizing: "border-box",
     aspectRatio: 16 / 9,
     backgroundColor: "#dde1e1",
-    WebkitBackgroundClip: 'padding-box',
-    WebkitBorderRadius:"20px",
-    zIndex:0,
+    WebkitBackgroundClip: "padding-box",
+    WebkitBorderRadius: "20px",
+    zIndex: 0,
   },
   overlay: {
     height: "100%",
@@ -137,7 +138,7 @@ const useStyles = makeStyles(() => ({
     left: 0,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center", 
+    justifyContent: "center",
     zIndex: 3,
   },
   thumbnail: {
@@ -244,6 +245,7 @@ export const ProjectPageNew = (props) => {
   const [creditsArr, setCreditsArr] = useState([]);
   const [isVisible, setIsVisible] = useState(true);
   const [animateDirection, setAnimateDirection] = useState("");
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     if (roles) {
@@ -320,6 +322,7 @@ export const ProjectPageNew = (props) => {
       className={classes.root}
       style={{
         padding: largeScreen ? "84px 64px 0px 64px" : "84px 32px 0px 32px",
+        backgroundColor: expanded ? "#000000" : "#dde1e1",
       }}
       id="pageRoot"
     >
@@ -334,6 +337,8 @@ export const ProjectPageNew = (props) => {
         singleAsset={singleAsset}
         isIos={isIOS}
         isMobileTablet={smallScreen || isMobile}
+        expanded={expanded}
+        setExpanded={setExpanded}
       />
       {!singleAsset && (
         <div
@@ -346,8 +351,10 @@ export const ProjectPageNew = (props) => {
             sx={{
               fontSize: ".5rem",
               fontFamily: "Square721",
+              height: ".75rem",
             }}
             onClick={stepDown}
+            size="small"
           >
             PREVIOUS
           </Button>
@@ -355,8 +362,10 @@ export const ProjectPageNew = (props) => {
             sx={{
               fontSize: ".5rem",
               fontFamily: "Square721",
+              height: ".75rem",
             }}
             onClick={stepUp}
+            size="small"
           >
             NEXT
           </Button>

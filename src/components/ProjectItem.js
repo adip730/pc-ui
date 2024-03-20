@@ -26,6 +26,8 @@ export const ProjectItem = (props) => {
     singleAsset,
     isMobileTablet,
     isIos,
+    expanded,
+    setExpanded,
   } = props;
 
   const playerRef = useRef(null);
@@ -33,7 +35,6 @@ export const ProjectItem = (props) => {
   const [featuredUrl, setFeaturedUrl] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
 
-  const [expanded, setExpanded] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const [showControls, setShowControls] = useState(false);
@@ -156,7 +157,10 @@ export const ProjectItem = (props) => {
   return (
     <div
       className={classes.window}
-      style={{ marginBottom: singleAsset ? "24px" : 0 }}
+      style={{
+        marginBottom: singleAsset ? "24px" : 0,
+        background: expanded ? "#000000" : "#dde1e1",
+      }}
       key={`container-${index}`}
       id={`container-${index}`}
       onMouseLeave={() => {
@@ -186,6 +190,10 @@ export const ProjectItem = (props) => {
             }}
             onClick={() => {
               isMobileTablet ? setShowControls(!showControls) : false;
+            }}
+            style={{
+              background: expanded ? "#000000" : "#dde1e1",
+              textAlign: "center",
             }}
             // onMouseEnter={() => !expanded && setShowControls(true)}
             // onMouseLeave={() => !expanded && setShowControls(false)}
@@ -281,7 +289,10 @@ export const ProjectItem = (props) => {
                   {playing ? (
                     <PauseIcon fontSize="medium" style={{ color: "#dde1e1" }} />
                   ) : videoDuration === 1 ? (
-                    <ReplayIcon fontSize="medium" style={{ color: "#dde1e1" }} />
+                    <ReplayIcon
+                      fontSize="medium"
+                      style={{ color: "#dde1e1" }}
+                    />
                   ) : (
                     <PlayArrowIcon
                       fontSize="medium"
@@ -306,7 +317,10 @@ export const ProjectItem = (props) => {
                   onClick={() => setVolume(volume === 1 ? 0 : 1)}
                 >
                   {volume === 1 ? (
-                    <VolumeUpIcon fontSize="small" style={{ color: "#dde1e1" }} />
+                    <VolumeUpIcon
+                      fontSize="small"
+                      style={{ color: "#dde1e1" }}
+                    />
                   ) : (
                     <VolumeOffIcon
                       fontSize="small"

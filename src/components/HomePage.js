@@ -105,7 +105,7 @@ export const HomePage = (props) => {
 
   useEffect(() => {
     setShowLoading(true);
-  }, [])
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -113,16 +113,26 @@ export const HomePage = (props) => {
         <div className={classes.loadingScreen}>LOADING</div>
       </Fade>
       <div className={classes.scrollView} ref={viewRef} id="scrollview">
-        <div className={classes.viewContainer} id="logo-container">
+        <div
+          className={classes.viewContainer}
+          style={{
+            height: "100dvh",
+          }}
+          id="logo-container"
+        >
           <HomeLogo />
         </div>
         {projects.map(
           (proj, ind) =>
             ((config && config === []) ||
-              (!!config && config?.length && config?.length > 0 && config.includes(proj.name))) && (
+              (!!config &&
+                config?.length &&
+                config?.length > 0 &&
+                config.includes(proj.name))) && (
               <div
                 key={`${proj.name}-preview`}
                 className={classes.viewContainer}
+                style={{ height: ind == 0 && !largeScreen ? "calc(100vh-80px)" : "100vh" }}
               >
                 <Preview
                   options={videoObserverOptions}
