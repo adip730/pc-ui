@@ -3,6 +3,7 @@ import ReactPlayer from "react-player/file";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 import PlayCircleOutlinedIcon from "@mui/icons-material/PlayCircleOutlined";
 import Slider from "@mui/material/Slider";
@@ -43,6 +44,10 @@ export const ProjectItem = (props) => {
   const [videoDuration, setVideoDuration] = useState(0);
   const [seeking, setSeeking] = useState(false);
   const [played, setPlayed] = useState(false);
+
+  const largeScreen = useMediaQuery("(min-width:600px)");
+
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   useEffect(() => {
     let featUrl = featuredData.attributes.url;
@@ -154,12 +159,31 @@ export const ProjectItem = (props) => {
 
   const isVideo = featuredData.attributes.mime.includes("video");
 
+  const [transVal, setTransVal] = useState(0);
+
+  const handleReady = (player) => {
+    // Get the video element from the player instance
+    setIsLoaded(true);
+    if (isSafari) {
+      const videoElement = player.getInternalPlayer();
+      const contElement = document.getElementById(`container-${index}`);
+      if (videoElement) {
+        // Access the height of the video element
+        const height = videoElement.clientHeight;
+        const translateVal =
+          -100 * ((height - contElement.offsetHeight) / 2 / height);
+        setTransVal(translateVal);
+      }
+    }
+  };
+
   return (
     <div
       className={classes.window}
       style={{
         marginBottom: singleAsset ? "24px" : 0,
-        background: expanded ? "#000000" : "#dde1e1",
+        background: isFullScreen ? "#000000" : "#dde1e1",
+        borderRadius: isFullScreen ? 0 : "20px",
       }}
       key={`container-${index}`}
       id={`container-${index}`}
@@ -192,8 +216,9 @@ export const ProjectItem = (props) => {
               isMobileTablet ? setShowControls(!showControls) : false;
             }}
             style={{
-              background: expanded ? "#000000" : "#dde1e1",
+              background: isFullScreen ? "#000000" : "#dde1e1",
               textAlign: "center",
+              borderRadius: isFullScreen ? 0 : "20px",
             }}
             // onMouseEnter={() => !expanded && setShowControls(true)}
             // onMouseLeave={() => !expanded && setShowControls(false)}
@@ -204,15 +229,17 @@ export const ProjectItem = (props) => {
           >
             <ReactPlayer
               ref={playerRef}
+              className={"react-player"}
               id="videoFrame"
               style={{
                 maxHeight: "100%",
                 maxWidth: "100%",
-                borderRadius: expanded ? "0px" : "20px",
+                borderRadius: isFullScreen ? "0px" : "20px",
                 overflow: "hidden",
                 position: "absolute",
                 top: 0,
                 left: 0,
+                "--tranYval": `${transVal}%`,
                 alignContent: "center",
                 height: "auto !important",
                 width: "100% !important",
@@ -235,7 +262,8 @@ export const ProjectItem = (props) => {
               }}
               progressInterval={100}
               onProgress={handleProgress}
-              onReady={() => setIsLoaded(true)}
+              // onReady={() => setIsLoaded(true)}
+              onReady={handleReady}
             />
 
             {showOverlay && isLoaded && (
@@ -275,6 +303,8 @@ export const ProjectItem = (props) => {
             <div
               className={classes.controls}
               style={{
+                borderBottomLeftRadius: isFullScreen ? 0 : "20px",
+                borderBottomRightRadius: isFullScreen ? 0 : "20px",
                 width:
                   containerEl?.offsetWidth < playerEl?.offsetWidth
                     ? containerEl?.offsetWidth

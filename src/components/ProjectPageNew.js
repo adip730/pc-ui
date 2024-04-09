@@ -317,12 +317,20 @@ export const ProjectPageNew = (props) => {
     updateSize();
   }, [contWidth, playWidth]);
 
+  
+  const isFullScreen =
+    !!document.fullscreenElement ||
+    !!document.webkitFullscreenElement ||
+    !!document.mozFullScreenElement ||
+    document.fullScreen ||
+    document.webkitIsFullScreen;
+
   return (
     <div
       className={classes.root}
       style={{
         padding: largeScreen ? "84px 64px 0px 64px" : "84px 32px 0px 32px",
-        backgroundColor: expanded ? "#000000" : "#dde1e1",
+        backgroundColor: expanded && isFullScreen ? "#000000" : "#dde1e1",
       }}
       id="pageRoot"
     >
@@ -340,7 +348,7 @@ export const ProjectPageNew = (props) => {
         expanded={expanded}
         setExpanded={setExpanded}
       />
-      {!singleAsset && (
+      {!singleAsset && !isIOS && (
         <div
           className={classes.buttonRow}
           style={{

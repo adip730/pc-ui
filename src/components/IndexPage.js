@@ -90,6 +90,8 @@ export const IndexPage = (props) => {
 
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const xsScreen = useMediaQuery("(max-width:385px)");
+
   useEffect(() => {
     if (hover !== "") {
       if (projects.some((proj) => proj.name === hover)) {
@@ -177,7 +179,11 @@ export const IndexPage = (props) => {
                   color="primary"
                   style={{
                     fontFamily: "Square721",
-                    fontSize: largeScreen ? ".75rem" : ".6rem",
+                    fontSize: largeScreen
+                      ? ".75rem"
+                      : xsScreen
+                      ? ".5rem"
+                      : ".6rem",
                     lineHeight: ".6rem",
                   }}
                 >
@@ -223,7 +229,11 @@ export const IndexPage = (props) => {
                       color="primary"
                       style={{
                         fontFamily: "Square721",
-                        fontSize: largeScreen ? ".75rem" : ".6rem",
+                        fontSize: largeScreen
+                          ? ".75rem"
+                          : xsScreen
+                          ? ".5rem"
+                          : ".6rem",
                         lineHeight: ".6rem",
                       }}
                     >
@@ -247,7 +257,11 @@ export const IndexPage = (props) => {
                   color="primary"
                   style={{
                     fontFamily: "Square721",
-                    fontSize: largeScreen ? ".75rem" : ".6rem",
+                    fontSize: largeScreen
+                      ? ".75rem"
+                      : xsScreen
+                      ? ".5rem"
+                      : ".6rem",
                     lineHeight: ".6rem",
                   }}
                 >
@@ -286,7 +300,11 @@ export const IndexPage = (props) => {
                   color="primary"
                   style={{
                     fontFamily: "Square721",
-                    fontSize: largeScreen ? ".75rem" : ".6rem",
+                    fontSize: largeScreen
+                      ? ".75rem"
+                      : xsScreen
+                      ? ".5rem"
+                      : ".6rem",
                     lineHeight: ".6rem",
                     textAlign: "right",
                   }}

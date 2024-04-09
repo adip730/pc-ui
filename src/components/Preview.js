@@ -26,8 +26,10 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     justifyContent: "center",
     transition: "width .75s",
+    WebkitTransition: "width .75s",
     cursor: "pointer",
     willChange: "transform",
+    WebkitTransform: "translate3d(0, 0, 0)",
     transform: "translate3d(0, 0, 0)",
   },
   window: {
@@ -35,12 +37,14 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     alignItems: "center",
     transition: "all .5s",
+    WebkitTransition: "all .5s",
     // justifyContent: useMediaQuery("(min-width: 600px)") ? "" : "flex-start",
     // paddingTop: useMediaQuery("(min-width: 600px)") ? "0" : "80px",
     position: "relative",
     height: "100%",
     width: "100%",
     willChange: "transform",
+    WebkitTransform: "translate3d(0, 0, 0)", 
     transform: "translate3d(0, 0, 0)",
   },
   cont: {
@@ -53,6 +57,7 @@ const useStyles = makeStyles(() => ({
     borderRadius: "20px",
     boxSizing: "border-box",
     willChange: "transform",
+    WebkitTransform: "translate3d(0, 0, 0)",
     transform: "translate3d(0, 0, 0)",
   },
   subtitle: {
@@ -92,6 +97,8 @@ export const Preview = (props) => {
   const [previewUrl, setPreviewUrl] = useState("");
 
   const largeScreen = useMediaQuery("(min-width:600px)");
+
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   const {
     projectName,
@@ -146,7 +153,7 @@ export const Preview = (props) => {
   function growTimer(container, wind) {
     // container.style.transition = "width .75s, height .5s";
     const animate = () => {
-      wind.style.paddingTop = index === 0 ? "0px" : "80px";
+      wind.style.paddingTop = "80px";
       container.style.transition = "all .5s ease-in-out";
       container.style.width = "95%";
       container.style.height = "95%";
@@ -166,7 +173,7 @@ export const Preview = (props) => {
     } else {
       clearTimeout(this.grow);
       const animateReset = () => {
-        wind.style.paddingTop = index === 0 ? "0px" : "80px";
+        wind.style.paddingTop = "80px";
         container.style.width = "85%";
         container.style.height = "75%";
         container.style.borderRadius = "40px";
@@ -232,34 +239,17 @@ export const Preview = (props) => {
 
   const handleReady = (player) => {
     // Get the video element from the player instance
-    if (largeScreen) {
+    if (largeScreen && isSafari) {
       const videoElement = player.getInternalPlayer();
+      const contElement = document.getElementById(`window-${name}`);
       if (videoElement) {
         // Access the height of the video element
-        const height = videoElement.videoHeight;
-        const width = videoElement.videoWidth;
-        // console.log(
-        //   "parent ref height: ",
-        //   parentRef.current.wrapper.offsetHeight
-        // );
-        // console.log(
-        //   "parent ref width: ",
-        //   parentRef.current.wrapper.offsetWidth
-        // );
-        // console.log("video width: ", width);
-        // console.log("video height: ", height);
-        const actualVidHeight =
-          (width * parentRef.current.wrapper.offsetHeight) /
-          parentRef.current.wrapper.offsetWidth;
-        // console.log("video ", name, "actual height: ", actualVidHeight);
+        const height = videoElement.clientHeight;
         const translateVal =
-          -100 *
-          ((actualVidHeight - parentRef.current.wrapper.offsetHeight) /
-            4 /
-            actualVidHeight);
-        // const translateVal = -(actualVidHeight - parentRef.current.wrapper.offsetHeight)/2;
-        // console.log("translate Percent: ", translateVal);
-        // setVideoHeight(height);
+        -100 *
+        (((height+32) - contElement.offsetHeight) /
+        2 /
+        height)
         setTransVal(translateVal);
       }
     }
@@ -270,7 +260,8 @@ export const Preview = (props) => {
       className={classes.root}
       style={{
         padding: largeScreen ? "120px 64px" : "0px",
-        height: !largeScreen && index === 0 ? "calc(85vh - 80px)" : "85vh",
+        // height: !largeScreen && index === 0 ? "calc(85vh - 80px)" : "85vh",
+        height: "85vh",
       }}
       id={`root-${name}`}
     >
@@ -278,7 +269,7 @@ export const Preview = (props) => {
         className={classes.window}
         style={{
           justifyContent: largeScreen ? "" : "flex-start",
-          paddingTop: largeScreen ? "0" : index === 0 ? 0 : "80px",
+          paddingTop: largeScreen ? "0" : "80px",
         }}
         id={`window-${name}`}
       >
@@ -310,6 +301,8 @@ export const Preview = (props) => {
                 top: 0,
                 left: 0,
                 "--tranYval": `${transVal}%`,
+                WebkitBorderRadius: "20px",
+                WebkitOverflowScrolling: "touch",
                 alignContent: "center",
               }}
               url={
@@ -322,7 +315,7 @@ export const Preview = (props) => {
               playing={playing}
               loop
               muted
-              playsinline
+              playsinline={true}
               // onReady={() => {
               //   let vids = [...loadedVids];
               //   if (!vids.includes(name)) {

@@ -42,6 +42,7 @@ const useStyles = makeStyles(() => ({
 export const AboutPage = (props) => {
   const classes = useStyles();
   const largeScreen = useMediaQuery("(min-width:600px)");
+  const xsScreen = useMediaQuery("(max-width:385px)");
 
   return (
     <div className={classes.root}>
@@ -84,7 +85,7 @@ export const AboutPage = (props) => {
           <Typography
             style={{
               fontFamily: "Square721",
-              fontSize: largeScreen ? ".7rem" : ".55rem",
+              fontSize: largeScreen ? ".7rem" : xsScreen ? ".5rem" : ".55rem",
               // right: "0",
               // paddingBottom:"10px",
               textAlign: "left",
@@ -112,7 +113,9 @@ export const AboutPage = (props) => {
           <Typography
             style={{
               fontFamily: "Square721",
-              fontSize: largeScreen ? ".7rem" : ".55rem",
+              // fontSize: largeScreen ? ".7rem" : ".55rem",
+              fontSize: largeScreen ? ".7rem" : xsScreen ? ".5rem" : ".55rem",
+
               // right: "0",
               // paddingBottom:"10px",
               textTransform: "Uppercase",
@@ -142,7 +145,9 @@ export const AboutPage = (props) => {
             <Typography
               style={{
                 fontFamily: "Square721",
-                fontSize: largeScreen ? ".7rem" : ".55rem",
+                // fontSize: largeScreen ? ".7rem" : ".55rem",
+                fontSize: largeScreen ? ".7rem" : xsScreen ? ".5rem" : ".55rem",
+
                 textTransform: "Uppercase",
                 // right: "0",
                 // paddingBottom:"10px",

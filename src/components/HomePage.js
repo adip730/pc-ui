@@ -6,6 +6,7 @@ import Preview from "./Preview";
 import HomeLogo from "../threejs/HomeLogo";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Footer from "./Footer";
+import { isMobile } from "react-device-detect";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles(() => ({
   },
   viewContainer: {
     position: "relative",
-    height: "100vh",
+    height: "70vh",
     width: "100%",
     display: "flex",
     alignItems: "center",
@@ -132,7 +133,14 @@ export const HomePage = (props) => {
               <div
                 key={`${proj.name}-preview`}
                 className={classes.viewContainer}
-                style={{ height: ind == 0 && !largeScreen ? "calc(100vh-80px)" : "100vh" }}
+                style={{
+                  height:
+                    isMobile && ind == projects.length - 1
+                      ? "100vh"
+                      : largeScreen
+                      ? "70vh"
+                      : "85vh",
+                }}
               >
                 <Preview
                   options={videoObserverOptions}
@@ -143,10 +151,17 @@ export const HomePage = (props) => {
               </div>
             )
         )}
+        {isMobile && (
+          <div style={{ width: "100%" }}>
+            <Footer />
+          </div>
+        )}
+      </div>
+      {!isMobile && (
         <div style={{ width: "100%" }}>
           <Footer />
         </div>
-      </div>
+      )}
     </div>
   );
 };
