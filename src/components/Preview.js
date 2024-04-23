@@ -44,7 +44,7 @@ const useStyles = makeStyles(() => ({
     height: "100%",
     width: "100%",
     willChange: "transform",
-    WebkitTransform: "translate3d(0, 0, 0)", 
+    WebkitTransform: "translate3d(0, 0, 0)",
     transform: "translate3d(0, 0, 0)",
   },
   cont: {
@@ -74,13 +74,17 @@ const useStyles = makeStyles(() => ({
     //   ? "space-between"
     //   : "center",
     transition: "display 12s",
+    justifyContent: "space-between",
   },
   smallSubtitle: {
     position: "relative",
     marginTop: 12,
-    width: "100%",
-    maxWidth: "100%",
-    textAlign: "center",
+    width: "75%",
+    maxWidth: "80%",
+    display: "flex",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 }));
 
@@ -246,10 +250,7 @@ export const Preview = (props) => {
         // Access the height of the video element
         const height = videoElement.clientHeight;
         const translateVal =
-        -100 *
-        (((height+32) - contElement.offsetHeight) /
-        2 /
-        height)
+          -100 * ((height + 32 - contElement.offsetHeight) / 2 / height);
         setTransVal(translateVal);
       }
     }
@@ -330,8 +331,17 @@ export const Preview = (props) => {
         {!largeScreen && (
           <div
             className={classes.smallSubtitle}
-            style={{ textAlign: "center" }}
+            // style={{ textAlign: "center" }}
           >
+            <Typography
+              color="primary"
+              style={{
+                fontFamily: "Square721",
+                fontSize: largeScreen ? ".7rem" : ".55rem",
+              }}
+            >
+              {client?.toUpperCase()}
+            </Typography>
             <Typography
               color="primary"
               style={{
@@ -344,12 +354,7 @@ export const Preview = (props) => {
           </div>
         )}
         {showSubtitle && largeScreen && growFinished && (
-          <div
-            className={classes.subtitle}
-            style={{
-              justifyContent: largeScreen ? "space-between" : "center",
-            }}
-          >
+          <div className={classes.subtitle}>
             <Typography
               color="primary"
               style={{
@@ -357,8 +362,19 @@ export const Preview = (props) => {
                 fontSize: largeScreen ? ".7rem" : ".55rem",
               }}
             >
-              {projectName?.toUpperCase()}
+              {client?.toUpperCase()}
             </Typography>
+            {largeScreen && (
+              <Typography
+                color="primary"
+                style={{
+                  fontFamily: "Square721",
+                  fontSize: largeScreen ? ".7rem" : ".55rem",
+                }}
+              >
+                {projectName?.toUpperCase()}
+              </Typography>
+            )}
             {largeScreen && (
               <Typography
                 color="primary"
@@ -379,17 +395,6 @@ export const Preview = (props) => {
                 }}
               >
                 {roles?.toUpperCase()}
-              </Typography>
-            )}
-            {largeScreen && (
-              <Typography
-                color="primary"
-                style={{
-                  fontFamily: "Square721",
-                  fontSize: largeScreen ? ".7rem" : ".55rem",
-                }}
-              >
-                {code?.toUpperCase()}
               </Typography>
             )}
           </div>

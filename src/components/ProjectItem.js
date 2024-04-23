@@ -160,7 +160,8 @@ export const ProjectItem = (props) => {
   const isVideo = featuredData.attributes.mime.includes("video");
 
   const [transVal, setTransVal] = useState(0);
-
+  const [savedVal, setSavedVal] = useState(0);
+  const isRatio = false;
   const handleReady = (player) => {
     // Get the video element from the player instance
     setIsLoaded(true);
@@ -168,14 +169,29 @@ export const ProjectItem = (props) => {
       const videoElement = player.getInternalPlayer();
       const contElement = document.getElementById(`container-${index}`);
       if (videoElement) {
+        if (videoElement.playerWidth / videoElement.playerHeight > 16 / 9) {
+          isRatio = true;
+        }
         // Access the height of the video element
         const height = videoElement.clientHeight;
         const translateVal =
           -100 * ((height - contElement.offsetHeight) / 2 / height);
         setTransVal(translateVal);
+        setSavedVal(translateVal);
       }
     }
   };
+
+  useEffect(() => {
+    if (isSafari) {
+      if (isFullScreen) {
+        setSavedVal(transVal);
+        setTransVal(0);
+      } else {
+        setTransVal(savedVal);
+      }
+    }
+  }, [isFullScreen]);
 
   return (
     <div
@@ -233,20 +249,21 @@ export const ProjectItem = (props) => {
               id="videoFrame"
               style={{
                 maxHeight: "100%",
-                maxWidth: "100%",
+                maxWidth: "100% !important",
                 borderRadius: isFullScreen ? "0px" : "20px",
                 overflow: "hidden",
                 position: "absolute",
-                top: 0,
-                left: 0,
+                top: isFullScreen ? "50%" : 0,
+                left: isFullScreen ? "50%" : 0,
+                transform: isFullScreen ? "translate(-50%, -50%)" : false,
                 "--tranYval": `${transVal}%`,
                 alignContent: "center",
-                height: "auto !important",
-                width: "100% !important",
+                height: isFullScreen ? "100% !important" : "auto !important",
+                width: isFullScreen ? "auto% !important" : "100% !important",
               }}
               url={`https://${endpoint}${featuredUrl}`}
-              width={expanded ? "100%" : "100%"}
-              height={expanded ? "auto" : "auto"}
+              width={isFullScreen ? "auto" : "100%"}
+              height={isFullScreen ? "100%" : "auto"}
               playing={playing}
               volume={volume}
               muted={volume === 0}

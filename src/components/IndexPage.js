@@ -144,7 +144,7 @@ export const IndexPage = (props) => {
           return (
             <Grid
               container
-              columns={{ xs: 3, md: 15 }}
+              columns={{ xs: 2, md: 15 }}
               direction="row"
               alignItems="center"
               justifyContent="space-evenly"
@@ -202,18 +202,18 @@ export const IndexPage = (props) => {
                 onMouseEnter={(e) => setHover(proj.client)}
                 onMouseLeave={(e) => setHover("")}
               >
-                {largeScreen ? (
-                  <Typography
-                    color="primary"
-                    style={{
-                      fontFamily: "Square721",
-                      fontSize: largeScreen ? ".75rem" : ".6rem",
-                      lineHeight: ".6rem",
-                    }}
-                  >
-                    {proj.projectName?.toUpperCase()}
-                  </Typography>
-                ) : (
+                {/* {largeScreen ? ( */}
+                <Typography
+                  color="primary"
+                  style={{
+                    fontFamily: "Square721",
+                    fontSize: largeScreen ? ".75rem" : ".6rem",
+                    lineHeight: ".6rem",
+                  }}
+                >
+                  {proj.projectName?.toUpperCase()}
+                </Typography>
+                {/* ) : (
                   <>
                     <Button
                       className={classes.indexButton}
@@ -240,15 +240,16 @@ export const IndexPage = (props) => {
                       {proj.client?.toUpperCase()}
                     </Typography>
                   </>
-                )}
+                )} */}
               </Grid>
 
               <Grid
                 item
-                xs={1}
+                xs={0}
                 md={3}
                 sx={{
                   textAlign: { xs: "left", md: "left" },
+                  display: { xs: "none", md: "block" },
                   paddingLeft: { xs: "4rem" },
                   whiteSpace: "nowrap",
                 }}
@@ -290,10 +291,11 @@ export const IndexPage = (props) => {
               </Grid>
               <Grid
                 item
-                xs={1}
+                xs={0}
                 md={1}
                 sx={{
-                  textAlign: { xs: "right", md: "right" },
+                  textAlign: { md: "right" },
+                  display: { xs: "none", md: "block" },
                 }}
               >
                 <Typography
@@ -310,6 +312,31 @@ export const IndexPage = (props) => {
                   }}
                 >
                   {proj.code?.toUpperCase()}
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                xs={1}
+                md={0}
+                sx={{
+                  textAlign: { xs: "right", md: "right" },
+                  display: { xs: "block", md: "none" },
+
+                }}
+              >
+                <Typography
+                  color="primary"
+                  style={{
+                    fontFamily: "Square721",
+                    fontSize: largeScreen
+                      ? ".75rem"
+                      : xsScreen
+                      ? ".5rem"
+                      : ".6rem",
+                    lineHeight: ".6rem",
+                  }}
+                >
+                  {proj.projectName?.toUpperCase()}
                 </Typography>
               </Grid>
             </Grid>
