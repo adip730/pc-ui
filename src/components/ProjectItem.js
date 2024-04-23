@@ -165,7 +165,7 @@ export const ProjectItem = (props) => {
   const handleReady = (player) => {
     // Get the video element from the player instance
     setIsLoaded(true);
-    if (isSafari) {
+    // if (isSafari) {
       const videoElement = player.getInternalPlayer();
       const contElement = document.getElementById(`container-${index}`);
       if (videoElement) {
@@ -179,18 +179,18 @@ export const ProjectItem = (props) => {
         setTransVal(translateVal);
         setSavedVal(translateVal);
       }
-    }
+    // }
   };
 
   useEffect(() => {
-    if (isSafari) {
+    // if (isSafari) {
       if (isFullScreen) {
         setSavedVal(transVal);
         setTransVal(0);
       } else {
         setTransVal(savedVal);
       }
-    }
+    // }
   }, [isFullScreen]);
 
   return (

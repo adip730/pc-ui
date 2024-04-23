@@ -243,14 +243,14 @@ export const Preview = (props) => {
 
   const handleReady = (player) => {
     // Get the video element from the player instance
-    if (largeScreen && isSafari) {
+    if (largeScreen) {
       const videoElement = player.getInternalPlayer();
       const contElement = document.getElementById(`window-${name}`);
       if (videoElement) {
         // Access the height of the video element
         const height = videoElement.clientHeight;
         const translateVal =
-          -100 * ((height + 32 - contElement.offsetHeight) / 2 / height);
+          -100 * ((height - contElement.offsetHeight) / 2 / height);
         setTransVal(translateVal);
       }
     }
